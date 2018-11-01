@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+
+    {{> head}}
+    {{> navbar}}
+    {{> navusuarios}}
+
+    <div ng-controller='controlador'>
+       <table  border="1">
+            <tr ng-repeat="usuario in usuarios track by $index">
+                <td>\{{ usuario.nombre }}</td>
+                <td>\{{ usuario.peso }}</td>
+                <td>\{{ usuario.estatura }}</td>
+                <td>\{{ usuario.fechanaci }}</td>
+                <td>\{{ usuario.genero }}</td>
+                <td>\{{ usuario.imc }}</td>
+                <td>\{{ usuario.dietaCalorica }}</td>
+
+                
+            </tr>
+        </table>
+    </div>
+</html>
+
+<script src="/assets/js/UsarioController.js"></script>

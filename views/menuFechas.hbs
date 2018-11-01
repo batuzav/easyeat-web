@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+    {{> head}}
+    {{> navbar}}
+    {{> navmenu}}
+<body ng-controller='controlador'>
+    <br>
+    <div class='col-md-2 col-md-offset-4 col-xs-7 col-xs-offset-2'>
+        <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fecha" />
+    </div>
+    <br> 
+    
+    <div class="col-md-10 col-xs-12  col-xs-offset-1  col-xs-8">
+        <br><br><br><br>
+        <div class="col-md-2 col-md-offset-0 form-group">
+            <select ng-model="frmData.desayuno1" ng-options="desayuno as desayuno.nombre for desayuno in desayunos track by desayuno.id" class="form-control" >
+                <option value="">--Elige el desayuno principal--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.desayuno2" ng-options="desayuno as desayuno.nombre for desayuno in desayunos track by desayuno.id" class="form-control" >
+                <option value="">--Elige el desayuno 1--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.desayuno3" ng-options="desayuno as desayuno.nombre for desayuno in desayunos track by desayuno.id" class="form-control" >
+                <option value="">--Elige el desayuno 2--</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group">
+            <select ng-model="frmData.comida1" ng-options="comida as comida.nombre for comida in comidas track by comida.id"  class="form-control" >
+                <option value="">--Elige el comida principal--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.comida2" ng-options="comida as comida.nombre for comida in comidas track by comida.id"  class="form-control" >
+                <option value="">--Elige el comida 1--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.comida3" ng-options="comida as comida.nombre for comida in comidas track by comida.id"  class="form-control" >
+                <option value="">--Elige el comida 2--</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group">
+            <select ng-model="frmData.cena1" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
+                <option value="">--Elige el cena principal--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.cena2" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
+                <option value="">--Elige el cena 1--</option>
+            </select>
+            <br>    
+            <select ng-model="frmData.cena3" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
+                <option value="">--Elige el cena 2--</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group">
+           
+            <select ng-model="frmData.colacion1" ng-options="colacion as colacion.nombre for colacion in colaciones track by colacion.id"  class="form-control">
+                <option value="">--Elige el colacion mañana--</option>
+            </select>
+            <br>
+            <select ng-model="frmData.colacion2" ng-options="colacion as colacion.nombre for colacion in colaciones track by colacion.id"  class="form-control">
+                <option value="">--Elige el colacion tarde--</option>
+            </select>
+        </div>
+        <br> <br>
+        <div class="col-md-2 col-md-offset-4 from-group anchoboton" style="width:100%">
+            <br>
+            <button type="submit" class="formbuttom btn" ng-click="agregarMenu();$event.stopPropagation();">Subir menú</button>
+        </div>
+            <br>
+            \{{ frmData.desayuno1 }}
+            <br>
+            \{{ frmData.comida1 }}
+            <br>
+            \{{ frmData.cena1 }}
+            <br>
+            \{{ frmData.colacion1 }}
+            
+            
+    </div>
+
+
+
+<script type="text/javascript">
+    $('#datetimepicker4').datepicker({
+                                     beforeShowDay: $.datepicker.noWeekends,
+                                     dateFormat: "yy-mm-dd",
+                                     minDate: '+2d'
+                                    });
+ 
+</script>
+
+
+   
+</body>
+</html>
+
+
+
+<script src="/assets/js/Controllers/Menu/MenuFechaController.js"> </script>

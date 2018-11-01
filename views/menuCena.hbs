@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+    {{> head}}
+    {{> navbar}}
+    {{> navmenu}}
+<body>
+<div class="containerComanda col-md-11 col-md-offset-0 col-xs-offset-1  col-xs-8 " ng-controller='controlador'>
+        
+        <div class=" col-md-6 col-xs-12 conHorizontal1 ">
+           <form action="">
+                    <br>
+                    <div class="col-md-5 col-md-offset-1 col-xs-12 formcomi centroformandbutom" >
+                        <div class="form-group">
+                            <label for="titulo" style="color: black"><b> *Título</b></label>
+                            <br>
+                            <input type="text" placeholder="Max 17 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="17" ng-model="frmData.nombre" required>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="descripcion" style="color: black"><b>*Descripción</b></label>
+                            <br>
+                            <input type="text" placeholder="Max 60 caracteres" name="descripcion" id="descripcion" class="inputalim form-control" maxlength="60" ng-model="frmData.descripcion" required>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6 col-xs-12">
+                            <label for="calorias" style="color: black"><b>*Calorias por porción</b></label>
+                            <br>
+                            <input type="text" placeholder="Max 17 caracteres" name="calorias" id="calorias" class="inputalim form-control" maxlength="17" ng-model="frmData.calorias" required>
+                        </div>
+                        <div class="form-group col-md-6  col-xs-12" style="float:left">
+                            <label for="medidas" style="color: black"><b>*Unidades de medida</b></label>
+                            <br>
+                            <input type="text" placeholder="Max 17 caracteres" name="medidas" id="medidas" class="inputalim form-control" maxlength="17" ng-model="frmData.medidas" required>
+                        </div>
+                    </div> 
+            </form>
+        </div>
+        <br>
+        <div class="col-md-6 col-xs-12 imagenform centroformandbutom">                                            
+            <div>
+                <img src="/assets/img/imagen-predeterminado-cena-menu.png" alt="" srcset="" class="imagencomida">
+            </div>
+            <br>
+            <div>
+            <button type="submit" class="formbuttom btn" ng-show="!modify" ng-click="agregarCena();$event.stopPropagation();">Subir menú</button>
+            <button type="submit" class="formbuttom btn" ng-show="modify" ng-click="modifyCena();$event.stopPropagation();">Modificar Menu</button>
+            <button type="submit" class="cancelarbtn btn" ng-show="modify" ng-click="cancelarModify();$event.stopPropagation();">Cancelar</button>
+            </div>                 
+        </div>
+        
+        <div class="col-md-12 col-xs-12 conHorizontal2">
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Descripcion</th>
+                        <th>Calorias por porción</th>
+                        <th>Unidades de medida</th>
+                        
+                    </tr>
+                    <tr ng-repeat="cena in cenas track by $index">
+                       <td>\{{ cena.nombre }}</td> 
+                       <td>\{{ cena.descripcion }}</td>
+                       <td>\{{ cena.calorias }}</td>
+                       <td>\{{ cena.medidas }}</td>
+                       <td class="editformComanda"><a href="#" ng-click="selectObject(cena);$event.stopPropagation();" > edit </a></td>
+                       
+                    </tr>    
+                </table>
+            </div>
+
+        </div>
+        
+    </div>
+</body>
+</html>
+<script src="/assets/js/Controllers/Menu/CenaController.js"> </script>

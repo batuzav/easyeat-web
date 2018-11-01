@@ -1,0 +1,25 @@
+{
+    "name": "easy-eat-website",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node start server/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.18.3",
+        "conekta": "^3.5.1",
+        "cors": "^2.8.4",
+        "express": "^4.16.3",
+        "firebase": "^5.5.3",
+        "hbs": "^4.0.1",
+        "jsonwebtoken": "^8.3.0",
+        "paypal-rest-sdk": "^1.8.1",
+        "socket.io": "^2.1.1",
+        "underscore": "^1.9.1"
+    }
+}
