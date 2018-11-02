@@ -161,8 +161,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                     console.log(res.toObject());
                     mensaje = res.toObject();
                     socket.broadcast.emit('mensaje', mensaje);
-
-                    db.ref("/Carrito/" + msg.idcliente9 + "/").child('infocliente').update({
+                    console.log(object)
+                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
                         status: true,
                     }, async function(err) {
                         if (err) {
