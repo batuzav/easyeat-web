@@ -9,6 +9,9 @@ const conekta = require('conekta');
 //paypal 
 const paypal = require('paypal-rest-sdk');
 
+/*\\Proximo cambio //*/
+const { db } = require('./config/firebase');
+
 
 
 
@@ -158,6 +161,19 @@ io.on('connection', function(socket) { //habla al metodo connection
                     console.log(res.toObject());
                     mensaje = res.toObject();
                     socket.broadcast.emit('mensaje', mensaje);
+
+                    db.ref("/Carrito").child(msg.idcliente).update({
+                        status: true,
+                    }, async function(err) {
+                        if (err) {
+                            console.log('ERROR')
+                        } else {
+                            console.log('HECHO')
+
+                        }
+                    });
+
+
                 }
                 if (err) {
                     console.log(err)

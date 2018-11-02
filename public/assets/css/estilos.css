@@ -256,3 +256,8 @@
             .anchoboton {
                 width: 60%,
             }
+            
+            .divUsuario {
+                height: 90%;
+                overflow: scroll;
+            }

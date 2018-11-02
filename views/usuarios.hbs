@@ -5,21 +5,47 @@
     {{> navbar}}
     {{> navusuarios}}
 
-    <div ng-controller='controlador'>
-       <table  border="1">
-            <tr ng-repeat="usuario in usuarios track by $index">
-                <td>\{{ usuario.nombre }}</td>
-                <td>\{{ usuario.peso }}</td>
-                <td>\{{ usuario.estatura }}</td>
-                <td>\{{ usuario.fechanaci }}</td>
-                <td>\{{ usuario.genero }}</td>
-                <td>\{{ usuario.imc }}</td>
-                <td>\{{ usuario.dietaCalorica }}</td>
+    <body  ng-controller='controlador'>
+        <br>
+        <div class="col-md-11 col-md-offset-0 col-xs-7 col-xs-offset-1 divUsuario" >
+            <div class="table-responsive" >
+                <br>
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Método de pago</th>
+                        <th>Plan contratado</th>
+                        <th>Total</th>
+                        <th>Peso</th>
+                        <th>Estatura</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>Sexo</th>
+                        <th>IMC</th>
+                        <th>DietaCalorica</th>
+                        
+                    
+                        
+                    </tr>
 
-                
-            </tr>
-        </table>
-    </div>
+
+
+                    <tr ng-repeat="usuario in usuarios track by $index">
+                        <td>\{{ usuario.nombre }}</td>
+                        <td>Método de pago</td>
+                        <td>Plan contratado</td>
+                        <td>Total</td>
+                        <td>\{{ usuario.peso }}</td>
+                        <td>\{{ usuario.estatura }}</td>
+                        <td>\{{ usuario.fechanaci }}</td>
+                        <td>\{{ usuario.genero }}</td>
+                        <td>\{{ usuario.imc }}</td>
+                        <td>DietaCalorica</td>   
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </body>
 </html>
 
 <script src="/assets/js/UsarioController.js"></script>
