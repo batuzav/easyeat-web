@@ -118,7 +118,7 @@ io.on('connection', function(socket) { //habla al metodo connection
             for (let x = 0; x <= msg.productos.length - 1; x++) {
                 datos[x] = {
                     "name": msg.productos[x].nombre,
-                    "unit_price": Number(msg.productos[x].precio + '.' + '0' + '0'),
+                    "unit_price": Number(msg.productos[x].precio + '0' + '0'),
                     "quantity": 1
                 }
 
@@ -151,6 +151,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                         "type": "oxxo_cash"
                     }
                 }]
+
+
             }, function(err, res) {
                 if (res) {
                     console.log(res.toObject());
@@ -219,63 +221,7 @@ io.on('connection', function(socket) { //habla al metodo connection
         }
 
 
-        /* if(tipoPago == 1) {
-    
-            //PAY-PAL
-    
-            var payReq= JSON.stringify({            
-                "intent": "sale",
-                "payer": {
-                    "payment_method": "paypal"
-                },
-                "redirect_urls": {
-                    "return_url": "http://localhost:3000/process",
-                    "cancel_url": "http://localhost:3000/cancel",
-                },
-                "transactions": [{
-                    "item_list": {
-                        "items": [{
-                            "name": "tacos",
-                            "sku": "001",
-                            "price": "20.00",
-                            "currency": "MXN",
-                            "quantity": 1
-                        }]
-                    },
-                    "amount": {
-                        "currency": "MXN",
-                        "total": "20.00"
-                    },
-                    "description": "This is the payment description."
-                }]
-            });
-            
-            
-            paypal.payment.create(payReq, function(error, payment){
-                var links = {};
-              
-                if(error){
-                  console.error(JSON.stringify(error));
-                } else {
-                  // Capture HATEOAS links
-                  console.log(payment)
-                  payment.links.forEach(function(linkObj){
-                    links[linkObj.rel] = {
-                      href: linkObj.href,
-                      method: linkObj.method
-                    };
-                  })
-              
-                  // If the redirect URL is present, redirect the customer to that URL
-                  if (links.hasOwnProperty('approval_url')){
-                    // Redirect the customer to links['approval_url'].href
-                  } else {
-                    console.error('no redirect URI present');
-                  }
-                }
-              });
-    
-        }*/
+
 
     });
 });
