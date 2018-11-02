@@ -261,3 +261,8 @@
                 height: 90%;
                 overflow: scroll;
             }
+            
+            .headtable {
+                background-color: #EFFEF6;
+                height: 60px;
+            }
