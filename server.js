@@ -190,7 +190,11 @@ io.on('connection', function(socket) { //habla al metodo connection
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "{ status: SC_ACCEPTED}",
+                    "return_url": {
+                        httpStatusCode: {
+                            status: 202,
+                        }
+                    },
                     "cancel_url": "http://localhost:3000/cancel",
                 },
                 "transactions": [{
