@@ -191,9 +191,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 },
                 "redirect_urls": {
                     "return_url": {
-                        httpStatusCode: {
-                            status: 202,
-                        }
+                        httpStatusCode: 202
                     },
                     "cancel_url": "http://localhost:3000/cancel",
                 },
