@@ -221,6 +221,28 @@ io.on('connection', function(socket) { //habla al metodo connection
                         if (payment.links[index].rel === 'approval_url') {
                             console.log('holaviejoo');
                             console.log(payment.links[index].href);
+
+                            const execute_payment_json = {
+                                "payer_id": "5487574",
+                                "transactions": [{
+                                    "amount": {
+                                        "currency": "USD",
+                                        "total": "25.00"
+                                    }
+                                }]
+                            };
+
+                            paypal.payment.execute(payment.id, execute_payment_json, function(error, payment) {
+                                console.log('Ejecutando... ');
+                                if (error) {
+                                    console.log(error.response);
+                                    throw error;
+                                } else {
+                                    console.log(JSON.stringify(payment));
+
+                                }
+                            });
+
                         }
                     }
                     console.log(payment);
