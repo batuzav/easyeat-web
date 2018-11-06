@@ -190,8 +190,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "https://www.paypal.com/PagoPaypalHecho",
-                    "cancel_url": "https://www.paypal.com/PagoPaypalCancel",
+                    "return_url": "https://easyeat-web.herokuapp.com/PagoPaypalHecho",
+                    "cancel_url": "https://easyeat-web.herokuapp.com/PagoPaypalCancel",
                 },
                 "transactions": [{
                     "item_list": {

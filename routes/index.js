@@ -14,7 +14,7 @@ app.use(require('./usuariosApp'));
 /*------ impirtacion de las rutas de los renders --------*/
 app.use(require('./renders'));
 
-app.get('/success', (req, res) => {
+app.get('/PagoPaypalHecho', (req, res) => {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
 
@@ -55,6 +55,8 @@ app.get('/success', (req, res) => {
     });
 
 });
+
+app.get('/PagoPaypalCancel', (req, res) => res.send('Cancelled'));
 
 
 
