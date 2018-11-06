@@ -223,7 +223,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                             console.log(payment.links[index].href);
 
                             const execute_payment_json = {
-                                "payer_id": "QSABTRW6AHYH6",
+                                "payer_id": "5115116511651",
                                 "transactions": [{
                                     "amount": {
                                         "currency": "USD",
