@@ -5,7 +5,7 @@ require('./config/config');
 require('./config/firebase');
 
 //requerimiento de conecta
-const conekta = require('conekta');
+//const conekta = require('conekta');
 //paypal 
 const paypal = require('paypal-rest-sdk');
 
@@ -59,8 +59,8 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 /*-----------------socket----------------*/
 //variables para poder usar conekta
-conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA';
-conekta.api_version = '2.0.0';
+/*conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA';
+conekta.api_version = '2.0.0';*/
 
 //configure de paypal
 paypal.configure({
@@ -115,70 +115,70 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         if (msg.metodoPago === '  Oxxo Pay') {
             //OXXO PAY
-            console.log('Pagara con oxxopay el compa');
+            /* console.log('Pagara con oxxopay el compa');
 
-            let datos = [];
-            for (let x = 0; x <= msg.productos.length - 1; x++) {
-                datos[x] = {
-                    "name": msg.productos[x].nombre,
-                    "unit_price": Number(msg.productos[x].precio + '0' + '0'),
-                    "quantity": 1
-                }
+              let datos = [];
+              for (let x = 0; x <= msg.productos.length - 1; x++) {
+                  datos[x] = {
+                      "name": msg.productos[x].nombre,
+                      "unit_price": Number(msg.productos[x].precio + '0' + '0'),
+                      "quantity": 1
+                  }
 
-            }
+              }
 
-            console.log(datos);
-            const telefono = toString(msg.cp);
-            console.log(telefono);
-            var data2 = order = conekta.Order.create({
-                "line_items": datos,
-                "shipping_lines": [{
-                    "amount": 0,
-                    "carrier": "Default"
-                }], //shipping_lines - phyiscal goods only
-                "currency": "MXN",
-                "customer_info": {
-                    "name": msg.cliente.nombre,
-                    "email": msg.cliente.email,
-                    "phone": msg.cliente.tel.toString(),
-                },
-                "shipping_contact": {
-                    "address": {
-                        "street1": msg.direccion,
-                        "postal_code": msg.cp.toString(),
-                        "country": "México"
-                    }
-                }, //shipping_contact - required only for physical goods
-                "charges": [{
-                    "payment_method": {
-                        "type": "oxxo_cash"
-                    }
-                }]
-
-
-            }, function(err, res) {
-                if (res) {
-                    console.log(res.toObject());
-                    mensaje = res.toObject();
-                    socket.broadcast.emit('mensaje', mensaje);
-                    console.log(msg.idcliente);
-                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
-                        status: true,
-                    }, async function(err) {
-                        if (err) {
-                            console.log('ERROR')
-                        } else {
-                            console.log('HECHO')
-
-                        }
-                    });
+              console.log(datos);
+              const telefono = toString(msg.cp);
+              console.log(telefono);
+              var data2 = order = conekta.Order.create({
+                  "line_items": datos,
+                  "shipping_lines": [{
+                      "amount": 0,
+                      "carrier": "Default"
+                  }], //shipping_lines - phyiscal goods only
+                  "currency": "MXN",
+                  "customer_info": {
+                      "name": msg.cliente.nombre,
+                      "email": msg.cliente.email,
+                      "phone": msg.cliente.tel.toString(),
+                  },
+                  "shipping_contact": {
+                      "address": {
+                          "street1": msg.direccion,
+                          "postal_code": msg.cp.toString(),
+                          "country": "México"
+                      }
+                  }, //shipping_contact - required only for physical goods
+                  "charges": [{
+                      "payment_method": {
+                          "type": "oxxo_cash"
+                      }
+                  }]
 
 
-                }
-                if (err) {
-                    console.log(err)
-                }
-            })
+              }, function(err, res) {
+                  if (res) {
+                      console.log(res.toObject());
+                      mensaje = res.toObject();
+                      socket.broadcast.emit('mensaje', mensaje);
+                      console.log(msg.idcliente);
+                      db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                          status: true,
+                      }, async function(err) {
+                          if (err) {
+                              console.log('ERROR')
+                          } else {
+                              console.log('HECHO')
+
+                          }
+                      });
+
+
+                  }
+                  if (err) {
+                      console.log(err)
+                  }
+              })*/
 
         }
 

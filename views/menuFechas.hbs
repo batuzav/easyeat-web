@@ -39,16 +39,20 @@
             </select>
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
-            <select ng-model="frmData.cena1" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
-                <option value="">--Elige el cena principal--</option>
+            <select ng-model="frmData.cena1" class="form-control">
+                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="frmData.cena1">{{cena.nombre}}</option>
             </select>
+
             <br>
-            <select ng-model="frmData.cena2" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
-                <option value="">--Elige el cena 1--</option>
+
+            <select ng-model="frmData.cena2" class="form-control">
+                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="frmData.cena2">{{cena.nombre}}</option>
             </select>
-            <br>    
-            <select ng-model="frmData.cena3" ng-options="cena as cena.nombre for cena in cenas track by cena.id" class="form-control">
-                <option value="">--Elige el cena 2--</option>
+
+            <br>
+
+            <select ng-model="frmData.cena3" class="form-control">
+                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="frmData.cena3">{{cena.nombre}}</option>
             </select>
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
