@@ -219,6 +219,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                     for (var index = 0; index < payment.links.length; index++) {
                         //Redirect user to this endpoint for redirect url
                         if (payment.links[index].rel === 'approval_url') {
+                            console.log('holaviejoo');
                             console.log(payment.links[index].href);
                         }
                     }
