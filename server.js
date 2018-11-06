@@ -103,164 +103,133 @@ server.listen(process.env.PORT, () => {
 
 
 io.on('connection', function(socket) { //habla al metodo connection
-            //console.log("Clientes conectados desde server Carlos");  
-            //socket.emit('mensaje',"Hola mundo desde server Carlos");
+    //console.log("Clientes conectados desde server Carlos");  
+    //socket.emit('mensaje',"Hola mundo desde server Carlos");
 
 
-            socket.on('mensaje', function(data) {
-                // console.log(data);
-                let mensaje = null;
-                let msg = JSON.parse(data);
-                console.log(msg.metodoPago);
+    socket.on('mensaje', function(data) {
+        // console.log(data);
+        let mensaje = null;
+        let msg = JSON.parse(data);
+        console.log(msg.metodoPago);
 
-                if (msg.metodoPago === '  Oxxo Pay') {
-                    //OXXO PAY
-                    console.log('Pagara con oxxopay el compa');
+        if (msg.metodoPago === '  Oxxo Pay') {
+            //OXXO PAY
+            console.log('Pagara con oxxopay el compa');
 
-                    let datos = [];
-                    for (let x = 0; x <= msg.productos.length - 1; x++) {
-                        datos[x] = {
-                            "name": msg.productos[x].nombre,
-                            "unit_price": Number(msg.productos[x].precio + '0' + '0'),
-                            "quantity": 1
-                        }
-
-                    }
-
-                    console.log(datos);
-                    const telefono = toString(msg.cp);
-                    console.log(telefono);
-                    var data2 = order = conekta.Order.create({
-                        "line_items": datos,
-                        "shipping_lines": [{
-                            "amount": 0,
-                            "carrier": "Default"
-                        }], //shipping_lines - phyiscal goods only
-                        "currency": "MXN",
-                        "customer_info": {
-                            "name": msg.cliente.nombre,
-                            "email": msg.cliente.email,
-                            "phone": msg.cliente.tel.toString(),
-                        },
-                        "shipping_contact": {
-                            "address": {
-                                "street1": msg.direccion,
-                                "postal_code": msg.cp.toString(),
-                                "country": "México"
-                            }
-                        }, //shipping_contact - required only for physical goods
-                        "charges": [{
-                            "payment_method": {
-                                "type": "oxxo_cash"
-                            }
-                        }]
-
-
-                    }, function(err, res) {
-                        if (res) {
-                            console.log(res.toObject());
-                            mensaje = res.toObject();
-                            socket.broadcast.emit('mensaje', mensaje);
-                            console.log(msg.idcliente);
-                            db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
-                                status: true,
-                            }, async function(err) {
-                                if (err) {
-                                    console.log('ERROR')
-                                } else {
-                                    console.log('HECHO')
-
-                                }
-                            });
-
-
-                        }
-                        if (err) {
-                            console.log(err)
-                        }
-                    })
-
+            let datos = [];
+            for (let x = 0; x <= msg.productos.length - 1; x++) {
+                datos[x] = {
+                    "name": msg.productos[x].nombre,
+                    "unit_price": Number(msg.productos[x].precio + '0' + '0'),
+                    "quantity": 1
                 }
 
-                if (msg.metodoPago === '  Paypal') {
-                    console.log('PAYPAL');
-                    app.post('/pay', (req, res) => {
-                            const create_payment_json = {
-                                "intent": "sale",
-                                "payer": {
-                                    "payment_method": "paypal"
-                                },
-                                "redirect_urls": {
-                                    "return_url": "http://localhost:3000/success",
-                                    "cancel_url": "http://localhost:3000/cancel"
-                                },
-                                "transactions": [{
-                                    "item_list": {
-                                        "items": [{
-                                            "name": "Red Sox Hat",
-                                            "sku": "001",
-                                            "price": "25.00",
-                                            "currency": "USD",
-                                            "quantity": 1
-                                        }]
-                                    },
-                                    "amount": {
-                                        "currency": "USD",
-                                        "total": "25.00"
-                                    },
-                                    "description": "Hat for the best team ever"
-                                }]
-                            };
+            }
 
-                            paypal.payment.create(create_payment_json, function(error, payment) {
-                                if (error) {
-                                    throw error;
-                                } else {
-                                    for (let i = 0; i < payment.links.length; i++) {
-                                        if (payment.links[i].rel === 'approval_url') {
-                                            res.redirect(payment.links[i].href);
-                                        }
-                                    }
-                                }
-                            });
+            console.log(datos);
+            const telefono = toString(msg.cp);
+            console.log(telefono);
+            var data2 = order = conekta.Order.create({
+                "line_items": datos,
+                "shipping_lines": [{
+                    "amount": 0,
+                    "carrier": "Default"
+                }], //shipping_lines - phyiscal goods only
+                "currency": "MXN",
+                "customer_info": {
+                    "name": msg.cliente.nombre,
+                    "email": msg.cliente.email,
+                    "phone": msg.cliente.tel.toString(),
+                },
+                "shipping_contact": {
+                    "address": {
+                        "street1": msg.direccion,
+                        "postal_code": msg.cp.toString(),
+                        "country": "México"
+                    }
+                }, //shipping_contact - required only for physical goods
+                "charges": [{
+                    "payment_method": {
+                        "type": "oxxo_cash"
+                    }
+                }]
 
 
-
+            }, function(err, res) {
+                if (res) {
+                    console.log(res.toObject());
+                    mensaje = res.toObject();
+                    socket.broadcast.emit('mensaje', mensaje);
+                    console.log(msg.idcliente);
+                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                        status: true,
+                    }, async function(err) {
+                        if (err) {
+                            console.log('ERROR')
+                        } else {
+                            console.log('HECHO')
 
                         }
-
-
-
-
                     });
-            });
 
-            app.get('/success', (req, res) => {
-                const payerId = req.query.PayerID;
-                const paymentId = req.query.paymentId;
 
-                const execute_payment_json = {
-                    "payer_id": payerId,
+                }
+                if (err) {
+                    console.log(err)
+                }
+            })
+
+        }
+
+        if (msg.metodoPago === '  Paypal') {
+            console.log('PAYPAL');
+            app.post('/pay', (req, res) => {
+                const create_payment_json = {
+                    "intent": "sale",
+                    "payer": {
+                        "payment_method": "paypal"
+                    },
+                    "redirect_urls": {
+                        "return_url": "http://localhost:3000/success",
+                        "cancel_url": "http://localhost:3000/cancel"
+                    },
                     "transactions": [{
+                        "item_list": {
+                            "items": [{
+                                "name": "Red Sox Hat",
+                                "sku": "001",
+                                "price": "25.00",
+                                "currency": "USD",
+                                "quantity": 1
+                            }]
+                        },
                         "amount": {
                             "currency": "USD",
                             "total": "25.00"
-                        }
+                        },
+                        "description": "Hat for the best team ever"
                     }]
                 };
 
-                paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
+                paypal.payment.create(create_payment_json, function(error, payment) {
                     if (error) {
-                        console.log(error.response);
                         throw error;
                     } else {
-                        console.log(JSON.stringify(payment));
-                        res.send('Success');
+                        for (let i = 0; i < payment.links.length; i++) {
+                            if (payment.links[i].rel === 'approval_url') {
+                                res.redirect(payment.links[i].href);
+                            }
+                        }
                     }
                 });
+
             });
 
-            app.get('/cancel', (req, res) => res.send('Cancelled'));
-            module.exports = {
-                io
-            }
+        }
+    });
+
+});
+module.exports = {
+    io
+}
