@@ -65,8 +65,8 @@ conekta.api_version = '2.0.0';
 //configure de paypal
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AVKkuvPnxLOcwO_VdDmCK-ceUj7uBZhVR0skupVCTqGvBByiW0runX4Cys9Vdd0qoEJe1M4Vrxfc3S5n',
-    'client_secret': 'EAujfG0P4Dm0XKzjtsGClmNHA7uS8C2oEo76V9K62wz1-Dl1OSIxlZ0xbvyKl7QBE8hKa2DoG5hZGv7_',
+    'client_id': 'ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE',
+    'client_secret': 'EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h',
 
     /* {
          "port": 3000,

@@ -1,16 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" ng-app='app'>
      {{> head}}
     {{> navbar}}
     {{> navcomanda}}
-<body >
+<body ng-controller='controlador'>
    
-   <div>
-       Comandaaaaa
-   </div>
+        <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
+            <div class="table-responsive" >
+                <br>
+                <table class="table table-condensed table-hover">
+                    <tr class="headtable">
+                        <th>Estatus</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th>Gramos x Porcion</th>
+                        <th>Menú</th>
+                       
+                        
+                    
+                        
+                    </tr>
+
+
+
+                    <tr ng-repeat="usuario in usuarios track by $index">
+                        <td>\{{ usuario.nombre }}</td>
+                        <td>Método de pago</td>
+                        <td>Plan contratado</td>
+                        <td>Total</td>
+                        <td>\{{ usuario.peso }}</td>
+                          
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+   
 
     
     
 </body>
 </html>
+
+<script src="/assets/js/Controllers/Comandas/DesayunoComandaController.js"> </script>
 

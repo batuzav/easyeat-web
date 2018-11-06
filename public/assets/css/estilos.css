@@ -89,13 +89,14 @@
                 float: left;
                 box-shadow: 0 0 15px gray;
                 text-align: center;
+                position: fixed;
+                overflow: auto;
             }
             
             .sidebar-navigation ul {
                 text-align: center;
                 color: grey;
                 margin-left: -30px;
-                position: sticky;
             }
             
             .sidebar-navigation ul a {
@@ -142,28 +143,12 @@
             }
             /*========================= NAV VERDE==================*/
             
-            .navalimento {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
+            .nav-colorverde {
                 background-color: #00C7A9;
-            }
-            
-            .navalimento li {
-                float: left;
-                list-style: none;
-            }
-            
-            .navalimento li a {
-                display: block;
                 color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
             }
             
-            .navalimento li a:hover {
+            .nav-colorverde li a:hover {
                 background-color: #00ad9f;
             }
             /*// estilos de comandas \\*/
