@@ -223,7 +223,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                             console.log(payment.links[index].href);
 
                             const execute_payment_json = {
-                                "payer_id": "5487574",
+                                "payer_id": "QSABTRW6AHYH6",
                                 "transactions": [{
                                     "amount": {
                                         "currency": "USD",
@@ -232,14 +232,15 @@ io.on('connection', function(socket) { //habla al metodo connection
                                 }]
                             };
 
-                            paypal.payment.execute(payment.id, execute_payment_json, function(error, payment) {
-                                console.log('Ejecutando... ');
+                            var paymentId = 'PAYMENT id created in previous step';
+
+                            paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
                                 if (error) {
                                     console.log(error.response);
                                     throw error;
                                 } else {
+                                    console.log("Get Payment Response");
                                     console.log(JSON.stringify(payment));
-
                                 }
                             });
 
