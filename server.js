@@ -213,6 +213,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 };
 
                 paypal.payment.create(create_payment_json, function(error, payment) {
+                    console.log('Creando....');
                     if (error) {
                         throw error;
                     } else {
