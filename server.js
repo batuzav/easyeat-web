@@ -183,57 +183,49 @@ io.on('connection', function(socket) { //habla al metodo connection
         }
 
         if (msg.metodoPago === '  Paypal') {
-            var payReq = JSON.stringify({
-
-                "intent": "sale",
+            var create_payment_json = {
+                "intent": "authorize",
                 "payer": {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
                     "return_url": "https://easyeat-web.herokuapp.com/PagoPaypalHecho",
-                    "cancel_url": "https://easyeat-web.herokuapp.com/PagoPaypalCancel",
+                    "cancel_url": "https://easyeat-web.herokuapp.com/PagoPaypalCancel"
                 },
                 "transactions": [{
                     "item_list": {
                         "items": [{
-                            "name": "tacos",
-                            "sku": "001",
-                            "price": "20.00",
-                            "currency": "MXN",
+                            "name": "item",
+                            "sku": "item",
+                            "price": "1.00",
+                            "currency": "USD",
                             "quantity": 1
                         }]
                     },
                     "amount": {
-                        "currency": "MXN",
-                        "total": "20.00"
+                        "currency": "USD",
+                        "total": "1.00"
                     },
                     "description": "This is the payment description."
                 }]
-            });
+            };
 
-            paypal.payment.create(payReq, async function(error, payment) {
-                var links = {};
-
+            paypal.payment.create(create_payment_json, function(error, payment) {
                 if (error) {
-                    console.error(JSON.stringify(error));
+                    console.log(error.response);
+                    throw error;
                 } else {
-                    // Capture HATEOAS links
-                    console.log(payment)
-                    payment.links.forEach(async function(linkObj) {
-                        links[linkObj.rel] = await {
-                            href: linkObj.href,
-                            method: linkObj.method
-                        };
-                    })
-
-                    // If the redirect URL is present, redirect the customer to that URL
-                    if (links.hasOwnProperty('approval_url')) {
-                        // Redirect the customer to links['approval_url'].href
-                    } else {
-                        console.error('no redirect URI present');
+                    for (var index = 0; index < payment.links.length; index++) {
+                        //Redirect user to this endpoint for redirect url
+                        if (payment.links[index].rel === 'approval_url') {
+                            console.log(payment.links[index].href);
+                        }
                     }
+                    console.log(payment);
                 }
             });
+
+
         }
 
 
@@ -242,7 +234,49 @@ io.on('connection', function(socket) { //habla al metodo connection
     });
 });
 
+app.get('/PagoPaypalHecho', (req, res) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
 
+    const execute_payment_json = {
+        "payer_id": payerId,
+        "transactions": [{
+            "amount": {
+                "currency": "USD",
+                "total": "25.00"
+            }
+        }]
+    };
+
+    paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
+        if (error) {
+            console.log(error.response);
+            throw error;
+        } else {
+            console.log(JSON.stringify(payment));
+            res.send('Success');
+        }
+    });
+
+    var capture_details = {
+        "amount": {
+            "currency": "USD",
+            "total": "4.54"
+        },
+        "is_final_capture": true
+    };
+
+    paypal.authorization.capture("A21AAEAV2X3q3t54y2uSL8hZc0-617h8tz8OO2FaK5QnSgEDJZZssHa5BHr1d-R2906FLCWYmP_MHTN5JdsLEgSSadZJbJ6Lg", capture_details, function(error, capture) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(capture);
+        }
+    });
+
+});
+
+app.get('/PagoPaypalCancel', (req, res) => res.send('Cancelled'));
 
 
 module.exports = {

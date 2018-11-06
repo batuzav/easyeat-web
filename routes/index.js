@@ -14,49 +14,7 @@ app.use(require('./usuariosApp'));
 /*------ impirtacion de las rutas de los renders --------*/
 app.use(require('./renders'));
 
-app.get('/PagoPaypalHecho', (req, res) => {
-    const payerId = req.query.PayerID;
-    const paymentId = req.query.paymentId;
 
-    const execute_payment_json = {
-        "payer_id": payerId,
-        "transactions": [{
-            "amount": {
-                "currency": "USD",
-                "total": "25.00"
-            }
-        }]
-    };
-
-    paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
-        if (error) {
-            console.log(error.response);
-            throw error;
-        } else {
-            console.log(JSON.stringify(payment));
-            res.send('Success');
-        }
-    });
-
-    var capture_details = {
-        "amount": {
-            "currency": "USD",
-            "total": "4.54"
-        },
-        "is_final_capture": true
-    };
-
-    paypal.authorization.capture("A21AAEAV2X3q3t54y2uSL8hZc0-617h8tz8OO2FaK5QnSgEDJZZssHa5BHr1d-R2906FLCWYmP_MHTN5JdsLEgSSadZJbJ6Lg", capture_details, function(error, capture) {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log(capture);
-        }
-    });
-
-});
-
-app.get('/PagoPaypalCancel', (req, res) => res.send('Cancelled'));
 
 
 
