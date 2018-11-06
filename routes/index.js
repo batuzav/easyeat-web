@@ -14,8 +14,6 @@ app.use(require('./usuariosApp'));
 /*------ impirtacion de las rutas de los renders --------*/
 app.use(require('./renders'));
 
-
-
 app.get('/success', (req, res) => {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
@@ -39,10 +37,27 @@ app.get('/success', (req, res) => {
             res.send('Success');
         }
     });
+
+    var capture_details = {
+        "amount": {
+            "currency": "USD",
+            "total": "4.54"
+        },
+        "is_final_capture": true
+    };
+
+    paypal.authorization.capture("A21AAEAV2X3q3t54y2uSL8hZc0-617h8tz8OO2FaK5QnSgEDJZZssHa5BHr1d-R2906FLCWYmP_MHTN5JdsLEgSSadZJbJ6Lg", capture_details, function(error, capture) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(capture);
+        }
+    });
+
 });
 
 
-app.get('/cancel', (req, res) => res.send('Cancelled'));
+
 
 
 module.exports = app;
