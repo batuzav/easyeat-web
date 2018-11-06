@@ -184,48 +184,49 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         if (msg.metodoPago === '  Paypal') {
             console.log('PAYPAL');
-            app.post('/pay', (req, res) => {
-                const create_payment_json = {
-                    "intent": "sale",
-                    "payer": {
-                        "payment_method": "paypal"
-                    },
-                    "redirect_urls": {
-                        "return_url": "http://localhost:3000/success",
-                        "cancel_url": "http://localhost:3000/cancel"
-                    },
-                    "transactions": [{
-                        "item_list": {
-                            "items": [{
-                                "name": "Red Sox Hat",
-                                "sku": "001",
-                                "price": "25.00",
-                                "currency": "USD",
-                                "quantity": 1
-                            }]
-                        },
-                        "amount": {
+            var create_payment_json = {
+                "intent": "authorize",
+                "payer": {
+                    "payment_method": "paypal"
+                },
+                "redirect_urls": {
+                    "return_url": "http://return.url",
+                    "cancel_url": "http://cancel.url"
+                },
+                "transactions": [{
+                    "item_list": {
+                        "items": [{
+                            "name": "item",
+                            "sku": "item",
+                            "price": "1.00",
                             "currency": "USD",
-                            "total": "25.00"
-                        },
-                        "description": "Hat for the best team ever"
-                    }]
-                };
+                            "quantity": 1
+                        }]
+                    },
+                    "amount": {
+                        "currency": "USD",
+                        "total": "1.00"
+                    },
+                    "description": "This is the payment description."
+                }]
+            };
 
-                paypal.payment.create(create_payment_json, function(error, payment) {
-                    console.log('Creando....');
-                    if (error) {
-                        throw error;
-                    } else {
-                        for (let i = 0; i < payment.links.length; i++) {
-                            if (payment.links[i].rel === 'approval_url') {
-                                res.redirect(payment.links[i].href);
-                            }
+            paypal.payment.create(create_payment_json, function(error, payment) {
+                if (error) {
+                    console.log(error.response);
+                    throw error;
+                } else {
+                    for (var index = 0; index < payment.links.length; index++) {
+                        //Redirect user to this endpoint for redirect url
+                        if (payment.links[index].rel === 'approval_url') {
+                            console.log(payment.links[index].href);
                         }
                     }
-                });
-
+                    console.log(payment);
+                }
             });
+
+
 
         }
     });
