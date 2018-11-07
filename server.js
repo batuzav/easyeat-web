@@ -12,12 +12,6 @@ const paypal = require('paypal-rest-sdk');
 /*\\Proximo cambio //*/
 const { db } = require('./config/firebase');
 
-
-
-
-
-
-
 // Variables pars  Express
 const express = require('express');
 const app = express();
@@ -184,71 +178,71 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         if (msg.metodoPago === '  Paypal') {
             console.log('PAYPAL');
-            var create_payment_json = {
-                "intent": "authorize",
-                "payer": {
-                    "payment_method": "paypal"
-                },
-                "redirect_urls": {
-                    "return_url": "http://return.url",
-                    "cancel_url": "http://cancel.url"
-                },
-                "transactions": [{
-                    "item_list": {
-                        "items": [{
-                            "name": "item",
-                            "sku": "item",
-                            "price": "1.00",
-                            "currency": "USD",
-                            "quantity": 1
-                        }]
-                    },
-                    "amount": {
-                        "currency": "USD",
-                        "total": "1.00"
-                    },
-                    "description": "This is the payment description."
-                }]
-            };
+            /* var create_payment_json = {
+                 "intent": "authorize",
+                 "payer": {
+                     "payment_method": "paypal"
+                 },
+                 "redirect_urls": {
+                     "return_url": "http://return.url",
+                     "cancel_url": "http://cancel.url"
+                 },
+                 "transactions": [{
+                     "item_list": {
+                         "items": [{
+                             "name": "item",
+                             "sku": "item",
+                             "price": "1.00",
+                             "currency": "USD",
+                             "quantity": 1
+                         }]
+                     },
+                     "amount": {
+                         "currency": "USD",
+                         "total": "1.00"
+                     },
+                     "description": "This is the payment description."
+                 }]
+             };
 
-            paypal.payment.create(create_payment_json, function(error, payment) {
-                if (error) {
-                    console.log(error.response);
-                    throw error;
-                } else {
-                    for (var index = 0; index < payment.links.length; index++) {
-                        //Redirect user to this endpoint for redirect url
-                        if (payment.links[index].rel === 'approval_url') {
-                            console.log('holaviejoo');
-                            console.log(payment.links[index].href);
+             paypal.payment.create(create_payment_json, function(error, payment) {
+                 if (error) {
+                     console.log(error.response);
+                     throw error;
+                 } else {
+                     for (var index = 0; index < payment.links.length; index++) {
+                         //Redirect user to this endpoint for redirect url
+                         if (payment.links[index].rel === 'approval_url') {
+                             console.log('holaviejoo');
+                             console.log(payment.links[index].href);
 
-                            const execute_payment_json = {
-                                "payer_id": "5115116511651",
-                                "transactions": [{
-                                    "amount": {
-                                        "currency": "USD",
-                                        "total": "25.00"
-                                    }
-                                }]
-                            };
+                             /*const execute_payment_json = {
+                                 "payer_id": "5115116511651",
+                                 "transactions": [{
+                                     "amount": {
+                                         "currency": "USD",
+                                         "total": "25.00"
+                                     }
+                                 }]
+                             };
 
-                            var paymentId = 'PAYMENT id created in previous step';
+                             var paymentId = 'PAYMENT id created in previous step';
 
-                            paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
-                                if (error) {
-                                    console.log(error.response);
-                                    throw error;
-                                } else {
-                                    console.log("Get Payment Response");
-                                    console.log(JSON.stringify(payment));
-                                }
-                            });
+                             paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
+                                 if (error) {
+                                     console.log(error.response);
+                                     throw error;
+                                 } else {
+                                     console.log("Get Payment Response");
+                                     console.log(JSON.stringify(payment));
+                                 }
+                             });*/
 
-                        }
+            /*    }
                     }
                     console.log(payment);
                 }
-            });
+            });*/
 
 
 

@@ -8,7 +8,7 @@
             }
             
             body {
-                height: 100%;
+                height: 95%;
             }
             
             .container {
@@ -83,7 +83,7 @@
             .sidebar-navigation {
                 display: inline-block;
                 height: 100%;
-                font-size: 17px;
+                font-size: 2vh;
                 min-height: 100%;
                 background-color: whitesmoke;
                 float: left;
@@ -91,12 +91,14 @@
                 text-align: center;
                 position: fixed;
                 overflow: auto;
+                align-content: center;
             }
             
             .sidebar-navigation ul {
                 text-align: center;
                 color: grey;
-                margin-left: -30px;
+                margin-left: -7vh;
+                justify-items: center;
             }
             
             .sidebar-navigation ul a {
@@ -133,13 +135,14 @@
             
             .logonav {
                 align-self: center;
-                width: 110%;
-                height: 110%;
+                width: 15vh;
+                height: 5vh;
+                justify-self: center;
             }
             
             .icononav {
-                width: 40%;
-                height: 40%;
+                width: 6vh;
+                height: 6vh;
             }
             /*========================= NAV VERDE==================*/
             
@@ -248,4 +251,14 @@
             .headtable {
                 background-color: #EFFEF6;
                 height: 60px;
+            }
+            
+            .reporte {
+                height: 17vh;
+                margin-bottom: 1vh;
+                border-radius: 20px;
+            }
+            
+            .report1 {
+                margin-top: -2vh
             }
