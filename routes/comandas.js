@@ -73,12 +73,32 @@ app.post('/comida/getComandas', async(req, res) => {
 
         });
 
-    }
+        if (infoComanda.val().id === infoMenu.val().comida1.id) cComida1++;
 
+        if (infoComanda.val().id === infoMenu.val().comida2.id) cComida2++;
+
+        if (infoComanda.val().id === infoMenu.val().comida3.id) cComida3++;
+
+
+    }
+    console.log(cComida1);
+    console.log(cComida2);
+    console.log(cComida3);
     console.log('data completa', data);
+    const NomComida1 = await db.ref("/MenuComida/" + infoMenu.val().comida1.id + "/nombre").once("value");
+    const NomComida2 = await db.ref("/MenuComida/" + infoMenu.val().comida2.id + "/nombre").once("value");
+    const NomComida3 = await db.ref("/MenuComida/" + infoMenu.val().comida3.id + "/nombre").once("value");
+    console.log(NomComida1.val());
     res.json({
         ok: true,
         comanda: data,
+        cComida1,
+        cComida2,
+        cComida3,
+        NomComida1: NomComida1.val(),
+        NomComida2: NomComida2.val(),
+        NomComida3: NomComida3.val(),
+
     });
 });
 

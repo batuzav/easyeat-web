@@ -154,8 +154,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                 if (res) {
                     console.log(res.toObject());
                     mensaje = res.toObject();
-                    socket.broadcast.emit('mensaje', mensaje);
-                    console.log(msg.idcliente);
+                    //socket.broadcast.emit('mensaje', mensaje);
+                    console.log('idcleinte', msg.idcliente);
                     db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
                         status: true,
                     }, async function(err) {
@@ -164,13 +164,25 @@ io.on('connection', function(socket) { //habla al metodo connection
                         } else {
                             console.log('HECHO')
 
+
                         }
                     });
 
 
                 }
                 if (err) {
-                    console.log(err)
+                    console.log(err);
+                    /*  db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                          status: false,
+                      }, async function(err) {
+                          if (err) {
+                              console.log('ERROR')
+                          } else {
+                              console.log('HECHO')
+
+
+                          }
+                      });*/
                 }
             })
 

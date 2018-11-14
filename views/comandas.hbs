@@ -20,20 +20,20 @@
                             \{{ comandas.length }}
                         </div>
                         <p style="font-size:2.5vh; text-decoration: underline">Comidas</p>
-                        
-                    </center>
+                    </center>    
+                    
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#6FD7A5">
-                    <center>
-                        <div class="divNumR" style="background-color:#6FD7A5">
-                            2
+                    
+                        <div class="divNumR" style="background-color:#6FD7A5; float:left;">
+                            \{{ cComida1 }}
                         </div>
                         
-                        Comida 1
-                    </center>
+                        <p class="PComan">\{{ NomComida1 }}</p>
+                    
 
                 </div>
             </div>
@@ -48,25 +48,25 @@
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#AAF9D2">
-                    <center>
-                        <div class="divNumR" style="background-color:#AAF9D2">
-                            3
+                    
+                        <div class="divNumR" style="background-color:#AAF9D2; float:left;">
+                            \{{ cComida2 }}
                         </div>
                         
-                        Comida 2
-                    </center>
+                        <p class="PComan">\{{ NomComida2 }}</p>
+                    
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#AAF9D2">
-                    <center>
-                        <div class="divNumR" style="background-color:#AAF9D2">
-                            4
+                    
+                        <div class="divNumR" style="background-color:#AAF9D2; float:left;">
+                            \{{ cComida3 }}
                         </div>
                         
-                        Comida 3
-                    </center>
+                        <p class="PComan">\{{ NomComida3 }}</p>
+                    
                 </div>
             </div>
 
@@ -81,15 +81,8 @@
                         <th>Fecha</th>
                         <th>Calorías x Porcion</th>
                         <th>Porciones</th>
-                        <th>Menú</th>
-                       
-                        
-                    
-                        
+                        <th>Menú</th>   
                      </tr>
-
-
-
                     <tr ng-repeat="comanda in comandas track by $index">
                         <td>false</td>
                         <td>\{{ comanda.nombre }}</td>
