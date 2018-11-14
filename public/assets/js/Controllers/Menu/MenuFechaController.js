@@ -63,6 +63,7 @@ angular.module("app", [])
             $http.post('/comidas/insertmenufecha', $scope.frmData)
                 .then(function(respone) {
                     console.log(respone.data.ok);
+                    $scope.frmData = {};
                     alert('¡HECHO!');
                 }, function(respone) {
                     console.log(respone);

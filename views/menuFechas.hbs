@@ -39,21 +39,18 @@
             </select>
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
-            <select ng-model="frmData.cena1" class="form-control">
-                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="cena.codigo">{{cena.valor}}</option>
+            <select ng-model="frmData.cena1" ng-options="cena as cena.nombre for cena in cenas track by cena.id"  class="form-control" >
+                <option value="">--Elige el cena principal--</option>
             </select>
-
             <br>
-
-            <select ng-model="frmData.cena2" class="form-control">
-                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="cena.codigo">{{cena.valor}}</option>
+            <select ng-model="frmData.cena2" ng-options="cena as cena.nombre for cena in cenas track by cena.id"  class="form-control" >
+                <option value="">--Elige el cena 1--</option>
             </select>
-
             <br>
-
-            <select ng-model="frmData.cena3" class="form-control">
-                <option ng-repeat="cena as cena.nombre for cena in cenas track by cena.id" ng-value="cena.codigo">{{cena.valor}}</option>
+            <select ng-model="frmData.cena3" ng-options="cena as cena.nombre for cena in cenas track by cena.id"  class="form-control" >
+                <option value="">--Elige el cena 2--</option>
             </select>
+            
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
            
@@ -74,15 +71,6 @@
             </div>
 
         </div>
-        
-            <br>
-            \{{ frmData.desayuno1 }}
-            <br>
-            \{{ frmData.comida1 }}
-            <br>
-            \{{ frmData.cena1 }}
-            <br>
-            \{{ frmData.colacion1 }}
             
             
     </div>

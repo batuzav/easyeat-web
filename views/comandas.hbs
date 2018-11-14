@@ -6,6 +6,72 @@
 <body ng-controller='controlador'>
    
         <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
+
+            <div class="col-md-2 col-md-offset-0 fechasreport">
+            <div class="row">
+                <div class="col-md-12 form-group " >
+                    <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fechaReporte" ng-change="llamarComandas();$event.stopPropagation();" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 comandas " style="background-color:rgb(247, 242, 242); color:#6FD7A5 ">
+                    <center>
+                        <div class="divNumR" style="background-color: rgb(247, 242, 242); border: 2px solid #6FD7A5;">
+                            \{{ comandas.length }}
+                        </div>
+                        <p style="font-size:2.5vh; text-decoration: underline">Comidas</p>
+                        
+                    </center>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 comandas" style="background-color:#6FD7A5">
+                    <center>
+                        <div class="divNumR" style="background-color:#6FD7A5">
+                            2
+                        </div>
+                        
+                        Comida 1
+                    </center>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 comandas" style="background-color: rgb(247, 242, 242); color:#6FD7A5; font-size:2vh ">
+                    <center>
+                        <p>Especiales</p>  
+                    </center>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 comandas" style="background-color:#AAF9D2">
+                    <center>
+                        <div class="divNumR" style="background-color:#AAF9D2">
+                            3
+                        </div>
+                        
+                        Comida 2
+                    </center>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 comandas" style="background-color:#AAF9D2">
+                    <center>
+                        <div class="divNumR" style="background-color:#AAF9D2">
+                            4
+                        </div>
+                        
+                        Comida 3
+                    </center>
+                </div>
+            </div>
+
+        </div>
+
             <div class="table-responsive" >
                 <br>
                 <table class="table table-condensed table-hover">
@@ -13,34 +79,43 @@
                         <th>Estatus</th>
                         <th>Usuario</th>
                         <th>Fecha</th>
-                        <th>Gramos x Porcion</th>
+                        <th>Calorías x Porcion</th>
+                        <th>Porciones</th>
                         <th>Menú</th>
                        
                         
                     
                         
-                    </tr>
+                     </tr>
 
 
 
-                    <tr ng-repeat="usuario in usuarios track by $index">
-                        <td>\{{ usuario.nombre }}</td>
-                        <td>Método de pago</td>
-                        <td>Plan contratado</td>
-                        <td>Total</td>
-                        <td>\{{ usuario.peso }}</td>
+                    <tr ng-repeat="comanda in comandas track by $index">
+                        <td>false</td>
+                        <td>\{{ comanda.nombre }}</td>
+                        <td>\{{ comanda.fecha }}</td>
+                        <td>\{{ comanda.calorias }}</td>
+                        <td>Porciones</td>
+                        <td>\{{ comanda.menu }}</td>
                           
                     </tr>
                 </table>
             </div>
 
-        </div>
+        </div> 
    
 
-    
+<script type="text/javascript">
+    $('#datetimepicker4').datepicker({
+                                     beforeShowDay: $.datepicker.noWeekends,
+                                     dateFormat: "yy-mm-dd",
+                                     //minDate: '+2d'
+                                    });
+ 
+</script> 
     
 </body>
 </html>
 
-<script src="/assets/js/Controllers/Comandas/DesayunoComandaController.js"> </script>
+<script src="/assets/js/Controllers/Comandas/ComidaComandaController.js"> </script>
 

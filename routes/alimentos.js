@@ -93,7 +93,7 @@ app.post('/comidas/getdesayunos', (req, res) => {
                 id: child.key
             });
         })
-        console.log('entro aqui');
+
         res.json({
             ok: true,
             desayuno: data
@@ -346,90 +346,46 @@ app.post('/comidas/insertmenufecha', async(req, res) => {
     await db.ref("/MenuHistorial").child(data.fecha).set({
         Cena: {
             comida1: {
-                calorias: data.cena1.calorias,
-                medidas: data.cena1.medidas,
-                nombre: data.cena1.nombre,
-                descripcion: data.cena1.descripcion,
-
+                id: data.cena1.id,
             },
             comida2: {
-                calorias: data.cena2.calorias,
-                medidas: data.cena2.medidas,
-                nombre: data.cena2.nombre,
-                descripcion: data.cena2.descripcion,
-
+                id: data.cena2.id,
             },
             comida3: {
-                calorias: data.cena3.calorias,
-                medidas: data.cena3.medidas,
-                nombre: data.cena3.nombre,
-                descripcion: data.cena3.descripcion,
-
+                id: data.cena3.id,
             }
 
         },
         Desayuno: {
             comida1: {
-                calorias: data.desayuno1.calorias,
-                medidas: data.desayuno1.medidas,
-                nombre: data.desayuno1.nombre,
-                descripcion: data.desayuno1.descripcion,
-
+                id: data.desayuno1.id,
             },
             comida2: {
-                calorias: data.desayuno2.calorias,
-                medidas: data.desayuno2.medidas,
-                nombre: data.desayuno2.nombre,
-                descripcion: data.desayuno2.descripcion,
-
+                id: data.desayuno2.id,
             },
             comida3: {
-                calorias: data.desayuno3.calorias,
-                medidas: data.desayuno3.medidas,
-                nombre: data.desayuno3.nombre,
-                descripcion: data.desayuno3.descripcion,
-
+                id: data.desayuno3.id,
             }
 
         },
         Comida: {
             comida1: {
-                calorias: data.comida1.calorias,
-                medidas: data.comida1.medidas,
-                nombre: data.comida1.nombre,
-                descripcion: data.comida1.descripcion,
-
+                id: data.comida1.id,
             },
             comida2: {
-                calorias: data.comida2.calorias,
-                medidas: data.comida2.medidas,
-                nombre: data.comida2.nombre,
-                descripcion: data.comida2.descripcion,
-
+                id: data.comida2.id
             },
             comida3: {
-                calorias: data.comida3.calorias,
-                medidas: data.comida3.medidas,
-                nombre: data.comida3.nombre,
-                descripcion: data.comida3.descripcion,
-
+                id: data.comida3.id,
             }
 
         },
         Colacion: {
             comida1: {
-                calorias: data.colacion1.calorias,
-                medidas: data.colacion1.medidas,
-                nombre: data.colacion1.nombre,
-                descripcion: data.colacion1.descripcion,
-
+                id: data.colacion1.id,
             },
             comida2: {
-                calorias: data.colacion2.calorias,
-                medidas: data.colacion2.medidas,
-                nombre: data.colacion2.nombre,
-                descripcion: data.colacion2.descripcion,
-
+                id: data.colacion2.id,
             },
 
         }

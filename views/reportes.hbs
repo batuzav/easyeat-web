@@ -1,52 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='app'>
 
-<body>
+<body ng-controller='controlador'>
 
     {{> head }}
     {{> navbar}}
     {{> naventregas}}
 
+
     <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3" style="min-height: 90%">
-        <div class="row">
-            <div class="col-md-2 form-group report1" >
-                <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fecha" />
+        <div class="col-md-2 col-md-offset-0 fechasreport">
+            <div class="row">
+                <div class="col-md-12 form-group report1" >
+                    <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fechaReporte" ng-change="llamarReportes();$event.stopPropagation();" />
+                </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 reporte " style="background-color:#F0D441">
+                    <center>
+                        <div class="divNumR" style="background-color:#F0D441">
+                            \{{ reportes.cTarde }}
+                        </div>
+                        
+                        Mi comida llegó en mal estado
+                    </center>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 reporte" style="background-color:#00C7A9">
+                    <center>
+                        <div class="divNumR" style="background-color:#00C7A9">
+                            \{{ reportes.cEstado }}
+                        </div>
+                        
+                        Mi comida llegó tarde
+                    </center>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 reporte" style="background-color:#FFA16F">
+                    <center>
+                        <div class="divNumR" style="background-color:#FFA16F">
+                            \{{ reportes.cNoLlego }}
+                        </div>
+                        \{{ reportes.cNoLlego }}
+                        Mi comida no llegó
+                    </center>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 reporte" style="background-color:#B1D236">
+                    <center>
+                        <div class="divNumR" style="background-color:#B1D236">
+                            
+                        </div>
+                        
+                        Contáctanos
+                    </center>
+                </div>
+            </div>
+
         </div>
-        <div class="row">
-            <div class="col-md-2 reporte " style="background-color:#F0D441">
 
-            </div>
-        </div>
+        <div class="col-md-10 col-md-offset-0">
+                <div class="table-responsive" >
+                    
+                    <table class="table table-condensed table-hover">
+                        <tr class="headtable">
+                            <th>Estatus</th>
+                            <th>Usuario</th>
+                            <th>Plan</th>
+                            <th>Fecha</th>
+                            <th>Teléfono</th>
+                            <th>Alimentos</th>
+                            <th>Comentarios</th>  
+                        </tr>
 
-        <div class="row">
-            <div class="col-md-2 reporte" style="background-color:#00C7A9">
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2 reporte" style="background-color:#FFA16F">
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2 reporte" style="background-color:#B1D236">
-
-            </div>
+                        <tr ng-repeat="tabla in tabla track by $index">
+                            <td>\{{ tabla.status }}</td>
+                            <td>\{{ tabla.nombre }}</td>
+                            <td>\{{ tabla.plan }}</td>
+                            <td>\{{ tabla.fecha }}</td>
+                            <td>\{{ tabla.telefono }}</td>
+                            <td>\{{ tabla.alimento }}</td>
+                            <td>\{{ tabla.comentarios }}</td>
+                        </tr>
+                    </table>
+                </div>
+        
         </div>
         
+        
+        
     </div>
+
+    
 
 <script type="text/javascript">
     $('#datetimepicker4').datepicker({
                                      beforeShowDay: $.datepicker.noWeekends,
                                      dateFormat: "yy-mm-dd",
-                                     minDate: '+2d'
+                                     //minDate: '+2d'
                                     });
  
 </script>
     
 </body>
 </html>
+
+<script src="/assets/js/Controllers/Reportes/ReportesController.js"> </script>
