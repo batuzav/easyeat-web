@@ -6,9 +6,7 @@ angular.module("app", [])
         $scope.hola = "hola soy batuza";
         $scope.info = {};
         $scope.comandas = {};
-        $scope.NomComida1 = {};
-        $scope.NomComida2 = {};
-        $scope.NomComida3 = {};
+
         $scope.cComida1 = 0;
         $scope.cComida2 = 0;
         $scope.cComida3 = 0;

@@ -320,4 +320,11 @@ body {
 .comandas {
     margin-bottom: 1vh;
     color: black;
+    padding-right: 0;
+}
+
+.divinfocomida {
+    padding: 0;
+    margin: 0;
+    height: 11vh;
 }
