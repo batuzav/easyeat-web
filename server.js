@@ -132,7 +132,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }], //shipping_lines - phyiscal goods only
                 "currency": "MXN",
                 "customer_info": {
-                    "name": msg.cliente.nombre,
+                    "name": "", //msg.cliente.nombre,
                     "email": msg.cliente.email,
                     "phone": msg.cliente.tel.toString(),
                 },
@@ -172,17 +172,17 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
                 if (err) {
                     console.log(err);
-                    /*  db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
-                          status: false,
-                      }, async function(err) {
-                          if (err) {
-                              console.log('ERROR')
-                          } else {
-                              console.log('HECHO')
+                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                        status: false,
+                    }, async function(err) {
+                        if (err) {
+                            console.log('ERROR')
+                        } else {
+                            console.log('HECHO')
 
 
-                          }
-                      });*/
+                        }
+                    });
                 }
             })
 
