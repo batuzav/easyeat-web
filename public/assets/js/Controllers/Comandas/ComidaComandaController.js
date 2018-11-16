@@ -41,10 +41,14 @@ angular.module("app", [])
                     $scope.cComida3 = $scope.comandas.cComida3;
                     $scope.comandas = $scope.comandas.comanda;
                     console.log($scope.comandas);
+                    if ($scope.comandas.length == 0) {
+                        alert('No hay Comandas')
+                    } else {
+                        alert('Comandas listas ');
+                    }
 
-                    alert('Comandas listas ');
                 }, function(respone) {
-                    alert(respone.err);
+                    alert(respone);
                 });
         }
 

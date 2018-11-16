@@ -5,16 +5,16 @@
     {{> navcomanda}}
 <body ng-controller='controlador'>
    
-        <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
+    <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario">
 
-            <div class="col-md-2 col-md-offset-0 fechasreport">
+        <div class="col-md-2 col-md-offset-0 fechasreport">
             <div class="row">
                 <div class="col-md-12 form-group " >
                     <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fechaReporte" ng-change="llamarComandas();$event.stopPropagation();" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 comandas " style="background-color:rgb(247, 242, 242); color:#6FD7A5 ">
+                <div class="col-md-12 comandasT " style="background-color:rgb(247, 242, 242); color:#6FD7A5 ">
                     <center>
                         <div class="divNumR" style="background-color: rgb(247, 242, 242); border: 2px solid #6FD7A5;">
                             \{{ comandas.length }}
@@ -27,54 +27,60 @@
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#6FD7A5">
-                    
-                        <div class="divNumR" style="background-color:#6FD7A5; float:left;">
-                            \{{ cComida1 }}
-                        </div>
-                        
-                        <p class="PComan">\{{ NomComida1 }}</p>
-                    
+                    <div class="divNumR" style="background-color:#6FD7A5; float:left;">
+                        \{{ cComida1 }}
+                    </div>
 
+                    <div class="PComan col-md-4">
+                        <p >\{{ NomComida1 }}</p>
+                    </div>
+
+                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5; ">
+                        p
+                    </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-12 comandas" style="background-color: rgb(247, 242, 242); color:#6FD7A5; font-size:2vh ">
+                <div class="col-md-12 " style="background-color: rgb(247, 242, 242); color:#6FD7A5; font-size:4vh margin-bottom: 1vh; height:6vh;">
                     <center>
                         <p>Especiales</p>  
                     </center>
-
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#AAF9D2">
+                    <div class="divNumR" style="background-color:#AAF9D2; float:left;">
+                        \{{ cComida2 }}
+                    </div>
                     
-                        <div class="divNumR" style="background-color:#AAF9D2; float:left;">
-                            \{{ cComida2 }}
-                        </div>
-                        
-                        <p class="PComan">\{{ NomComida2 }}</p>
+                    <div class="PComan col-md-4">
+                        <p >\{{ NomComida2 }}</p>
+                    </div>
 
-                        <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5; ">
-                            p
-                        </div>
+                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5;">
+                        p
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12 comandas" style="background-color:#AAF9D2">
+                    <div class="divNumR" style="background-color:#AAF9D2; float:left;">
+                        \{{ cComida3 }}
+                    </div>
                     
-                        <div class="divNumR" style="background-color:#AAF9D2; float:left;">
-                            \{{ cComida3 }}
-                        </div>
-                        
-                        <p class="PComan">\{{ NomComida3 }}</p>
-                    
+                    <div class="PComan col-md-4">
+                        <p >\{{ NomComida3 }}</p>
+                    </div>
+                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5;">
+                        p
+                    </div> 
                 </div>
             </div>
-
         </div>
-
+        <div class="col-md-10 col-md-offset-0">
             <div class="table-responsive" >
                 <br>
                 <table class="table table-condensed table-hover">
@@ -85,7 +91,7 @@
                         <th>Calorías x Porcion</th>
                         <th>Porciones</th>
                         <th>Menú</th>   
-                     </tr>
+                    </tr>
                     <tr ng-repeat="comanda in comandas track by $index">
                         <td>false</td>
                         <td>\{{ comanda.nombre }}</td>
@@ -93,12 +99,13 @@
                         <td>\{{ comanda.calorias }}</td>
                         <td>Porciones</td>
                         <td>\{{ comanda.menu }}</td>
-                          
+                        
                     </tr>
                 </table>
             </div>
+        </div>
 
-        </div> 
+    </div> 
    
 
 <script type="text/javascript">
