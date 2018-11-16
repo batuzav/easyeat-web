@@ -19,7 +19,8 @@ app.get('/usuarios', (req, res) => {
 });
 
 app.get('/comandas', (req, res) => {
-    res.render('comandas');
+    res.render('comandaDesayuno');
+
 });
 
 app.get('/reportes', (req, res) => {
@@ -53,9 +54,21 @@ app.get('/menuColaciones', (req, res) => {
 app.get('/menuFechas', (req, res) => {
     res.render('menuFechas');
 });
-
-
 // Fin de los renders para el partado de MENU \\
 
+// Renders para el apartado de Comandas \\
+
+app.get('/comandaComidas', (req, res) => {
+    res.render('comandas');
+});
+
+app.get('/comandaCenas', (req, res) => {
+    res.render('comandaCenas');
+});
+app.get('/comandaColaciones', (req, res) => {
+    res.render('comandaColaciones');
+});
+
+// Fin del apartado de comandas \\
 
 module.exports = app;
