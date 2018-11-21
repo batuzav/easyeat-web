@@ -132,7 +132,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }]
             }, function(err, res) {
                 if (err) {
-                    console.log(err);
+                    console.log('error en el token', err);
+
                     return;
                 }
                 console.log(res.toObject());
