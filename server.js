@@ -168,7 +168,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }]
             }, function(err, res) {
                 if (err) {
-                    console.log(err);
+                    console.log('error en hacer la compra', err);
                     return;
                 }
                 console.log(res.toObject());
