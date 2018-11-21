@@ -110,6 +110,7 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         if (msg.metodoPago === '  Crédito - Debito') {
             console.log('Entro al pago de tarjeta');
+            console.log('Este es el objeto: ', msg);
         }
 
         if (msg.metodoPago === '  Oxxo Pay') {
