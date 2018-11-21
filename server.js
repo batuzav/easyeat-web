@@ -101,7 +101,7 @@ io.on('connection', function(socket) { //habla al metodo connection
     //socket.emit('mensaje',"Hola mundo desde server Carlos");
 
 
-    socket.on('mensaje', function(data) {
+    socket.on('mensaje', async function(data) {
         // console.log(data);
         let mensaje = null;
         let msg = JSON.parse(data);
@@ -122,7 +122,7 @@ io.on('connection', function(socket) { //habla al metodo connection
             }
 
 
-            let idclient = customer = conekta.Customer.create({
+            let idclient = customer = await conekta.Customer.create({
                 'name': msg.cliente.nombre,
                 'email': msg.cliente.email,
                 'phone': msg.cliente.tel.toString(),
@@ -141,7 +141,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
             });
 
-            var data2 = order = conekta.Order.create({
+            var data2 = order = await conekta.Order.create({
                 "line_items": datos,
                 "shipping_lines": [{
                     "amount": 0,
