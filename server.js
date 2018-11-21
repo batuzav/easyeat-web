@@ -137,7 +137,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
                 console.log(res.toObject());
                 ClienteID = res.toObject();
-                console.log('Id del cleinte en la variable CLienteID', ClienteID);
+                console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
             });
 
             // var data2 = order = conekta.Order.create({
