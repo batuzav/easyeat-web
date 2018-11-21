@@ -107,10 +107,72 @@ io.on('connection', function(socket) { //habla al metodo connection
         let msg = JSON.parse(data);
         console.log(msg.metodoPago);
 
-
+        /* Tarjeta de credito */
         if (msg.metodoPago === '  Crédito - Debito') {
             console.log('Entro al pago de tarjeta');
-            console.log('Este es el objeto: ', msg);
+            let datos = [];
+            let ClienteID = '';
+            for (let x = 0; x <= msg.productos.length - 1; x++) {
+                datos[x] = {
+                    "name": msg.productos[x].nombre,
+                    "unit_price": Number(msg.productos[x].precio + '0' + '0'),
+                    "quantity": 1
+                }
+
+            }
+
+
+            let idclient = customer = conekta.Customer.create({
+                'name': msg.cliente.nombre,
+                'email': msg.cliente.email,
+                'phone': msg.cliente.tel.toString(),
+                'payment_sources': [{
+                    'type': 'card',
+                    'token_id': msg.token_id
+                }]
+            }, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(res.toObject());
+                ClienteID = res.toObject();
+                console.log('Id del cleinte en la variable CLienteID', ClienteID);
+            });
+
+            // var data2 = order = conekta.Order.create({
+            //     "line_items": datos,
+            //     "shipping_lines": [{
+            //         "amount": 0,
+            //         "carrier": "Default"
+            //     }], //shipping_lines - physical goods only
+            //     "currency": "MXN",
+            //     "customer_info": {
+            //         "customer_id": ClienteID
+            //     },
+            //     "shipping_contact": {
+            //         "address": {
+            //             "street1": msg.direccion,
+            //             "postal_code": msg.cp.toString(),
+            //             "country": "México"
+            //         }
+            //     }, //shipping_contact - required only for physical goods
+            //     "metadata": { "description": "Plan alimenticio", "reference": "1334523452345" },
+            //     "charges": [{
+            //         "payment_method": {
+            //             "type": "default"
+            //         } //payment_methods - use the customer's default - a card
+            //         //to charge a card, different from the default,
+            //         //you can indicate the card's source_id as shown in the Retry Card Section
+            //     }]
+            // }, function(err, res) {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     console.log(res.toObject());
+            // });
+
         }
 
         if (msg.metodoPago === '  Oxxo Pay') {
