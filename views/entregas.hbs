@@ -1,15 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='app'>
 
 
-<body>
+<body style="padding: 0vh;" ng-controller='controlador'>
     {{> head }}
     {{> navbar}}
     {{> naventregas}}
 
-    <div>
-        ENTREGAS
+    <div class="col-md-2 col-md-offset-5 col-xs-9 col-xs-offset-3" style="margin-bottom: 2vh; margin-top:-1.5vh">
+        <div class="col-md-12 form-group " >
+            <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fechaReporte" ng-change="llamarComandas();$event.stopPropagation();" />
+        </div>
     </div>
+
+    <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
+        <div class="table-responsive" >
+            <table class="table table-condensed table-hover">
+                <tr class="headtable">
+                    <th>Estado</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Dirección</th>
+                    <th>Comentarios</th>
+                    <th>Menú</th>  
+                </tr>
+                <tr>
+                    <td>Estado</td>
+                    <td>Usuario</td>
+                    <td>Fecha</td>
+                    <td>Hora</td>
+                    <td>Dirección</td>
+                    <td>Comentarios</td>
+                    <td>Menú</td>  
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+<script type="text/javascript">
+    $('#datetimepicker4').datepicker({
+                                     
+                                     dateFormat: "yy-mm-dd",
+                                     minDate: '0d'
+                                    });
+ 
+</script>
     
 </body>
 </html>
+
+<script src="/assets/js/Controllers/Entregas/EntregasController.js"> </script>

@@ -103,7 +103,9 @@
                         <th>Unidad de Medida</th>   
                     </tr>
                     <tr ng-repeat="comanda in comandas track by $index">
-                        <td>false</td>
+                        <td><label ng-hide="\{{ comanda.status }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="comandaLista(comanda);$event.stopPropagation();"> PENDIENTE</label>
+                            <label ng-show="\{{ comanda.status }}">✔️ ¡LISTO!</label>
+                        </td>
                         <td>\{{ comanda.nombre }}</td>
                         <td>\{{ comanda.fecha }}</td>
                         <td>\{{ comanda.calorias }}</td>
@@ -123,6 +125,7 @@
     $('#datetimepicker4').datepicker({
                                      beforeShowDay: $.datepicker.noWeekends,
                                      dateFormat: "yy-mm-dd",
+                                     
                                      //minDate: '+2d'
                                     });
  

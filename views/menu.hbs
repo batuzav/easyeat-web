@@ -42,7 +42,9 @@
         <br>
         <div class="col-md-6 col-xs-12 imagenform centroformandbutom">                                            
             <div>
-                <img src="/assets/img/imagen-predeterminado-desayuno-menu.png" alt="" srcset="" class="imagencomida">
+                <img id="img1" ng-show="imagen" class="imagencomida"><br/>
+                <input id="inputFile1" type="file" ng-show="imagen" name="inputFile1" ng-model="frmData.imagen">
+                <img src="/assets/img/imagen-predeterminado-desayuno-menu.png" alt="" srcset="" class="imagencomida" ng-show="!imagen" ng-click="cambiarImagen()">
             </div>
             <br>
             <div>

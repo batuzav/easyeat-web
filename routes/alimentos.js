@@ -53,14 +53,7 @@ app.put('/comidas/modifydesayunos', function(req, res) {
                 Mensaje: "Error con la base de datos"
             });
         } else {
-            /* db.ref("comidas/desayunos").once("value", async function(snapshot) {
-                 if (!snapshot.val()) {
-                     return res.status(400).json({
-                         ok: false,
-                         err,
-                         Mensaje: "usuario no encontrado"
-                     });
-                 }*/
+
             res.json({
                 ok: true,
 

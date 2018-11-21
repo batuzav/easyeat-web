@@ -15,21 +15,6 @@ angular.module("app", [])
         $scope.porcionComida2 = 0;
         $scope.porcionComida3 = 0;
 
-        $scope.comandaLista = async function(comanda) {
-            console.log('hola');
-
-            console.log($scope.frmData);
-            await $http.put('/comida/ComandaLista', comanda)
-                .then(function(respone) {
-                    console.log(comanda);
-                    console.log($scope.frmData);
-                    $scope.llamarComandas();
-
-                }, function(respone) {
-                    alert(respone.err);
-                });
-        }
-
         $scope.llamarComandas = async function() {
             console.log($scope.frmData);
             await $http.post('/comida/getkeys')
@@ -48,7 +33,7 @@ angular.module("app", [])
 
         async function getComandas(info) {
             $scope.comandas = {};
-            await $http.post('/comida/getComandas', info)
+            await $http.post('/desayuno/getComandas', info)
                 .then(function(respone) {
                     $scope.comandas = respone['data'];
                     console.log($scope.comandas);
@@ -71,6 +56,21 @@ angular.module("app", [])
 
                 }, function(respone) {
                     alert(respone);
+                });
+        }
+
+        $scope.comandaLista = async function(comanda) {
+            console.log('hola');
+
+            console.log($scope.frmData);
+            await $http.put('/desayuno/ComandaLista', comanda)
+                .then(function(respone) {
+                    console.log(comanda);
+                    console.log($scope.frmData);
+                    $scope.llamarComandas();
+
+                }, function(respone) {
+                    alert(respone.err);
                 });
         }
 

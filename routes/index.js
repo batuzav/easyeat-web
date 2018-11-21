@@ -21,5 +21,9 @@ app.use(require('./reportes'));
 /*------Impoprtaciones de las funciones de comandas*/
 app.use(require('./comandas'));
 
+/* importaciones de la funciones de Entregas */
+
+app.use(require('./entregas'));
+
 
 module.exports = app;

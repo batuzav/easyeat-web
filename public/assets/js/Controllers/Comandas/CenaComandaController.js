@@ -19,7 +19,7 @@ angular.module("app", [])
             console.log('hola');
 
             console.log($scope.frmData);
-            await $http.put('/comida/ComandaLista', comanda)
+            await $http.put('/cena/ComandaLista', comanda)
                 .then(function(respone) {
                     console.log(comanda);
                     console.log($scope.frmData);
@@ -48,7 +48,7 @@ angular.module("app", [])
 
         async function getComandas(info) {
             $scope.comandas = {};
-            await $http.post('/comida/getComandas', info)
+            await $http.post('/cena/getComandas', info)
                 .then(function(respone) {
                     $scope.comandas = respone['data'];
                     console.log($scope.comandas);

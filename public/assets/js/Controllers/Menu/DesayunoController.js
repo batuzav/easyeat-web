@@ -7,10 +7,27 @@ angular.module("app", [])
         $scope.hh = [];
         $scope.frmData = {};
         $scope.modify = false;
+        $scope.imagen - false;
 
         cargarDesayunos();
 
 
+        function init() {
+            var inputFile = document.getElementById('inputFile1');
+            inputFile.addEventListener('change', mostrarImagen, false);
+        }
+
+        function mostrarImagen(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var img = document.getElementById('img1');
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        window.addEventListener('load', init, false);
         async function cargarDesayunos() {
             await $http.post('/comidas/getdesayunos')
                 .then(function(respone) {
@@ -37,6 +54,10 @@ angular.module("app", [])
                 });
 
         };
+
+        $scope.cambiarImagen = async function() {
+            $scope.imagen = true;
+        }
 
         $scope.modifyDesayuno = async function() {
 
