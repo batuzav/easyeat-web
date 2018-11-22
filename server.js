@@ -116,6 +116,7 @@ app.get("/paypal", (req, res) => {
         } else {
             console.log("Create Payment Response");
             console.log(payment);
+            console.log('link de que salio chido: ', payment.links[1].href);
             res.redirect(payment.links[1].href);
         }
     });
