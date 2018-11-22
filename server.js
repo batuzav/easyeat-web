@@ -98,9 +98,9 @@ app.get("/paypal", async(req, res) => {
         await snapshot.forEach((child) => {
             console.log('Este el valor del hijo del carrtio', child.val().precio);
             data.push({
-                "name": child.val().nombre,
-                "unit_price": child.val().precio,
-                "quantity": 1
+                name: child.val().nombre,
+                unit_price: child.val().precio,
+                quantity: 1
             });
             cont++;
             total = total + Number(child.val().precio);
@@ -121,7 +121,9 @@ app.get("/paypal", async(req, res) => {
             cancel_url: "https://easyeat-web.herokuapp.com/cancel"
         },
         transactions: [{
-            item_list: data,
+            item_list: {
+                items: data
+            },
             amount: {
                 currency: "MXN",
                 total: total.toString(),
