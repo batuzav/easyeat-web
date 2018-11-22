@@ -85,6 +85,8 @@ app.get("/paypal", async(req, res) => {
     console.log('AQui debe ir la id:', req.query.id);
     const idCliente = req.query.id;
     let data = [];
+    let cont = 0;
+    let total = 0;
 
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
         if (!snapshot.val()) {
@@ -95,8 +97,17 @@ app.get("/paypal", async(req, res) => {
         }
         await snapshot.forEach((child) => {
             console.log('Este el valor del hijo del carrtio', child.val().precio);
+            data.push({
+                "name": child.val().nombre,
+                "unit_price": Number(child.val().precio),
+                "quantity": 1
+            });
+            cont++;
+            total = total + Number(child.val().precio);
+
         });
         console.log(data);
+        console.log('Contador ' + cont + ' total: ' + total);
     });
 
 
@@ -111,13 +122,7 @@ app.get("/paypal", async(req, res) => {
         },
         transactions: [{
             item_list: {
-                items: [{
-                    name: "item",
-                    sku: "item",
-                    price: "1.00",
-                    currency: "USD",
-                    quantity: 1
-                }]
+                items: data
             },
             amount: {
                 currency: "USD",
