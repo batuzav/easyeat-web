@@ -133,7 +133,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                     'type': 'card',
                     'token_id': msg.token_id
                 }]
-            }, function(err, res) {
+            }, async function(err, res) {
                 if (err) {
                     console.log('error en el token', err);
 
