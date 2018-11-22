@@ -81,16 +81,16 @@ app.get("/pagopaypal", (req, res) => {
     res.render("indexpaypal");
 });
 
-app.get("/paypal", (req, res) => {
-    console.log(req.data);
+app.get("/paypal:id", (req, res) => {
+    console.log(req.params.id)
     var create_payment_json = {
         intent: "sale",
         payer: {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "easyeat-web.herokuapp.com/success",
-            cancel_url: "easyeat-web.herokuapp.com/cancel"
+            return_url: "http://localhost:3000/success",
+            cancel_url: "http://localhost:3000/cancel"
         },
         transactions: [{
             item_list: {
@@ -116,7 +116,6 @@ app.get("/paypal", (req, res) => {
         } else {
             console.log("Create Payment Response");
             console.log(payment);
-            console.log('link de que salio chido: ', payment.links[1].href);
             res.redirect(payment.links[1].href);
         }
     });
@@ -150,7 +149,7 @@ app.get("/success", (req, res) => {
     });
 });
 
-app.get("cancel", (req, res) => {
+app.get("/cancel", (req, res) => {
     res.render("cancel");
 });
 
