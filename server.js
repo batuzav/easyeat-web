@@ -121,8 +121,10 @@ io.on('connection', function(socket) { //habla al metodo connection
                     "quantity": 1
                 }
             }
+            console.log(msg.cliente.nombre);
+            console.log(msg.cliente.email);
+            console.log(msg.cliente.tel.toString());
 
-            console.log(msg);
             customer = await conekta.Customer.create({
                 'name': msg.cliente.nombre,
                 'email': msg.cliente.email,
@@ -139,7 +141,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
                 console.log(res.toObject());
                 ClienteID = res.toObject();
-                console.log('Id del cleinte en la variable CLienteID', ClienteID);
+                console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
             });
 
             order = await conekta.Order.create({
