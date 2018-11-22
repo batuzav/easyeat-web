@@ -113,7 +113,7 @@ io.on('connection', function(socket) { //habla al metodo connection
             let datos = [];
             let ClienteID = '';
 
-            console.log(msg);
+            console.log(msg.cliente);
             for (let x = 0; x <= msg.productos.length - 1; x++) {
                 datos[x] = {
                     "name": msg.productos[x].nombre,
