@@ -172,9 +172,27 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }, function(err, res) {
                     if (err) {
                         console.log('error en hacer la compra', err);
+                        db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                            status: false,
+                        }, async function(err) {
+                            if (err) {
+                                console.log('ERROR')
+                            } else {
+                                console.log('HECHO')
+                            }
+                        });
                         return;
                     }
                     console.log(res.toObject());
+                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
+                        status: true,
+                    }, async function(err) {
+                        if (err) {
+                            console.log('ERROR')
+                        } else {
+                            console.log('HECHO')
+                        }
+                    });
                 });
             });
 
