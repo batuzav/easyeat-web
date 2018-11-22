@@ -144,40 +144,41 @@ io.on('connection', function(socket) { //habla al metodo connection
                 console.log('no hay error');
                 console.log(ClienteID);
                 console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
+                order = await conekta.Order.create({
+                    "line_items": datos,
+                    "shipping_lines": [{
+                        "amount": 0,
+                        "carrier": "Default"
+                    }], //shipping_lines - physical goods only
+                    "currency": "MXN",
+                    "customer_info": {
+                        "customer_id": ClienteID.id
+                    },
+                    "shipping_contact": {
+                        "address": {
+                            "street1": msg.direccion,
+                            "postal_code": msg.cp.toString(),
+                            "country": "México"
+                        }
+                    }, //shipping_contact - required only for physical goods
+                    "metadata": { "description": "Plan alimenticio", "reference": "1334523452345" },
+                    "charges": [{
+                        "payment_method": {
+                            "type": "default"
+                        } //payment_methods - use the customer's default - a card
+                        //to charge a card, different from the default,
+                        //you can indicate the card's source_id as shown in the Retry Card Section
+                    }]
+                }, function(err, res) {
+                    if (err) {
+                        console.log('error en hacer la compra', err);
+                        return;
+                    }
+                    console.log(res.toObject());
+                });
             });
 
-            order = await conekta.Order.create({
-                "line_items": datos,
-                "shipping_lines": [{
-                    "amount": 0,
-                    "carrier": "Default"
-                }], //shipping_lines - physical goods only
-                "currency": "MXN",
-                "customer_info": {
-                    "customer_id": ClienteID.id
-                },
-                "shipping_contact": {
-                    "address": {
-                        "street1": msg.direccion,
-                        "postal_code": msg.cp.toString(),
-                        "country": "México"
-                    }
-                }, //shipping_contact - required only for physical goods
-                "metadata": { "description": "Plan alimenticio", "reference": "1334523452345" },
-                "charges": [{
-                    "payment_method": {
-                        "type": "default"
-                    } //payment_methods - use the customer's default - a card
-                    //to charge a card, different from the default,
-                    //you can indicate the card's source_id as shown in the Retry Card Section
-                }]
-            }, function(err, res) {
-                if (err) {
-                    console.log('error en hacer la compra', err);
-                    return;
-                }
-                console.log(res.toObject());
-            });
+
 
         }
 
