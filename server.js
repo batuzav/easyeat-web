@@ -81,7 +81,7 @@ app.get("/pagopaypal", (req, res) => {
     res.render("indexpaypal");
 });
 
-app.get("/paypal:id?", (req, res) => {
+app.get("/paypal", (req, res) => {
     console.log('AQui debe ir la id:', req.params.id);
     var create_payment_json = {
         intent: "sale",
