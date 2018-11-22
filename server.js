@@ -86,7 +86,7 @@ app.get("/paypal", async(req, res) => {
     const idCliente = req.query.id;
     let data = [];
 
-    db.ref("/Carrito/" + idCliente + "/productos").on("value"), async function(snapshot) {
+    db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
@@ -97,47 +97,45 @@ app.get("/paypal", async(req, res) => {
             console.log('Este el valor del hijo del carrtio', child.val().precio);
         });
         console.log(data);
-
-
     });
 
 
-var create_payment_json = {
-    intent: "sale",
-    payer: {
-        payment_method: "paypal"
-    },
-    redirect_urls: {
-        return_url: "https://easyeat-web.herokuapp.com/success",
-        cancel_url: "https://easyeat-web.herokuapp.com/cancel"
-    },
-    transactions: [{
-        item_list: {
-            items: [{
-                name: "item",
-                sku: "item",
-                price: "1.00",
+    var create_payment_json = {
+        intent: "sale",
+        payer: {
+            payment_method: "paypal"
+        },
+        redirect_urls: {
+            return_url: "https://easyeat-web.herokuapp.com/success",
+            cancel_url: "https://easyeat-web.herokuapp.com/cancel"
+        },
+        transactions: [{
+            item_list: {
+                items: [{
+                    name: "item",
+                    sku: "item",
+                    price: "1.00",
+                    currency: "USD",
+                    quantity: 1
+                }]
+            },
+            amount: {
                 currency: "USD",
-                quantity: 1
-            }]
-        },
-        amount: {
-            currency: "USD",
-            total: "1.00"
-        },
-        description: "This is the payment description."
-    }]
-};
+                total: "1.00"
+            },
+            description: "This is the payment description."
+        }]
+    };
 
-paypal.payment.create(create_payment_json, function(error, payment) {
-    if (error) {
-        throw error;
-    } else {
-        console.log("Create Payment Response");
-        console.log(payment);
-        res.redirect(payment.links[1].href);
-    }
-});
+    paypal.payment.create(create_payment_json, function(error, payment) {
+        if (error) {
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+            res.redirect(payment.links[1].href);
+        }
+    });
 });
 
 app.get("/success", (req, res) => {
