@@ -82,7 +82,7 @@ app.get("/pagopaypal", (req, res) => {
 });
 
 app.get("/paypal:id?", (req, res) => {
-    console.log(req.params.id)
+    console.log('AQui debe ir la id:', req.params.id);
     var create_payment_json = {
         intent: "sale",
         payer: {
@@ -351,15 +351,6 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         }
 
-        if (msg.metodoPago === '  Paypal') {
-            console.log('PAYPAL');
-            res.render("indexpaypal", { //envio el html
-                data: msg,
-            });
-
-
-
-        }
     });
 
 });
