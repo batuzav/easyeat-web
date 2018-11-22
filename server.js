@@ -7,7 +7,8 @@ require('./config/firebase');
 //requerimiento de conecta
 const conekta = require('conekta');
 //paypal 
-const paypal = require('paypal-rest-sdk');
+const engines = require("consolidate");
+const paypal = require("paypal-rest-sdk");
 
 /*\\Proximo cambio //*/
 const { db } = require('./config/firebase');
@@ -57,20 +58,16 @@ conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA';
 conekta.api_version = '2.0.0';
 
 //configure de paypal
-paypal.configure({
-    'mode': 'sandbox', //sandbox or live
-    'client_id': 'ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE',
-    'client_secret': 'EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h',
+// paypal.configure({
+//     'mode': 'sandbox', //sandbox or live
+//     'client_id': 'ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE',
+//     'client_secret': 'EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h',
+// });
 
-    /* {
-         "port": 3000,
-         "api": {
-             "mode": "live",
-             "host": "api.paypal.com",
-             "port": "",
-             "client_id": "ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE",
-             "client_secret": 'EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h'
-         }*/
+paypal.configure({
+    mode: "sandbox", //sandbox or live
+    client_id: "ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE",
+    client_secret: "EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h"
 });
 
 
@@ -79,7 +76,82 @@ paypal.configure({
 //Configuracion global de rutas
 app.use(require('./routes/index'));
 
+//web-view
+app.get("/pagopaypal", (req, res) => {
+    res.render("indexpaypal");
+});
 
+app.get("/paypal", (req, res) => {
+    console.log(req.data);
+    var create_payment_json = {
+        intent: "sale",
+        payer: {
+            payment_method: "paypal"
+        },
+        redirect_urls: {
+            return_url: "easyeat-web.herokuapp.com/success",
+            cancel_url: "easyeat-web.herokuapp.com/cancel"
+        },
+        transactions: [{
+            item_list: {
+                items: [{
+                    name: "item",
+                    sku: "item",
+                    price: "1.00",
+                    currency: "USD",
+                    quantity: 1
+                }]
+            },
+            amount: {
+                currency: "USD",
+                total: "1.00"
+            },
+            description: "This is the payment description."
+        }]
+    };
+
+    paypal.payment.create(create_payment_json, function(error, payment) {
+        if (error) {
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+            res.redirect(payment.links[1].href);
+        }
+    });
+});
+
+app.get("/success", (req, res) => {
+    var PayerID = req.query.PayerID;
+    var paymentId = req.query.paymentId;
+    var execute_payment_json = {
+        payer_id: PayerID,
+        transactions: [{
+            amount: {
+                currency: "USD",
+                total: "1.00"
+            }
+        }]
+    };
+
+    paypal.payment.execute(paymentId, execute_payment_json, function(
+        error,
+        payment
+    ) {
+        if (error) {
+            console.log(error.response);
+            throw error;
+        } else {
+            console.log("Get Payment Response");
+            console.log(JSON.stringify(payment));
+            res.render("success");
+        }
+    });
+});
+
+app.get("cancel", (req, res) => {
+    res.render("cancel");
+});
 
 
 ///COnectar al puerto y subir los servicios
@@ -165,9 +237,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                     "charges": [{
                         "payment_method": {
                             "type": "default"
-                        } //payment_methods - use the customer's default - a card
-                        //to charge a card, different from the default,
-                        //you can indicate the card's source_id as shown in the Retry Card Section
+                        }
                     }]
                 }, function(err, res) {
                     if (err) {
@@ -283,71 +353,9 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         if (msg.metodoPago === '  Paypal') {
             console.log('PAYPAL');
-            /* var create_payment_json = {
-                 "intent": "authorize",
-                 "payer": {
-                     "payment_method": "paypal"
-                 },
-                 "redirect_urls": {
-                     "return_url": "http://return.url",
-                     "cancel_url": "http://cancel.url"
-                 },
-                 "transactions": [{
-                     "item_list": {
-                         "items": [{
-                             "name": "item",
-                             "sku": "item",
-                             "price": "1.00",
-                             "currency": "USD",
-                             "quantity": 1
-                         }]
-                     },
-                     "amount": {
-                         "currency": "USD",
-                         "total": "1.00"
-                     },
-                     "description": "This is the payment description."
-                 }]
-             };
-
-             paypal.payment.create(create_payment_json, function(error, payment) {
-                 if (error) {
-                     console.log(error.response);
-                     throw error;
-                 } else {
-                     for (var index = 0; index < payment.links.length; index++) {
-                         //Redirect user to this endpoint for redirect url
-                         if (payment.links[index].rel === 'approval_url') {
-                             console.log('holaviejoo');
-                             console.log(payment.links[index].href);
-
-                             /*const execute_payment_json = {
-                                 "payer_id": "5115116511651",
-                                 "transactions": [{
-                                     "amount": {
-                                         "currency": "USD",
-                                         "total": "25.00"
-                                     }
-                                 }]
-                             };
-
-                             var paymentId = 'PAYMENT id created in previous step';
-
-                             paypal.payment.execute(paymentId, execute_payment_json, function(error, payment) {
-                                 if (error) {
-                                     console.log(error.response);
-                                     throw error;
-                                 } else {
-                                     console.log("Get Payment Response");
-                                     console.log(JSON.stringify(payment));
-                                 }
-                             });*/
-
-            /*    }
-                    }
-                    console.log(payment);
-                }
-            });*/
+            res.render("indexpaypal", { //envio el html
+                data: msg,
+            });
 
 
 
