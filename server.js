@@ -105,23 +105,24 @@ io.on('connection', function(socket) { //habla al metodo connection
         // console.log(data);
         let mensaje = null;
         let msg = JSON.parse(data);
-        console.log(msg.metodoPago);
+
 
         /* Tarjeta de credito */
         if (msg.metodoPago === '  Crédito - Debito') {
             console.log('Entro al pago de tarjeta');
             let datos = [];
             let ClienteID = '';
+
+            console.log(msg);
             for (let x = 0; x <= msg.productos.length - 1; x++) {
                 datos[x] = {
                     "name": msg.productos[x].nombre,
                     "unit_price": Number(msg.productos[x].precio + '0' + '0'),
                     "quantity": 1
                 }
-
             }
 
-
+            console.log(msg);
             customer = await conekta.Customer.create({
                 'name': msg.cliente.nombre,
                 'email': msg.cliente.email,
@@ -138,7 +139,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
                 console.log(res.toObject());
                 ClienteID = res.toObject();
-                console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
+                console.log('Id del cleinte en la variable CLienteID', ClienteID);
             });
 
             order = await conekta.Order.create({
