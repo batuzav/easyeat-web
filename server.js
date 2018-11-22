@@ -141,6 +141,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
                 console.log(res.toObject());
                 ClienteID = res.toObject();
+                console.log('no hay error');
+                console.log(ClienteID);
                 console.log('Id del cleinte en la variable CLienteID', ClienteID.id);
             });
 
