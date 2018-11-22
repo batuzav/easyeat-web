@@ -89,8 +89,8 @@ app.get("/paypal:id", (req, res) => {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/cancel"
+            return_url: "https://easyeat-web.herokuapp.com/success",
+            cancel_url: "https://easyeat-web.herokuapp.com/cancel"
         },
         transactions: [{
             item_list: {
