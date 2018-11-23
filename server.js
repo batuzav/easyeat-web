@@ -115,7 +115,8 @@ app.get("/paypal", async(req, res) => {
         });
         console.log('esta es data: ', data);
         console.log('Este es total de suma: ', total);
-        totalventa = total;
+        totalventa = total.toFixed(2);
+        totalventa = totalventa.toString();
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
     });
