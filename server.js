@@ -100,7 +100,8 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: child.val().precio.toString() + ".00",
+                price: "1.00",
+                /*child.val().precio.toString() + ".00"*/
                 currency: "MXN",
                 quantity: 1
             });
@@ -128,7 +129,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: total.toString() + ".00",
+                total: "1.00" //total.toString() + ".00",
             },
             description: "This is the payment description."
         }]
@@ -153,7 +154,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: total.toString() + ".00",
+                total: "1.00" //total.toString() + ".00",
             }
         }]
     };
