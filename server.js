@@ -99,7 +99,9 @@ app.get("/paypal", async(req, res) => {
             console.log('Este el valor del hijo del carrtio', child.val().precio);
             data.push({
                 name: child.val().nombre,
-                unit_price: child.val().precio,
+                sku: child.val().nombre,
+                price: child.val().precio.toString(),
+                currency: "MXN",
                 quantity: 1
             });
             cont++;
@@ -126,7 +128,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: "1",
+                total: total.toString(),
             },
             description: "This is the payment description."
         }]
@@ -151,7 +153,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: "1",
+                total: total.toString(),
             }
         }]
     };
