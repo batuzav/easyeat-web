@@ -91,7 +91,7 @@ app.get("/paypal", async(req, res) => {
     let totalString = 0;
     console.log('Total: ', req.query.total);
     totalventa = req.query.total;
-    db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
+    db.ref("/Carrito/" + idCliente + "/productos").once("value", async function(snapshot) {
 
         if (!snapshot.val()) {
             return res.status(400).json({
