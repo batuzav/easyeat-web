@@ -187,6 +187,7 @@ app.get("/success", (req, res) => {
 });
 
 app.get("/cancel", (req, res) => {
+    totalventa = 0;
     res.render("cancel");
 });
 
