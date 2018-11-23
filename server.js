@@ -115,7 +115,7 @@ app.get("/paypal", async(req, res) => {
         });
         console.log('esta es data: ', data);
         totalventa = total;
-        console.log('Este es el string de total: ', Number(totalventa));
+        console.log('Este es el string de total: ', Number(totalventa).toFixed(2));
         console.log('Contador ' + cont + ' total: ' + total);
     });
 
@@ -136,7 +136,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: totalventa.toFixed(2),
+                total: 500.00 //totalventa.toFixed(2),
             },
             description: "This is the payment description."
         }]
@@ -161,7 +161,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: totalventa.toFixed(2),
+                total: 500.00 //totalventa.toFixed(2),
             }
         }]
     };
