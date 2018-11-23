@@ -103,13 +103,13 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: Number(conver).toFixed(2),
+                price: child.val().precio.toFixed(2),
                 /**/
                 currency: "MXN",
                 quantity: 1
             });
             cont++;
-            total = total + Number(conver);
+            total = total + child.val().precio.toFixed(2);
 
 
         });
