@@ -91,6 +91,7 @@ app.get("/paypal", async(req, res) => {
     let totalString = 0;
     totalventa = 0;
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
+        totalventa = 0;
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
@@ -182,6 +183,7 @@ app.get("/success", (req, res) => {
             console.log("Get Payment Response");
             console.log(JSON.stringify(payment));
             res.render("success");
+            totalventa = 0;
         }
     });
 });
