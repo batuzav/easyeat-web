@@ -103,7 +103,7 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: parseFloat(child.val().precio).toFixed(2),
+                price: 500, //parseFloat(child.val().precio).toFixed(2),
                 /**/
                 currency: "MXN",
                 quantity: 1
@@ -138,7 +138,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: totalventa.toFixed(2)
+                total: 500
             },
             description: "This is the payment description."
         }]
@@ -164,7 +164,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: totalventa.toFixed(2)
+                total: 500
             }
         }]
     };
