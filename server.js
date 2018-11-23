@@ -98,7 +98,7 @@ app.get("/paypal", async(req, res) => {
             });
         }
         await snapshot.forEach((child) => {
-            console.log('Este el valor del hijo del carrtio', child.val().precio.toFixed(2));
+            console.log('Este el valor del hijo del carrtio', child.val());
             const conver = Number(child.val().precio);
             data.push({
                 name: child.val().nombre,
@@ -122,7 +122,7 @@ app.get("/paypal", async(req, res) => {
     });
 
 
-
+    console.log('Este es el string de total fuera: ', totalventa);
     var create_payment_json = {
         intent: "sale",
         payer: {
