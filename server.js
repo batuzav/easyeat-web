@@ -135,7 +135,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: totalventa.toString(),
+                total: totalventa,
             },
             description: "This is the payment description."
         }]
@@ -160,7 +160,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: totalventa.toString(),
+                total: totalventa,
             }
         }]
     };
