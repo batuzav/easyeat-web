@@ -88,7 +88,7 @@ app.get("/paypal", async(req, res) => {
     let data = [];
     let cont = 0;
     let total = 0;
-    let totalString = '';
+    let totalString = 0;
 
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
         if (!snapshot.val()) {
@@ -103,7 +103,7 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: Number(conver),
+                price: Number(conver) + ".00",
                 /**/
                 currency: "MXN",
                 quantity: 1
@@ -136,7 +136,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: totalventa,
+                total: totalventa + ".00",
             },
             description: "This is the payment description."
         }]
@@ -161,7 +161,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: totalventa,
+                total: totalventa + ".00",
             }
         }]
     };
