@@ -108,11 +108,12 @@ app.get("/paypal", async(req, res) => {
             });
             cont++;
             total = total + Number(child.val().precio);
-            totalString = total.toString() + ".00";
-            console.log('Este es el string de total: ', totalString);
+
 
         });
         console.log('esta es data: ', data);
+        totalString = total.toString() + ".00";
+        console.log('Este es el string de total: ', totalString);
         console.log('Contador ' + cont + ' total: ' + total);
     });
 
@@ -133,7 +134,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: "1.00" //total.toString() + ".00",
+                total: totalString,
             },
             description: "This is the payment description."
         }]
@@ -158,7 +159,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: "1.00" //total.toString() + ".00",
+                total: totalString,
             }
         }]
     };
