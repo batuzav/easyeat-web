@@ -119,40 +119,42 @@ app.get("/paypal", async(req, res) => {
         //totalventa = totalventa.toString();
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
+
+        var create_payment_json = {
+            intent: "sale",
+            payer: {
+                payment_method: "paypal"
+            },
+            redirect_urls: {
+                return_url: "https://easyeat-web.herokuapp.com/success",
+                cancel_url: "https://easyeat-web.herokuapp.com/cancel"
+            },
+            transactions: [{
+                item_list: {
+                    items: data
+                },
+                amount: {
+                    currency: "MXN",
+                    total: totalventa
+                },
+                description: "This is the payment description."
+            }]
+        };
+
+        paypal.payment.create(create_payment_json, function(error, payment) {
+            if (error) {
+                throw error;
+            } else {
+                console.log("Create Payment Response");
+                console.log(payment);
+                res.redirect(payment.links[1].href);
+            }
+        });
     });
 
 
     console.log('Este es el string de total fuera: ', totalventa);
-    var create_payment_json = {
-        intent: "sale",
-        payer: {
-            payment_method: "paypal"
-        },
-        redirect_urls: {
-            return_url: "https://easyeat-web.herokuapp.com/success",
-            cancel_url: "https://easyeat-web.herokuapp.com/cancel"
-        },
-        transactions: [{
-            item_list: {
-                items: data
-            },
-            amount: {
-                currency: "MXN",
-                total: totalventa
-            },
-            description: "This is the payment description."
-        }]
-    };
 
-    paypal.payment.create(create_payment_json, function(error, payment) {
-        if (error) {
-            throw error;
-        } else {
-            console.log("Create Payment Response");
-            console.log(payment);
-            res.redirect(payment.links[1].href);
-        }
-    });
 });
 
 app.get("/success", (req, res) => {
