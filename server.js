@@ -103,7 +103,7 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: Number(child.val().precio.toFixed(2)).toFixed(2),
+                price: Number(child.val().precio.toFixed(2)),
                 /**/
                 currency: "MXN",
                 quantity: 1
