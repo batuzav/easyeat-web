@@ -87,6 +87,7 @@ app.get("/paypal", async(req, res) => {
     let data = [];
     let cont = 0;
     let total = 0;
+    let totalString = '';
 
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
         if (!snapshot.val()) {
@@ -107,14 +108,16 @@ app.get("/paypal", async(req, res) => {
             });
             cont++;
             total = total + Number(child.val().precio);
+            totalString = total.toString() + ".00";
+            console.log('Este es el string de total: ', totalString);
 
         });
         console.log('esta es data: ', data);
         console.log('Contador ' + cont + ' total: ' + total);
     });
 
-    const totalString = total.toString() + ".00";
-    console.log('Este es el string de total: ', totalString)
+
+
     var create_payment_json = {
         intent: "sale",
         payer: {
