@@ -98,7 +98,7 @@ app.get("/paypal", async(req, res) => {
             });
         }
         await snapshot.forEach((child) => {
-            console.log('Este el valor del hijo del carrtio', Number(child.val().precio));
+            console.log('Este el valor del hijo del carrtio', child.val().precio.toFixed(2));
             const conver = Number(child.val().precio);
             data.push({
                 name: child.val().nombre,
