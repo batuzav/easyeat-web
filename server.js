@@ -109,13 +109,13 @@ app.get("/paypal", async(req, res) => {
                 quantity: 1
             });
             cont++;
-            total = total + child.val().precio.toFixed(2);
+            total = total + Number(child.val().precio.toFixed(2));
 
 
         });
         console.log('esta es data: ', data);
         console.log('Este es total de suma: ', total);
-        totalventa = Number(total).toFixed(2);
+        totalventa = total;
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
     });
