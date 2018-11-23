@@ -99,10 +99,11 @@ app.get("/paypal", async(req, res) => {
         }
         await snapshot.forEach((child) => {
             console.log('Este el valor del hijo del carrtio', Number(child.val().precio));
+            const conver = child.val().precio.toString() + ".00";
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: Number(child.val().precio.toString() + ".00"),
+                price: Number(conver),
                 /**/
                 currency: "MXN",
                 quantity: 1
@@ -113,7 +114,7 @@ app.get("/paypal", async(req, res) => {
 
         });
         console.log('esta es data: ', data);
-        totalventa = Number(total.toString() + ".00");
+        totalventa = total;
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
     });
