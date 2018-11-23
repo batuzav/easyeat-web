@@ -115,7 +115,7 @@ app.get("/paypal", async(req, res) => {
 
 
         });
-        console.log('esta es data: ', data);
+        console.log('esta es numero de carrito: ', data.length);
         console.log('Este es total de suma: ', total);
 
         //totalventa = totalventa.toString();
@@ -184,7 +184,7 @@ app.get("/success", (req, res) => {
             console.log("Get Payment Response");
             console.log(JSON.stringify(payment));
             res.render("success");
-            totalventa = 0;
+
         }
     });
 });
