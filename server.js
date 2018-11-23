@@ -103,19 +103,19 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: 500, //parseFloat(child.val().precio).toFixed(2),
+                price: child.val().precio,
                 /**/
                 currency: "MXN",
                 quantity: 1
             });
             cont++;
-            total = total + Number(child.val().precio.toFixed(2));
+            total = total + child.val().precio;
 
 
         });
         console.log('esta es data: ', data);
         console.log('Este es total de suma: ', total);
-        totalventa = total.toFixed(2);
+        totalventa = total;
         //totalventa = totalventa.toString();
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
@@ -138,7 +138,7 @@ app.get("/paypal", async(req, res) => {
             },
             amount: {
                 currency: "MXN",
-                total: 500
+                total: totalventa
             },
             description: "This is the payment description."
         }]
@@ -164,7 +164,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: 500
+                total: totalventa
             }
         }]
     };
