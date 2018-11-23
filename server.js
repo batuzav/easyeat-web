@@ -89,7 +89,7 @@ app.get("/paypal", async(req, res) => {
     let cont = 0;
     let total = 0;
     let totalString = 0;
-
+    totalventa = 0;
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
         if (!snapshot.val()) {
             return res.status(400).json({
