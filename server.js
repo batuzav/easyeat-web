@@ -89,9 +89,9 @@ app.get("/paypal", async(req, res) => {
     let cont = 0;
     let total = 0;
     let totalString = 0;
-    totalventa = 0;
+    totalventa = req.query.total;
     db.ref("/Carrito/" + idCliente + "/productos").on("value", async function(snapshot) {
-        totalventa = 0;
+
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
@@ -116,7 +116,7 @@ app.get("/paypal", async(req, res) => {
         });
         console.log('esta es data: ', data);
         console.log('Este es total de suma: ', total);
-        totalventa = total;
+
         //totalventa = totalventa.toString();
         console.log('Este es el string de total: ', totalventa);
         console.log('Contador ' + cont + ' total: ' + total);
@@ -189,7 +189,7 @@ app.get("/success", (req, res) => {
 });
 
 app.get("/cancel", (req, res) => {
-    totalventa = 0;
+
     res.render("cancel");
 });
 
