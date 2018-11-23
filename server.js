@@ -121,10 +121,12 @@ app.get("/paypal", async(req, res) => {
             cancel_url: "https://easyeat-web.herokuapp.com/cancel"
         },
         transactions: [{
-            item_list: data,
+            item_list: {
+                items: data
+            },
             amount: {
                 currency: "MXN",
-                total: total.toString(),
+                total: total,
             },
             description: "This is the payment description."
         }]
@@ -149,7 +151,7 @@ app.get("/success", (req, res) => {
         transactions: [{
             amount: {
                 currency: "MXN",
-                total: total.toString(),
+                total: total,
             }
         }]
     };
