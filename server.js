@@ -157,6 +157,7 @@ app.get("/paypal", async(req, res) => {
 app.get("/success", (req, res) => {
     var PayerID = req.query.PayerID;
     var paymentId = req.query.paymentId;
+    console.log('total en succes: ', totalventa);
     var execute_payment_json = {
         payer_id: PayerID,
         transactions: [{
