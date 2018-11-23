@@ -100,8 +100,8 @@ app.get("/paypal", async(req, res) => {
             data.push({
                 name: child.val().nombre,
                 sku: child.val().nombre,
-                price: "1.00",
-                /*child.val().precio.toString() + ".00"*/
+                price: child.val().precio.toString() + ".00",
+                /**/
                 currency: "MXN",
                 quantity: 1
             });
@@ -113,7 +113,8 @@ app.get("/paypal", async(req, res) => {
         console.log('Contador ' + cont + ' total: ' + total);
     });
 
-
+    const totalString = total.toString() + ".00";
+    console.log('Este es el string de total: ', totalString)
     var create_payment_json = {
         intent: "sale",
         payer: {
