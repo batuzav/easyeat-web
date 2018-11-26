@@ -337,9 +337,9 @@ io.on('connection', function(socket) { //habla al metodo connection
 
             }
 
-            console.log(datos);
+            //console.log(datos);
             const telefono = toString(msg.cp);
-            console.log(telefono);
+            // console.log(telefono);
             var data2 = order = conekta.Order.create({
                 "line_items": datos,
                 "shipping_lines": [{
