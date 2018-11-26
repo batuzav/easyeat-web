@@ -9,7 +9,7 @@ angular.module("app", [])
 
         $scope.llamarComandas = async function() {
             console.log($scope.frmData);
-            await $http.post('/comida/getkeys')
+            await $http.post('/entregas/getkeys')
                 .then(function(respone) {
                     $scope.keys = respone['data'];
                     console.log($scope.keys);

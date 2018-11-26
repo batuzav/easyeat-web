@@ -78,8 +78,8 @@ const nodemailer = require('nodemailer'),
     transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'easyeatapp@sitiorandom.com',
-            pass: 'Sitiorandom1994!',
+            user: 'easyeatapp.random@gmail.com',
+            pass: '*#Easy$13#*',
         },
     }),
     EmailTemplate = require('email-templates-v2').EmailTemplate,
