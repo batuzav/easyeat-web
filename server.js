@@ -373,6 +373,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                     //socket.broadcast.emit('mensaje', mensaje);
                     console.log(mensaje.charges.data[0].payment_method.reference);
                     console.log('idcleinte', mensaje);
+                    let efer = mensaje.charges.data[0].payment_method.reference;
                     let users = [{
                             name: mensaje.customer_info.name,
                             email: mensaje.customer_info.email,
@@ -399,7 +400,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                         }));
                     }
 
-                    loadTemplate('welcome', users, mensaje).then((results) => {
+                    loadTemplate('welcome', users, mensaje, efer).then((results) => {
                         console.log(results)
                         return Promise.all(results.map((result) => {
                             sendEmail({
