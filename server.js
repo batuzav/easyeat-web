@@ -72,7 +72,10 @@ paypal.configure({
 
 let totalventa = 0;
 
-
+//config de mailgun
+var domain = 'sandbox6a90472a12f74f1ca66fe296fc86518c.mailgun.org';
+var mailgun = require('mailgun-js')({ apiKey: "af27a6f57aff4b3a66688ed122f2c4cc-1053eade-5ce1ac9c", domain: domain });
+var mailcomposer = require('mailcomposer');
 
 //Configuracion global de rutas
 app.use(require('./routes/index'));
@@ -360,6 +363,29 @@ io.on('connection', function(socket) { //habla al metodo connection
                     mensaje = res.toObject();
                     //socket.broadcast.emit('mensaje', mensaje);
                     console.log('idcleinte', msg);
+                    var mail = mailcomposer({
+                        from: 'easyeatapp@sitiorandom.com',
+                        to: '2015030278@upsin.edu.mx',
+                        subject: 'Test email subject',
+                        body: 'Test email text',
+                        html: '<b> Test email text </b>'
+                    });
+
+                    mail.build(function(mailBuildError, message) {
+
+                        var dataToSend = {
+                            to: 'mm@samples.mailgun.org',
+                            message: message.toString('ascii')
+                        };
+
+                        mailgun.messages().sendMime(dataToSend, function(sendError, body) {
+                            if (sendError) {
+                                console.log(sendError);
+                                return;
+                            }
+                        });
+                    });
+
                     db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
                         status: true,
                     }, async function(err) {
@@ -371,6 +397,8 @@ io.on('connection', function(socket) { //habla al metodo connection
 
                         }
                     });
+
+
 
 
                 }
