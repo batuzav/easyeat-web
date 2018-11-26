@@ -72,10 +72,19 @@ paypal.configure({
 
 let totalventa = 0;
 
-//config de mailgun
-var domain = 'sandbox6a90472a12f74f1ca66fe296fc86518c.mailgun.org';
-var mailgun = require('mailgun-js')({ apiKey: "af27a6f57aff4b3a66688ed122f2c4cc-1053eade-5ce1ac9c", domain: domain });
-var mailcomposer = require('mailcomposer');
+//config de mailg
+const nodemailer = require('nodemailer'),
+    creds = require('./creds'),
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'easyeatapp@sitiorandom.com',
+            pass: 'Sitiorandom1994!',
+        },
+    }),
+    EmailTemplate = require('email-templates-v2').EmailTemplate,
+    path = require('path'),
+    Promise = require('bluebird');
 
 //Configuracion global de rutas
 app.use(require('./routes/index'));
@@ -363,27 +372,45 @@ io.on('connection', function(socket) { //habla al metodo connection
                     mensaje = res.toObject();
                     //socket.broadcast.emit('mensaje', mensaje);
                     console.log('idcleinte', msg);
-                    var mail = mailcomposer({
-                        from: 'easyeatapp@sitiorandom.com',
-                        to: '2015030278@upsin.edu.mx',
-                        subject: 'Test email subject',
-                        body: 'Test email text',
-                        html: '<b> Test email text </b>'
-                    });
+                    let users = [{
+                            name: mensaje.customer_info.name,
+                            email: mensaje.customer_info.email,
+                        }
 
-                    mail.build(function(mailBuildError, message) {
+                    ];
 
-                        var dataToSend = {
-                            to: '2015030278@upsin.edu.mx',
-                            message: message.toString('ascii')
-                        };
+                    function sendEmail(obj) {
+                        return transporter.sendMail(obj);
+                    }
 
-                        mailgun.messages().sendMime(dataToSend, function(sendError, body) {
-                            if (sendError) {
-                                console.log(sendError);
-                                return;
-                            }
-                        });
+                    function loadTemplate(templateName, contexts) {
+                        let template = new EmailTemplate(path.join(__dirname, 'templates', templateName));
+                        return Promise.all(contexts.map((context) => {
+                            return new Promise((resolve, reject) => {
+                                template.render(context, (err, result) => {
+                                    if (err) reject(err);
+                                    else resolve({
+                                        email: result,
+                                        context,
+                                    });
+                                });
+                            });
+                        }));
+                    }
+
+                    loadTemplate('welcome', users, mensaje).then((results) => {
+                        console.log(results)
+                        return Promise.all(results.map((result) => {
+                            sendEmail({
+                                to: result.context.email,
+                                from: 'EASYEAT-APP',
+                                subject: result.email.subject,
+                                html: result.email.html,
+                                text: result.email.text,
+                            });
+                        }));
+                    }).then(() => {
+                        console.log('Yay!');
                     });
 
                     db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
@@ -397,10 +424,6 @@ io.on('connection', function(socket) { //habla al metodo connection
 
                         }
                     });
-
-
-
-
                 }
                 if (err) {
                     console.log(err);

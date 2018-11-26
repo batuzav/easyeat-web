@@ -11,10 +11,12 @@
     "license": "ISC",
     "dependencies": {
         "bcryptjs": "^2.4.3",
+        "bluebird": "^3.5.3",
         "body-parser": "^1.18.3",
         "conekta": "^3.5.1",
         "consolidate": "^0.15.1",
         "cors": "^2.8.4",
+        "email-templates-v2": "^2.0.3",
         "express": "^4.16.3",
         "firebase": "^5.5.3",
         "hbs": "^4.0.1",
@@ -22,6 +24,7 @@
         "mailcomposer": "^4.0.2",
         "mailgun-js": "^0.22.0",
         "moment": "^2.22.2",
+        "nodemailer": "^4.7.0",
         "paypal-rest-sdk": "^1.8.1",
         "socket.io": "^2.1.1",
         "underscore": "^1.9.1"
