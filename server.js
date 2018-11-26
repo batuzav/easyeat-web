@@ -371,7 +371,8 @@ io.on('connection', function(socket) { //habla al metodo connection
                     console.log(res.toObject());
                     mensaje = res.toObject();
                     //socket.broadcast.emit('mensaje', mensaje);
-                    console.log('idcleinte', msg);
+                    console.log(mensaje.charges.data[0].payment_method.reference);
+                    console.log('idcleinte', mensaje);
                     let users = [{
                             name: mensaje.customer_info.name,
                             email: mensaje.customer_info.email,
