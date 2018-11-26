@@ -143,13 +143,13 @@ a {
                     <div class="opps-brand"><img src='https://scontent.fgdl5-1.fna.fbcdn.net/v/t1.15752-9/47056285_340117119902573_3179407570167136256_n.png?_nc_cat=101&_nc_ht=scontent.fgdl5-1.fna&oh=10f53ec6795c1da7930f186c61e01c89&oe=5C6CB506' alt="OXXOPay"></div>
                     <div class="opps-ammount">
                         <h3>Monto a pagar</h3>
-                        <h2>$ 307<sup>MXN</sup></h2>
+                        <h2>$ {{ mensaje.amount }}<sup>{{ mensaje.currency }}</sup></h2>
                         <p>OXXO cobrará una comisión adicional al momento de realizar el pago.</p>
                     </div>
                 </div>
                 <div class="opps-reference">
                     <h3>Referencia</h3>
-                    <h1>123456789123</h1>
+                    <h1>{{ mensaje.charges.data[0].payment_method.reference }}</h1>
                 </div>
             </div>
             <div class="opps-instructions">
