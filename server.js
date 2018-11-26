@@ -374,7 +374,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                     mail.build(function(mailBuildError, message) {
 
                         var dataToSend = {
-                            to: 'mm@samples.mailgun.org',
+                            to: '2015030278@upsin.edu.mx',
                             message: message.toString('ascii')
                         };
 
