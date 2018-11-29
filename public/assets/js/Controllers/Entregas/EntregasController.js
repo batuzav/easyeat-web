@@ -7,6 +7,20 @@ angular.module("app", [])
         $scope.info = {};
         $scope.entregas = {};
 
+        $scope.entregaLista = async function(entrega) {
+            console.log($scope.frmData);
+            await $http.put('/entregas/entregaLista', entrega)
+                .then(function(respone) {
+                    console.log(entrega);
+                    console.log($scope.frmData);
+                    $scope.llamarComandas();
+
+                }, function(respone) {
+                    alert(respone.err);
+                });
+        }
+
+
         $scope.llamarComandas = async function() {
             console.log($scope.frmData);
             await $http.post('/entregas/getkeys')
@@ -25,17 +39,17 @@ angular.module("app", [])
 
 
         async function getComandas(info) {
-            $scope.comandas = {};
+            $scope.entregas = {};
             await $http.post('/entregas/getComandas', info)
                 .then(function(respone) {
-                    $scope.comandas = respone['data'];
-                    console.log('hola');
-
-                    /* if ($scope.comandas.length == 0) {
-                         alert('No hay Comandas')
-                     } else {
-                         alert('Comandas listas ');
-                     }*/
+                    $scope.entregas = respone['data'];
+                    $scope.entregas = $scope.entregas.data;
+                    console.log($scope.entregas);
+                    if ($scope.entregas.length == 0) {
+                        alert('No hay Entregas')
+                    } else {
+                        alert('Entregas listas ');
+                    }
 
                 }, function(respone) {
                     alert(respone);

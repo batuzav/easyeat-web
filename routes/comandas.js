@@ -108,17 +108,19 @@ app.post('/comida/getComandas', async(req, res) => {
             const dataUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
             const dataAlimento = await db.ref("/MenuComida/" + infoComanda.val().id + "/").once("value");
             const dataPlanAlimento = await db.ref("/planAlimenticio/" + busquedaDeFecha[x].idUsuario + "/calComida").once("value");
-            data.push(await {
-                nombre: dataUsuario.val().nombre,
-                fecha: info.fecha.fechaReporte,
-                menu: dataAlimento.val().nombre,
-                calorias: dataAlimento.val().calorias,
-                porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
-                uMedida: dataAlimento.val().medidas,
-                id: busquedaDeFecha[x].idUsuario,
-                status: infoComanda.val().status
+            if (dataUsuario.val() && dataAlimento.val() && dataPlanAlimento.val()) {
+                data.push(await {
+                    nombre: dataUsuario.val().nombre,
+                    fecha: info.fecha.fechaReporte,
+                    menu: dataAlimento.val().nombre,
+                    calorias: dataAlimento.val().calorias,
+                    porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
+                    uMedida: dataAlimento.val().medidas,
+                    id: busquedaDeFecha[x].idUsuario,
+                    status: infoComanda.val().status
 
-            });
+                });
+            }
 
             if (infoComanda.val().id === infoMenu.val().comida1.id) {
                 cComida1++;
@@ -230,17 +232,19 @@ app.post('/desayuno/getComandas', async(req, res) => {
             const dataUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
             const dataAlimento = await db.ref("/MenuDesayuno/" + infoComanda.val().id + "/").once("value");
             const dataPlanAlimento = await db.ref("/planAlimenticio/" + busquedaDeFecha[x].idUsuario + "/calDesayuno").once("value");
-            data.push(await {
-                nombre: dataUsuario.val().nombre,
-                fecha: info.fecha.fechaReporte,
-                menu: dataAlimento.val().nombre,
-                calorias: dataAlimento.val().calorias,
-                porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
-                uMedida: dataAlimento.val().medidas,
-                id: busquedaDeFecha[x].idUsuario,
-                status: infoComanda.val().status
+            if (dataUsuario.val() && dataAlimento.val() && dataPlanAlimento.val()) {
+                data.push(await {
+                    nombre: dataUsuario.val().nombre,
+                    fecha: info.fecha.fechaReporte,
+                    menu: dataAlimento.val().nombre,
+                    calorias: dataAlimento.val().calorias,
+                    porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
+                    uMedida: dataAlimento.val().medidas,
+                    id: busquedaDeFecha[x].idUsuario,
+                    status: infoComanda.val().status
 
-            });
+                });
+            }
 
             if (infoComanda.val().id === infoMenu.val().comida1.id) {
                 cComida1++;
@@ -354,17 +358,19 @@ app.post('/cena/getComandas', async(req, res) => {
             const dataUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
             const dataAlimento = await db.ref("/MenuCena/" + infoComanda.val().id + "/").once("value");
             const dataPlanAlimento = await db.ref("/planAlimenticio/" + busquedaDeFecha[x].idUsuario + "/calCena").once("value");
-            data.push(await {
-                nombre: dataUsuario.val().nombre,
-                fecha: info.fecha.fechaReporte,
-                menu: dataAlimento.val().nombre,
-                calorias: dataAlimento.val().calorias,
-                porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
-                uMedida: dataAlimento.val().medidas,
-                id: busquedaDeFecha[x].idUsuario,
-                status: infoComanda.val().status
+            if (dataUsuario.val() && dataAlimento.val() && dataPlanAlimento.val()) {
+                data.push(await {
+                    nombre: dataUsuario.val().nombre,
+                    fecha: info.fecha.fechaReporte,
+                    menu: dataAlimento.val().nombre,
+                    calorias: dataAlimento.val().calorias,
+                    porciones: dataPlanAlimento.val() / dataAlimento.val().calorias,
+                    uMedida: dataAlimento.val().medidas,
+                    id: busquedaDeFecha[x].idUsuario,
+                    status: infoComanda.val().status
 
-            });
+                });
+            }
 
             if (infoComanda.val().id === infoMenu.val().comida1.id) {
                 cComida1++;

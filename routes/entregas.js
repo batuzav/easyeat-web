@@ -30,6 +30,36 @@ app.post('/entregas/getkeys', async(req, res) => {
     });
 });
 
+app.put('/entregas/entregaLista', async(req, res) => {
+    const id = req.body.idUsuario;
+    const fecha = req.body.fecha;
+    const tipo = req.body.tipoComida;
+    const data = {
+        entrega: true
+    }
+    console.log('entrega lista tippo de comida: ', tipo);
+    console.log('entrega lista fech de comida: ', fecha);
+    console.log('entrega lista id de comida: ', id);
+
+    await db.ref("/MenuFechaPersona/" + id + "/" + fecha + "/").child(tipo).update(data, async function(err) {
+        console.log('entro aqui');
+        if (err) {
+            console.log('entro en error');
+            return res.status(400).json({
+                ok: false,
+                err,
+                Mensaje: "Error con la base de datos"
+            });
+        } else {
+
+            res.json({
+                ok: true,
+
+            });
+        }
+    });
+});
+
 app.post('/entregas/getComandas', async(req, res) => {
     let info = req.body;
     let keys = Object.values(info.keys);
@@ -66,19 +96,76 @@ app.post('/entregas/getComandas', async(req, res) => {
             console.log('Fecha de entrega verdadera o preparacion: ', fechaComanda.val());
             const infoComanda = await db.ref("/MenuFechaPersona/" + busquedaDeFecha[x].idUsuario + "/" + fechaComanda.val() + "/").once("value");
             if (infoComanda.val()) {
-
-                if (infoComanda.val().Desayuno && infoComanda.val().Comida && infoComanda.val().Cena) {
+                if (infoComanda.val().Desayuno && infoComanda.val().Comida && infoComanda.val().Cena && infoComanda.val().Desayuno.completo === true) {
                     console.log('hay un completo');
-                    const infoComandaCompleta = await db.ref("/MenuFechaPersona/" + busquedaDeFecha[x].idUsuario + "/" + fechaComanda.val() + "/").once("value");
+
+
                 } else {
                     if (infoComanda.val().Desayuno) {
                         console.log('Info de la comanda de dayuno: ', infoComanda.val().Desayuno);
+                        const infoComida = await db.ref("/MenuDesayuno/" + infoComanda.val().Desayuno.id + "/").once("value");
+                        console.log('info del desayuno: ', infoComida.val());
+                        const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                        console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                        const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Desayuno.direccion + "/").once("value");
+                        console.log('Direccion: ', infoDireccion.val());
+
+                        data.push({
+                            nombre: infoUsuario.val().nombre,
+                            fecha: busquedaDeFecha[x].fecha,
+                            hora: infoComanda.val().Desayuno.hora,
+                            direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                            comentarios: infoDireccion.val().comentarios,
+                            comida: infoComida.val().nombre,
+                            idUsuario: busquedaDeFecha[x].idUsuario,
+                            entrega: infoComanda.val().Desayuno.entrega,
+                            tipoComida: "Desayuno"
+                        });
+
                     }
                     if (infoComanda.val().Comida) {
                         console.log('Info de la comanda de comida: ', infoComanda.val().Comida);
+                        const infoComida = await db.ref("/MenuComida/" + infoComanda.val().Comida.id + "/").once("value");
+                        console.log('info del comida: ', infoComida.val());
+                        const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                        console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                        const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Comida.direccion + "/").once("value");
+                        console.log('Direccion: ', infoDireccion.val());
+
+                        data.push({
+                            nombre: infoUsuario.val().nombre,
+                            fecha: busquedaDeFecha[x].fecha,
+                            hora: infoComanda.val().Comida.hora,
+                            direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                            comentarios: infoDireccion.val().comentarios,
+                            comida: infoComida.val().nombre,
+                            idUsuario: busquedaDeFecha[x].idUsuario,
+                            entrega: infoComanda.val().Comida.entrega,
+                            tipoComida: "Comida",
+                        });
+
                     }
                     if (infoComanda.val().Cena) {
                         console.log('Info de la comanda de cena: ', infoComanda.val().Cena);
+                        const infoComida = await db.ref("/MenuCena/" + infoComanda.val().Cena.id + "/").once("value");
+                        console.log('info del cena: ', infoComida.val());
+                        const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                        console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                        const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Cena.direccion + "/").once("value");
+                        console.log('Direccion: ', infoDireccion.val());
+
+                        data.push({
+                            nombre: infoUsuario.val().nombre,
+                            fecha: busquedaDeFecha[x].fecha,
+                            hora: infoComanda.val().Cena.hora,
+                            direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                            comentarios: infoDireccion.val().comentarios,
+                            comida: infoComida.val().nombre,
+                            idUsuario: busquedaDeFecha[x].idUsuario,
+                            entrega: infoComanda.val().Cena.entrega,
+                            tipoComida: "Cena"
+                        });
+
                     }
                 }
 
@@ -89,8 +176,11 @@ app.post('/entregas/getComandas', async(req, res) => {
 
     }
 
+    console.log('DATA COMPLETA: ', data);
+
     res.json({
         ok: true,
+        data
 
     });
 });

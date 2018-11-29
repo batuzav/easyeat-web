@@ -25,14 +25,17 @@
                     <th>Comentarios</th>
                     <th>Menú</th>  
                 </tr>
-                <tr>
-                    <td>Estado</td>
-                    <td>Usuario</td>
-                    <td>Fecha</td>
-                    <td>Hora</td>
-                    <td>Dirección</td>
-                    <td>Comentarios</td>
-                    <td>Menú</td>  
+                <tr ng-repeat="entrega in entregas track by $index">
+                     <td>
+                        <label ng-hide="\{{ entrega.entrega }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="entregaLista(entrega);$event.stopPropagation();"> PENDIENTE</label>
+                        <label ng-show="\{{ entrega.entrega }}">✔️ ¡LISTO!</label>
+                    </td>
+                    <td>\{{ entrega.nombre }}</td>
+                    <td>\{{ entrega.fecha }}</td>
+                    <td>\{{ entrega.nombre }}</td>
+                    <td>\{{ entrega.hora }}</td>
+                    <td>\{{ entrega.direccion }}</td>
+                    <td>\{{ entrega.comida }}</td>  
                 </tr>
             </table>
         </div>
