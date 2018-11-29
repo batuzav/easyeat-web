@@ -415,9 +415,7 @@ io.on('connection', function(socket) { //habla al metodo connection
                         }));
                     }).then(() => {
                         console.log('Yay!');
-                        res.json({
-                            ok: true,
-                        })
+
                     });
 
 
