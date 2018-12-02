@@ -135,6 +135,11 @@
         z-index: 3;
     }
     
+    .logohippo {
+        width: 80vh;
+        height: 80vh;
+    }
+    
     .logonav {
         align-self: center;
         width: 15vh;
