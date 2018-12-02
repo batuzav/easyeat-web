@@ -43,46 +43,65 @@ app.post('/usuarios/getKeys', async(req, res) => {
 app.post('/usuartios/getUsuarios', async(req, res) => {
     let keys = req.body.data;
     let usuarioActivo = [];
+    let usuarioInactivo = [];
     console.log('ids de usuarios: ', keys.length);
     for (let x = 0; x < keys.length; x++) {
         const infoUsuario = await db.ref("/usuarios/" + keys[x].id + "/").once("value");
-        if (infoUsuario) {
+        if (infoUsuario.val()) {
             const fechaCena = new Date(infoUsuario.val().ultimacena);
             const fechaDesayuno = new Date(infoUsuario.val().ultimodesayuno);
             const fechaComida = new Date(infoUsuario.val().ultimacomida);
             const fechaCompleto = new Date(infoUsuario.val().ultimocompleto);
             let now = new Date();
-            const infoPlanAlimenticio = await db.ref("/planAlimenticio/" + keys[x].id + "/").once("value");
             if (fechaCena.getTime() >= now.getTime() || fechaDesayuno.getTime() >= now.getTime() || fechaComida.getTime() >= now.getTime() || fechaCompleto.getTime() >= now.getTime()) {
                 const infoPlanAlimenticio = await db.ref("/planAlimenticio/" + keys[x].id + "/").once("value");
-                db.ref("/HistorialPedidos/" + keys[x].id + "/").once("value", async function(snapshot) {
-                    let pedido = [];
-                    if (snapshot.val()) {
-                        snapshot.forEach(async(child) => {
-                            pedido.push({
-                                total: child.val().monto,
-                                plan: child.val().plan,
-                                metodoPago: child.val().metPagoH,
+                if (infoPlanAlimenticio.val()) {
+                    db.ref("/HistorialPedidos/" + keys[x].id + "/").once("value", async function(snapshot) {
+                        let pedido = [];
+                        if (snapshot.val()) {
+                            snapshot.forEach(async(child) => {
+                                pedido.push({
+                                    total: child.val().monto,
+                                    plan: child.val().plan,
+                                    metodoPago: child.val().metPagoH,
+
+                                });
+                            });
+
+
+                            usuarioActivo.push({
+                                nombre: infoUsuario.val().nombre,
+                                fechaNaci: infoUsuario.val().fechanaci,
+                                imc: infoPlanAlimenticio.val().imc,
+                                peso: infoPlanAlimenticio.val().peso,
+                                dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
+                                genero: infoPlanAlimenticio.val().genero,
+                                plan: pedido[pedido.length - 1].plan,
+                                metodoPago: pedido[pedido.length - 1].metodoPago,
+                                total: pedido[pedido.length - 1].total,
 
                             });
-                        });
+                        }
 
-                        console.log('ULTIMO PEDIDO: ', pedido[pedido.length - 1]);
-                        usuarioActivo.push({
-                            nombre: infoUsuario.val().nombre,
-                            fechaNaci: infoUsuario.val().fechanaci.toISOString().substring(0, 10),
-                            imc: infoPlanAlimenticio.val().imc,
-                            peso: infoPlanAlimenticio.val().peso,
-                            dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
-                            genero: infoPlanAlimenticio.val().genero,
-                            plan: pedido[pedido.length - 1].plan,
-                            metodoPago: pedido[pedido.length - 1].metodoPago,
-                            total: pedido[pedido.length - 1].total,
-
-                        });
-                    }
-
-                });
+                    });
+                }
+            } else {
+                const infoPlanAlimenticio = await db.ref("/planAlimenticio/" + keys[x].id + "/").once("value");
+                if (infoPlanAlimenticio.val()) {
+                    usuarioInactivo.push({
+                        nombre: infoUsuario.val().nombre,
+                        fechaNaci: infoUsuario.val().fechanaci,
+                        imc: infoPlanAlimenticio.val().imc,
+                        peso: infoPlanAlimenticio.val().peso,
+                        dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
+                        genero: infoPlanAlimenticio.val().genero,
+                    });
+                } else {
+                    usuarioInactivo.push({
+                        nombre: infoUsuario.val().nombre,
+                        fechaNaci: infoUsuario.val().fechanaci,
+                    })
+                }
             }
 
 
@@ -93,7 +112,10 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
 
 
     res.json({
-        ok: true
+        ok: true,
+        usuarioInactivo,
+        usuarioActivo
+
     })
 
 });

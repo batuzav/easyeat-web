@@ -15,6 +15,7 @@ angular.module("app", [])
             $http.post('/usuarios/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
+                    //console.log($scope.hh);
                     getUsuarios($scope.hh);
 
                 }, function(respone) {
