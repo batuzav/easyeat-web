@@ -38,7 +38,7 @@ const permisosAlimentos = (req, res, next) => {
 const permisosEntregas = (req, res, next) => {
         if (req.session.tipoUser == 1 || req.session.tipoUser == 3) next();
 
-        else res.redirect('/entregas');
+        else res.redirect('/comandas');
     }
     /*=============RENDERS=============*/
 

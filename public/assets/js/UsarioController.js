@@ -12,13 +12,13 @@ angular.module("app", [])
 
 
         function cargarUsarios() {
-            alert('USUARIOS VARGANDO, PODR[IA TARDAR UNOS MINUTOS');
+
             $http.post('/usuarios/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
                     //console.log($scope.hh);
                     getUsuarios($scope.hh);
-
+                    alert('USUARIOS CARGANDO, PODRA TARDAR UNOS MINUTOS');
                 }, function(respone) {
                     alert(respone);
                 });

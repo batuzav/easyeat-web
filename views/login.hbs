@@ -23,16 +23,16 @@
            
         <div style="position: absolute; top: 45%; left: 40%; height: 30%; width: 70%; margin: -15% 0 0 -25%;">       
             <div class="col-md-8 col-xs-12 form-group">
-                <label>Usuario</label>
-                <input type="texet"  class="form-control" required ng-model="frmData.user">
+                <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Usuario</label>
+                <input type="texet"  class="form-control input" placeholder="Tu usuario" required ng-model="frmData.user">
             </div>
             <div class="col-md-8 col-xs-12 form-group">
-                <label>Contraseña</label>
-                <input type="password" class="form-control"  required ng-model="frmData.pass">
+                <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Contraseña</label>
+                <input type="password" class="form-control input" placeholder="Tu contraseña"  required ng-model="frmData.pass">
             
             </div>
             <div class="col-md-8 col-xs-12 form-group">
-   <button  class="btn btn-default" ng-click="iniciar();$event.stopPropagation();">Register</button> 
+   <button  class="btn loginbuttom" ng-click="iniciar();$event.stopPropagation();">Register</button> 
    </div>
             
             
