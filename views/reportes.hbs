@@ -81,12 +81,15 @@
                         </tr>
 
                         <tr ng-repeat="tabla in tabla track by $index">
-                            <td>\{{ tabla.status }}</td>
+                            <td>
+                                <label ng-hide="\{{ tabla.status }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="reporteListo(tabla);$event.stopPropagation();"> PENDIENTE</label>
+                                <label ng-show="\{{ tabla.status }}">✔️ ¡LISTO!</label>
+                            </td>
                             <td>\{{ tabla.nombre }}</td>
                             <td>\{{ tabla.plan }}</td>
                             <td>\{{ tabla.fecha }}</td>
                             <td>\{{ tabla.telefono }}</td>
-                            <td>\{{ tabla.alimento }}</td>
+                            <td>\{{ tabla.nomCom }}</td>
                             <td>\{{ tabla.comentarios }}</td>
                         </tr>
                     </table>

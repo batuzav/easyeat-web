@@ -3,7 +3,52 @@ const express = require('express')
 const app = express();
 const { db } = require("../config/firebase");
 const _ = require('underscore');
-/*-------OPTIMIZAR-----*/
+
+
+app.post('/reportes/getkey', async(req, res) => {
+    let reporte = req.body;
+    console.log('fecha de reporte: ', reporte);
+    db.ref("/reportes/" + reporte.fecha + "/" + reporte.rama + "/" + reporte.plan + "/").on("value", async function(snapshot) {
+        if (!snapshot.val()) {
+            return res.status(400).json({
+                ok: false,
+            });
+        }
+        console.log('Entro aqui: ');
+        snapshot.forEach((child) => {
+            console.log('Entro aqui 2: ');
+            if (child.val().comentarios === reporte.comentarios && child.val().nombre === reporte.nombre && child.val().telefono === reporte.telefono) {
+                console.log("Encontro un reporte igual");
+                let data = {
+                    status: true,
+                }
+                console.log(child.val().comentarios);
+                db.ref("/reportes/" + reporte.fecha + "/" + reporte.rama + "/" + reporte.plan + "/").child(child.key).update(data, async function(err) {
+                    console.log('entro aqui');
+                    if (err) {
+                        console.log('entro en error');
+                        return res.status(400).json({
+                            ok: false,
+                            err,
+                            Mensaje: "Error con la base de datos"
+                        });
+                    } else {
+
+                        res.json({
+                            ok: true,
+
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+
+
+
+
+/*-------OPTIMIZAR-----NO CHETO---- */
 app.post('/getreportes', async(req, res) => {
     let fecha = req.body;
     //Variable con la info completa
@@ -39,8 +84,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataTardeComida.length; x++) {
         dataTardeComida[x] = Object.assign({}, dataTardeComida[x], {
             plan: 'Comida',
-            status: false,
+            // status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaLlegoTarde",
         });
 
         cTarde++;
@@ -59,8 +105,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataTardeDesayuno.length; x++) {
         dataTardeDesayuno[x] = Object.assign({}, dataTardeDesayuno[x], {
             plan: 'Desayuno',
-            status: false,
+            // status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaLlegoTarde",
         });
         cTarde++;
     }
@@ -77,9 +124,10 @@ app.post('/getreportes', async(req, res) => {
     console.log(dataTardeCena[1]);
     for (let x = 0; x < dataTardeCena.length; x++) {
         dataTardeCena[x] = Object.assign({}, dataTardeCena[x], {
-            plan: 'Comida',
-            status: false,
+            plan: 'Cena',
+            //status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaLlegoTarde",
         });
         cTarde++;
     }
@@ -99,8 +147,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataMalEstadoComida.length; x++) {
         dataMalEstadoComida[x] = Object.assign({}, dataMalEstadoComida[x], {
             plan: 'Comida',
-            status: false,
+            //status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaMalEstado",
         });
         cEstado++;
     }
@@ -118,8 +167,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataMalEstadoDesayuno.length; x++) {
         dataMalEstadoDesayuno[x] = Object.assign({}, dataMalEstadoDesayuno[x], {
             plan: 'Desayuno',
-            status: false,
+            // status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaMalEstado",
         });
         cEstado++;
     }
@@ -136,9 +186,10 @@ app.post('/getreportes', async(req, res) => {
     console.log(dataMalEstadoCena[1]);
     for (let x = 0; x < dataMalEstadoCena.length; x++) {
         dataMalEstadoCena[x] = Object.assign({}, dataMalEstadoCena[x], {
-            plan: 'Comida',
-            status: false,
+            plan: 'Cena',
+            // status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaMalEstado",
         });
         cEstado++;
     }
@@ -158,8 +209,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataNollegoComida.length; x++) {
         dataNollegoComida[x] = Object.assign({}, dataNollegoComida[x], {
             plan: 'Comida',
-            status: false,
+            // status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaNoLlego",
         });
         cNoLlego++;
     }
@@ -177,8 +229,9 @@ app.post('/getreportes', async(req, res) => {
     for (let x = 0; x < dataNollegoDesayuno.length; x++) {
         dataNollegoDesayuno[x] = Object.assign({}, dataNollegoDesayuno[x], {
             plan: 'Desayuno',
-            status: false,
+            //  status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaNoLlego",
         });
         cNoLlego++;
     }
@@ -195,9 +248,10 @@ app.post('/getreportes', async(req, res) => {
     console.log(dataNollegoCena[1]);
     for (let x = 0; x < dataNollegoCena.length; x++) {
         dataNollegoCena[x] = Object.assign({}, dataNollegoCena[x], {
-            plan: 'Comida',
-            status: false,
+            plan: 'Cena',
+            //   status: false,
             fecha: fecha.fechaReporte,
+            rama: "ComidaNoLlego",
         });
         cNoLlego++;
     }

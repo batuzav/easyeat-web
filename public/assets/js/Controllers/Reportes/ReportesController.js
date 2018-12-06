@@ -1,6 +1,7 @@
 var angular;
 angular.module("app", [])
     .controller("controlador", function($scope, $http) {
+        document.getElementById('reportes').style = 'background-color: #18ab29; color:white'
         $scope.reportes = {};
         $scope.tabla = [];
         $scope.frmData = {};
@@ -42,7 +43,8 @@ angular.module("app", [])
                 .then(function(respone) {
                     $scope.reportes = respone['data'];
                     console.log($scope.reportes);
-                    cargarReportes($scope.reportes)
+                    cargarReportes($scope.reportes);
+                    alert('Reportes listos');
                     console.log($scope.reportes.dataTardeDesayuno);
                 }, function(respone) {
                     alert(respone);
@@ -70,19 +72,18 @@ angular.module("app", [])
             $scope.tabla = $scope.tabla.concat($scope.InfoLlegoMal, $scope.InfoNoLlego, $scope.InfoLlegoTarde);
             $scope.tabla = $scope.tabla.filter(Boolean);
             console.log('cantidad de posiciones', $scope.tabla.length);
+        }
 
-            //    for (let x = 0; x < $scope.tabla.length; x++) {
-            //         console.log('DEL ELEMENTO: ', $scope.tabla[x]);
-            //         if ($scope.tabla[x] == 0) {
-            //             $scope.remove = function(x) {
-            //                 $scope.tabla.splice(x, 1);
-            //             };
-            //         }
-            //         console.log($scope.tabla.length);
+        $scope.reporteListo = async(reporte) => {
+            await $http.post('/reportes/getkey', reporte)
+                .then(function(respone) {
+                    console.log(respone);
+                    $scope.tabla = [];
+                    $scope.llamarReportes();
+                }, function(respone) {
+                    alert(respone.err);
+                });
 
-            //     }
-
-            //console.log('Esta es la tabla completa', $scope.tabla);
         }
 
     });

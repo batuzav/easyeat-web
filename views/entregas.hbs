@@ -26,7 +26,7 @@
                     <th>Menú</th>  
                 </tr>
                 <tr ng-repeat="entrega in entregas track by $index">
-                     <td>
+                    <td>
                         <label ng-hide="\{{ entrega.entrega }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="entregaLista(entrega);$event.stopPropagation();"> PENDIENTE</label>
                         <label ng-show="\{{ entrega.entrega }}">✔️ ¡LISTO!</label>
                     </td>

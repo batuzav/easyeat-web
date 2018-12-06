@@ -1,7 +1,7 @@
 var angular;
 angular.module("app", [])
     .controller("controlador", function($scope, $http) {
-
+        document.getElementById('usuarios').style = 'background-color: #B1D236; color:white'
         $scope.usuarios = [];
         $scope.hola = "hola soy batuza";
         $scope.hh = [];
@@ -12,6 +12,7 @@ angular.module("app", [])
 
 
         function cargarUsarios() {
+            alert('USUARIOS VARGANDO, PODR[IA TARDAR UNOS MINUTOS');
             $http.post('/usuarios/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
@@ -29,6 +30,8 @@ angular.module("app", [])
             await $http.post('/usuartios/getUsuarios', info)
                 .then(function(respone) {
                     $scope.usuarios = respone['data'];
+                    $scope.usuarioActivo = $scope.usuarios.usuarioActivo;
+                    $scope.usuarioInactivo = $scope.usuarios.usuarioInactivo;
                     $scope.usuarios = $scope.usuarios.usuarioActivo;
                     console.log($scope.usuarios);
                     alert('Usuarios Listos');
@@ -36,5 +39,13 @@ angular.module("app", [])
                 }, function(respone) {
                     alert(respone);
                 });
+        }
+
+        $scope.MostrarUsuariosAc = () => {
+            $scope.usuarios = $scope.usuarioActivo;
+        }
+
+        $scope.MostrarUsuariosIn = () => {
+            $scope.usuarios = $scope.usuarioInactivo;
         }
     });

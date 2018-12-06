@@ -1,9 +1,11 @@
 //constantes para las funciones de express
-const express = require('express')
+const express = require('express');
 const app = express();
 const { db } = require("../config/firebase");
 const _ = require('underscore');
-let array = [];
+
+
+
 app.post('/usuarios/getKeys', async(req, res) => {
     let now = new Date('2018-12-05');
     let now2 = new Date();
@@ -71,7 +73,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
 
                             usuarioActivo.push({
                                 nombre: infoUsuario.val().nombre,
-                                fechaNaci: infoUsuario.val().fechanaci,
+                                fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
                                 imc: infoPlanAlimenticio.val().imc,
                                 peso: infoPlanAlimenticio.val().peso,
                                 dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
@@ -79,6 +81,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                                 plan: pedido[pedido.length - 1].plan,
                                 metodoPago: pedido[pedido.length - 1].metodoPago,
                                 total: pedido[pedido.length - 1].total,
+                                estatura: infoPlanAlimenticio.val().estatura
 
                             });
                         }
@@ -90,7 +93,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                 if (infoPlanAlimenticio.val()) {
                     usuarioInactivo.push({
                         nombre: infoUsuario.val().nombre,
-                        fechaNaci: infoUsuario.val().fechanaci,
+                        fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
                         imc: infoPlanAlimenticio.val().imc,
                         peso: infoPlanAlimenticio.val().peso,
                         dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
@@ -99,7 +102,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                 } else {
                     usuarioInactivo.push({
                         nombre: infoUsuario.val().nombre,
-                        fechaNaci: infoUsuario.val().fechanaci,
+                        fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
                     })
                 }
             }
@@ -108,9 +111,6 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
         }
 
     }
-
-
-
     res.json({
         ok: true,
         usuarioInactivo,

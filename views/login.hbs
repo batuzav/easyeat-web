@@ -1,33 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='app'>
 
 {{> head }}
 
-<body>
+<style>
+    html{
+        width: 100%;
+        height: 100%
+    }
+    body{
+        min-height: 100%
 
-    <div class="col-md-12 col-xs-12">
+    }
+</style>
+<body style="padding: 0vh;" ng-controller='controlador'>
 
-    
-    
-       <div class="col-md-6 col-xs-6" class="background-color:white; height:99vh">
 
-       </div>
+       <div class="col-md-12" style="height:100%; ">
 
-       <div class="col-md-6 col-md-offset-6 col-xs-6 col-xs-offset-6" style="background-color: #00C7A9; height:99vh">
+           
+        <div class="col-md-6" style="height: 100%; position: relative"> 
+           
+        <div style="position: absolute; top: 45%; left: 40%; height: 30%; width: 70%; margin: -15% 0 0 -25%;">       
+            <div class="col-md-8 col-xs-12 form-group">
+                <label>Usuario</label>
+                <input type="texet"  class="form-control" required ng-model="frmData.user">
+            </div>
+            <div class="col-md-8 col-xs-12 form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control"  required ng-model="frmData.pass">
+            
+            </div>
+            <div class="col-md-8 col-xs-12 form-group">
+   <button  class="btn btn-default" ng-click="iniciar();$event.stopPropagation();">Register</button> 
+   </div>
+            
+            
+           </div>
+           
+        </div>
+        
+
+       <div class="col-md-6  col-xs-12" style="background-color: #00C7A9; height:99vh;background-image:url(/assets/img/login-hippo.png);background-repeat:no-repeat;background-size:100% 100%">
            <center>
                <div style="width: 100%;">
-                   <img src="/assets/img/login-hippo.png" alt="" class="logohippo">
                    
                </div>
                
 
            </center>
 
-       </div>
-    
+        </div>
     </div>
+    
 
     
 </body>
 
 </html>
+
+<script src="/assets/js/Controllers/Login/LoginController.js"> </script>

@@ -11,8 +11,10 @@
     <br> 
     
     <div class="col-md-10 col-md-offset-1   col-xs-offset-3  col-xs-8">
-        <br><br><br><br>
+        <br><br><br>
         <div class="col-md-2 col-md-offset-1 form-group">
+            <img src="/assets/img/desayuno-menu.png" alt="" class="img imagenfechaD col-md-opposite-1" >
+            <br>
             <select ng-model="frmData.desayuno1" ng-options="desayuno as desayuno.nombre for desayuno in desayunos track by desayuno.id" class="form-control" >
                 <option value="">--Elige el desayuno principal--</option>
             </select>
@@ -26,6 +28,8 @@
             </select>
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
+            <img src="/assets/img/comida-menu.png" alt="" class="imagenfechaCo img" >
+            <br><br>
             <select ng-model="frmData.comida1" ng-options="comida as comida.nombre for comida in comidas track by comida.id"  class="form-control" >
                 <option value="">--Elige el comida principal--</option>
             </select>
@@ -39,6 +43,8 @@
             </select>
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
+             <img src="/assets/img/cena-menu.png" alt="" class="img imagenfechaCe col-md-opposite-1" >
+            <br><br>
             <select ng-model="frmData.cena1" ng-options="cena as cena.nombre for cena in cenas track by cena.id"  class="form-control" >
                 <option value="">--Elige el cena principal--</option>
             </select>
@@ -53,7 +59,8 @@
             
         </div>
         <div class="col-md-2 col-md-offset-1 form-group">
-           
+           <img src="/assets/img/colacion-menu.png" alt="" class="img imagenfechaCol col-md-opposite-1" >
+           <br><br>
             <select ng-model="frmData.colacion1" ng-options="colacion as colacion.nombre for colacion in colaciones track by colacion.id"  class="form-control">
                 <option value="">--Elige el colacion mañana--</option>
             </select>

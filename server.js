@@ -4,11 +4,17 @@ require('./config/config');
 //constante para firebase
 require('./config/firebase');
 
+//session
+var session = require('express-session');
+
+
 //requerimiento de conecta
 const conekta = require('conekta');
 //paypal 
 const engines = require("consolidate");
 const paypal = require("paypal-rest-sdk");
+const fileUpload = require('express-fileupload');
+
 
 /*\\Proximo cambio //*/
 const { db } = require('./config/firebase');
@@ -36,13 +42,13 @@ app.use((req, res, next) => {
 
     next();
 });
-
+app.use(fileUpload());
 const cors = require('cors')
 app.use(cors())
 
 //combertir el bogy en json 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 //compartir la carpeta publica 
 app.use(express.static(__dirname + '/public'));
@@ -93,6 +99,11 @@ app.use(require('./routes/index'));
 app.get("/pagopaypal", (req, res) => {
     res.render("indexpaypal");
 });
+
+
+//sesion//
+
+
 
 app.get("/paypal", async(req, res) => {
     console.log('AQui debe ir la id:', req.query.id);

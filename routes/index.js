@@ -3,12 +3,16 @@ const express = require('express');
 const app = express();
 
 
+app.use(require('./usuariosApp'));
+
 //Rutas del restServer
 app.use(require('./alimentos'));
 //zc 
 //Rutas del restServer para usuarios de la app
+
+
 //
-app.use(require('./usuariosApp'));
+
 
 
 /*------ impirtacion de las rutas de los renders --------*/

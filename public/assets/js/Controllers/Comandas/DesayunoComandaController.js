@@ -1,6 +1,8 @@
 var angular;
 angular.module("app", [])
     .controller("controlador", function($scope, $http) {
+        document.getElementById('comandas').style = 'background-color: #B1D236; color:white'
+        document.getElementById('desayunos').style = 'border-bottom-width: 0.5vh; border-bottom-color: white;'
         $scope.frmData = {};
         $scope.keys = [];
         $scope.hola = "hola soy batuza";

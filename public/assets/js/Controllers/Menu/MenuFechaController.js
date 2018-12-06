@@ -7,7 +7,7 @@ angular.module("app", [])
         $scope.desayunos = {};
         $scope.comidas = {};
 
-
+        document.getElementById('menu').style = 'background-color: #B1D236; color:white'
         cargarCenas();
         cargarColaciones();
         cargarDesayunos();
@@ -67,7 +67,7 @@ angular.module("app", [])
                     alert('¡HECHO!');
                 }, function(respone) {
                     console.log(respone);
-                    alert(respone.data.err);
+                    alert(respone.data.mensaje);
                 });
 
 

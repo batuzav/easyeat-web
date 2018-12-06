@@ -8,37 +8,40 @@
         
         <div class=" col-md-6 col-xs-12 conHorizontal1 ">
            <form action="">
-                    <br>
-                    <div class="col-md-5 col-md-offset-1 col-xs-12 formcomi centroformandbutom" >
+                     <div class="col-md-5 col-md-offset-1 col-xs-12 formcomi centroformandbutom" >
                         <div class="form-group">
-                            <label for="titulo" style="color: black"><b> *Título</b></label>
-                            <br>
-                            <input type="text" placeholder="Max 17 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="17" ng-model="frmData.nombre" required>
+                        <label for="titulo" style="color: black"><b> *Título</b></label>
+                        <br>
+                        <input type="text" placeholder="Max 17 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="17" ng-model="frmData.nombre" pattern="[A-Za-z ]+" required>
+                            
+
                         </div>
                         <br>
                         <div class="form-group">
                             <label for="descripcion" style="color: black"><b>*Descripción</b></label>
                             <br>
-                            <input type="text" placeholder="Max 60 caracteres" name="descripcion" id="descripcion" class="inputalim form-control" maxlength="60" ng-model="frmData.descripcion" required>
+                            <input type="text" placeholder="Max 60 caracteres" name="descripcion" id="descripcion" class="inputalim form-control" maxlength="60" ng-model="frmData.descripcion" pattern="[A-Za-z0-9 ]+" required >
                         </div>
                         <br>
                         <div class="form-group col-md-6 col-xs-12">
                             <label for="calorias" style="color: black"><b>*Calorias por porción</b></label>
                             <br>
-                            <input type="text" placeholder="Max 17 caracteres" name="calorias" id="calorias" class="inputalim form-control" maxlength="17" ng-model="frmData.calorias" required>
+                            <input type="text" placeholder="Max 17 caracteres" name="calorias" id="calorias" class="inputalim form-control" maxlength="7" ng-model="frmData.calorias" pattern="[0-9]+" required  >
                         </div>
                         <div class="form-group col-md-6  col-xs-12" style="float:left">
                             <label for="medidas" style="color: black"><b>*Unidades de medida</b></label>
                             <br>
-                            <input type="text" placeholder="Max 17 caracteres" name="medidas" id="medidas" class="inputalim form-control" maxlength="17" ng-model="frmData.medidas" required>
+                            <input type="text" placeholder="Max 17 caracteres" name="medidas" id="medidas" class="inputalim form-control" maxlength="17" ng-model="frmData.medidas" pattern="[A-Za-z ]+" required >
                         </div>
-                    </div> 
+                    </div>
             </form>
         </div>
         <br>
         <div class="col-md-6 col-xs-12 imagenform centroformandbutom">                                            
             <div>
-                <img src="/assets/img/imagen-predeterminado-colacion-menu.png" alt="" srcset="" class="imagencomida">
+                <img id="img1" ng-show="imagen" class="imagencomida" ng-click="cancelarImagen();$event.stopPropagation();"><br/>
+                <input id="inputFile1" type="file" ng-show="imagen" name="inputFile1" ng-model="frmData.inputFile1">
+                <img src="/assets/img/imagen-predeterminado-colacion-menu.png" alt="" srcset="" class="imagencomida" ng-show="!imagen" ng-click="cambiarImagen()">
             </div>
             <br>
             <div>

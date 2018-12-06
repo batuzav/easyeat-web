@@ -2,27 +2,32 @@ var angular;
 angular.module("app", [])
     .controller("controlador", function($scope, $http) {
 
+
         $scope.desayunos = [];
         $scope.hola = "hola soy batuza";
         $scope.hh = [];
         $scope.frmData = {};
         $scope.modify = false;
-        $scope.imagen - false;
+        $scope.imagen = false;
+        $scope.img = {};
+        $scope.urlImg = {};
 
         cargarDesayunos();
-
+        document.getElementById('menu').style = 'background-color: #B1D236; color:white'
 
         function init() {
-            var inputFile = document.getElementById('inputFile1');
-            inputFile.addEventListener('change', mostrarImagen, false);
+            $scope.urlImg = document.getElementById('inputFile1');
+
+            $scope.urlImg.addEventListener('change', mostrarImagen, false);
         }
 
         function mostrarImagen(event) {
             var file = event.target.files[0];
             var reader = new FileReader();
             reader.onload = function(event) {
-                var img = document.getElementById('img1');
-                img.src = event.target.result;
+                $scope.img = document.getElementById('img1');
+                $scope.img.src = event.target.result;
+                console.log('Este es el valor de la variable de imagen: ', $scope.img);
             }
             reader.readAsDataURL(file);
         }
@@ -40,17 +45,29 @@ angular.module("app", [])
         }
 
         $scope.agregarDesayuno = async function() {
-            console.log($scope.frmData);
-            await $http.post('/comidas/insertdesayunos', $scope.frmData, {
-                    //  headers: { "Content-Type: application/json", "Authorization: Bearer myaccesstokenishere"}
-                })
+            console.log('Formulario antes del set: ', $scope.frmData);
+            if ($scope.img.src) {
+
+                $scope.frmData = Object.assign({}, $scope.frmData, {
+                    imagen: $scope.img.src,
+                });
+
+                console.log($scope.img.src);
+            }
+
+            await $http.post('/comidas/insertdesayunos', $scope.frmData, )
                 .then(function(respone) {
                     $scope.frmData = {};
+                    alert('Desayuno agregado');
+                    $scope.imagen = false;
+                    console.log('Desayuno agregado');
+                    document.getElementById('img1').src = null;
 
-                    console.log(respone);
+                    console.log(document.getElementById('img1'));
                     cargarDesayunos();
                 }, function(respone) {
-                    alert(respone);
+                    console.log('respuesta mala', respone)
+                    alert(respone.data.mensaje);
                 });
 
         };
@@ -60,35 +77,60 @@ angular.module("app", [])
         }
 
         $scope.modifyDesayuno = async function() {
+            if ($scope.img.src) {
+
+                $scope.frmData = Object.assign({}, $scope.frmData, {
+                    imagen: $scope.img.src,
+                });
+
+                console.log($scope.img.src);
+            }
 
             console.log($scope.frmData);
             $http.put('/comidas/modifydesayunos', $scope.frmData)
                 .then(function(respone) {
                     $scope.frmData = {};
                     $scope.modify = false;
+                    $scope.imagen = false;
+                    console.log('Desayuno agregado');
+                    document.getElementById('img1').src = null;
+
+                    console.log(document.getElementById('img1'));
                     console.log(respone);
                     cargarDesayunos();
+                    alert("Desayuno modificado perfectamente");
                 }, function(respone) {
-                    alert('ERROR', respone);
+                    alert(respone.data.mensaje);
                 });
 
         }
 
         $scope.selectObject = async function(select) {
             console.log('Entro a seleccion');
+            console.log(select);
             $scope.frmData = {
                 id: select.id,
                 nombre: select.nombre,
                 descripcion: select.descripcion,
                 calorias: select.calorias,
                 medidas: select.medidas,
+                imagen: select.imagen
 
             };
+            $scope.imagen = true;
+            document.getElementById('img1').src = select.imagen;
             $scope.modify = true;
         }
 
         $scope.cancelarModify = async function() {
             $scope.frmData = {};
             $scope.modify = false;
+            document.getElementById('img1').src = null;
+            $scope.imagen = false;
+        }
+
+        $scope.cancelarImagen = () => {
+            document.getElementById('img1').src = null;
+            $scope.imagen = false;
         }
     });

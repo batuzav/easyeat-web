@@ -349,3 +349,19 @@
     }
     
     .comandasT {}
+    
+    .imagenfechaD {
+        width: 25vh
+    }
+    
+    .imagenfechaCe {
+        width: 20vh
+    }
+    
+    .imagenfechaCo {
+        width: 22vh;
+    }
+    
+    .imagenfechaCol {
+        width: 19vh;
+    }
