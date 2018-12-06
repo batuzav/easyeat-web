@@ -248,6 +248,51 @@ io.on('connection', function(socket) { //habla al metodo connection
 
         console.log('lo que trae el socket: ', msg);
 
+        //envio de correo de contactanos
+
+        //envio de correo en factura
+        if (msg.rfc) {
+            let users = [{
+                name: "EASYEAT  CONTCTANOS",
+                email: "batuza.belmont@gmail.com",
+            }];
+
+            function sendEmail(obj) {
+                return transporter.sendMail(obj);
+            }
+
+            function loadTemplate(templateName, contexts) {
+                let template = new EmailTemplate(path.join(__dirname, 'templates', templateName));
+                return Promise.all(contexts.map((context) => {
+                    return new Promise((resolve, reject) => {
+                        template.render(context, (err, result) => {
+                            if (err) reject(err);
+                            else resolve({
+                                email: result,
+                                context,
+                            });
+                        });
+                    });
+                }));
+            }
+
+            loadTemplate('welcome', users).then((results) => {
+                console.log(results)
+                return Promise.all(results.map((result) => {
+                    sendEmail({
+                        to: result.context.email,
+                        from: 'EASYEAT CONTACTANOS ',
+                        subject: result.email.subject,
+                        html: "<h1> FACURACION </h1> <br> <h2>" + msg.nombre + "</h2>",
+                        text: result.email.text,
+                    });
+                }));
+            }).then(() => {
+                console.log('Yay!');
+
+            });
+        }
+
         /* Tarjeta de credito */
         if (msg.metodoPago === '  Crédito - Debito') {
             console.log('Entro al pago de tarjeta');
