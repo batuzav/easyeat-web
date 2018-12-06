@@ -84,6 +84,12 @@ app.post('/loging/listo', (req, res) => {
     res.end('done');
 });
 
+app.post('/login/logout', (req, res) => {
+    req.session.userRegistrado = false;
+    req.session.tipoUser = 0;
+    res.end('done');
+});
+
 
 
 //RENDER PARA EL LOGIN

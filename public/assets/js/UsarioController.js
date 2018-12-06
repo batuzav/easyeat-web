@@ -48,4 +48,14 @@ angular.module("app", [])
         $scope.MostrarUsuariosIn = () => {
             $scope.usuarios = $scope.usuarioInactivo;
         }
+
+        $scope.logout = () => {
+            $http.post('/login/logout')
+                .then(function(respone) {
+                    location.reload();
+                }, function(respone) {
+                    alert('No se pudo cerrar sesion :(');
+                });
+        }
+
     });

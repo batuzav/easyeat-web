@@ -1,6 +1,6 @@
 var angular;
 angular.module("app", [])
-    .controller("controlador", function($scope, $http) {
+    .controller("controladorLogin", function($scope, $http) {
         $scope.frmData = {};
         console.log('Entro viejo');
 
@@ -26,6 +26,16 @@ angular.module("app", [])
                     location.href = '/usuarios';
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                });
+        }
+
+        $scope.logout = () => {
+            console.log('Entro a logout')
+            $http.post('/login/logout')
+                .then(function(respone) {
+                    location.reload();
+                }, function(respone) {
+                    alert('No se pudo cerrar sesion :(');
                 });
         }
 

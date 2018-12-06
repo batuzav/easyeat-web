@@ -246,6 +246,7 @@ io.on('connection', function(socket) { //habla al metodo connection
         let mensaje = null;
         let msg = JSON.parse(data);
 
+        console.log('lo que trae el socket: ', msg);
 
         /* Tarjeta de credito */
         if (msg.metodoPago === '  Crédito - Debito') {

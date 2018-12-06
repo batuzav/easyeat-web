@@ -13,30 +13,33 @@
 
     }
 </style>
-<body style="padding: 0vh;" ng-controller='controlador'>
+<body style="padding: 0vh;" ng-controller='controladorLogin'>
 
 
-       <div class="col-md-12" style="height:100%; ">
+    <div class="col-md-12" style="height:100%; ">
 
            
         <div class="col-md-6" style="height: 100%; position: relative"> 
+            <div class="col-md-8 col-md-offset-2" style="margin-top:15vh" > 
+                <img src="/assets/img/Logo.png" style="width:30vh; height: 10vh" class="img" alt="">    
+            </div>
            
-        <div style="position: absolute; top: 45%; left: 40%; height: 30%; width: 70%; margin: -15% 0 0 -25%;">       
-            <div class="col-md-8 col-xs-12 form-group">
-                <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Usuario</label>
-                <input type="texet"  class="form-control input" placeholder="Tu usuario" required ng-model="frmData.user">
+            <div style="position: absolute; top: 50%; left: 40%; height: 30%; width: 70%; margin: -15% 0 0 -25%;">   
+                <div class="col-md-8 col-xs-12 form-group">
+                    <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Usuario</label>
+                    <input type="texet"  class="form-control input" placeholder="Tu usuario" required ng-model="frmData.user">
+                </div>
+                <div class="col-md-8 col-xs-12 form-group">
+                    <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Contraseña</label>
+                    <input type="password" class="form-control input" placeholder="Tu contraseña"  required ng-model="frmData.pass">
+                
+                </div>
+                <div class="col-md-8 col-xs-12 form-group">
+                     <button  class="btn loginbuttom" ng-click="iniciar();$event.stopPropagation();"> <text style="margin-bottom: -1vh;">Log-In</text> </button>
+                </div>
+                
+                
             </div>
-            <div class="col-md-8 col-xs-12 form-group">
-                <label style="color:#00C7A9;"><text style="color: #B1D236;">•</text> Contraseña</label>
-                <input type="password" class="form-control input" placeholder="Tu contraseña"  required ng-model="frmData.pass">
-            
-            </div>
-            <div class="col-md-8 col-xs-12 form-group">
-   <button  class="btn loginbuttom" ng-click="iniciar();$event.stopPropagation();">Register</button> 
-   </div>
-            
-            
-           </div>
            
         </div>
         
