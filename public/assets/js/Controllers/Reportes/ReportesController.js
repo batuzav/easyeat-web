@@ -1,6 +1,6 @@
 var angular;
-angular.module("app", [])
-    .controller("controlador", function($scope, $http) {
+angular.module("app", ['ngCookies'])
+    .controller("controlador", function($scope, $http, $cookies) {
         document.getElementById('reportes').style = 'background-color: #18ab29; color:white'
         $scope.reportes = {};
         $scope.tabla = [];
@@ -15,6 +15,8 @@ angular.module("app", [])
         $scope.dataNollegoComida = {};
         $scope.dataNollegoDesayuno = {};
         $scope.dataNollegoCena = {};
+        $scope.imagenTipo = {};
+        $scope.nombreTipo = {};
         //contadores de reportes 
 
 
@@ -23,6 +25,26 @@ angular.module("app", [])
         $scope.InfoLlegoTarde = [];
         $scope.InfoLlegoMal = [];
         $scope.InfoNoLlego = [];
+
+        cargarTipo();
+
+        function cargarTipo() {
+            var tipoC = $cookies.get('tipo');
+
+            if (tipoC == 1) {
+                $scope.imagenTipo = "/assets/img/usuario-adm.png";
+                $scope.nombreTipo = "Administrador";
+            }
+            if (tipoC == 2) {
+                $scope.imagenTipo = "/assets/img/usuario-chef.png";
+                $scope.nombreTipo = "Chef";
+            }
+            if (tipoC == 3) {
+                $scope.imagenTipo = "/assets/img/usuario-repartidor.png";
+                $scope.nombreTipo = "Repartidor";
+            }
+
+        }
 
         $scope.llamarReportes = async function() {
             $scope.tabla.length = 0;
@@ -50,6 +72,25 @@ angular.module("app", [])
                     alert(respone);
                 });
         }
+
+        $scope.Nollego = () => {
+            $scope.tabla = [];
+            $scope.tabla.length = 0;
+            $scope.tabla = $scope.InfoNoLlego.filter(Boolean);
+
+        };
+
+        $scope.Llegomal = () => {
+            $scope.tabla = [];
+            $scope.tabla.length = 0;
+            $scope.tabla = $scope.InfoLlegoMal.filter(Boolean);
+        };
+
+        $scope.Llegotarde = () => {
+            $scope.tabla = [];
+            $scope.tabla.length = 0;
+            $scope.tabla = $scope.InfoLlegoTarde.filter(Boolean);
+        };
 
         async function cargarReportes(reportes) {
             console.log("tabla iniciando el cargar", $scope.tabla);
@@ -85,5 +126,16 @@ angular.module("app", [])
                 });
 
         }
+        $scope.logout = () => {
+            console.log('Entro a logout')
+            $http.post('/login/logout')
+                .then(function(respone) {
+                    $cookies.remove("tipo");
+                    location.reload();
+                }, function(respone) {
+                    alert('No se pudo cerrar sesion :(');
+                });
+        }
+
 
     });

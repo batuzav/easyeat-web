@@ -1,21 +1,43 @@
 var angular;
-angular.module("app", [])
-    .controller("controlador", function($scope, $http) {
-
+angular.module("app", ['ngCookies'])
+    .controller("controlador", function($scope, $http, $cookies) {
+        $scope.imagenDefault = '/assets/img/imagen-predeterminado-comida-menu.png';
         $scope.comidas = [];
         $scope.frmData = {};
         $scope.modify = false;
         $scope.imagen = false;
         $scope.img = {};
         $scope.urlImg = {};
+        $scope.imagenTipo = {};
+        $scope.nombreTipo = {};
 
         document.getElementById('menu').style = 'background-color: #B1D236; color:white'
+        document.getElementById('comidas').style = 'border-bottom: 5px solid white;'
+        cargarTipo();
         cargarComidas();
 
         function init() {
             $scope.urlImg = document.getElementById('inputFile1');
 
             $scope.urlImg.addEventListener('change', mostrarImagen, false);
+        }
+
+        function cargarTipo() {
+            var tipoC = $cookies.get('tipo');
+
+            if (tipoC == 1) {
+                $scope.imagenTipo = "/assets/img/usuario-adm.png";
+                $scope.nombreTipo = "Administrador";
+            }
+            if (tipoC == 2) {
+                $scope.imagenTipo = "/assets/img/usuario-chef.png";
+                $scope.nombreTipo = "Chef";
+            }
+            if (tipoC == 3) {
+                $scope.imagenTipo = "/assets/img/usuario-repartidor.png";
+                $scope.nombreTipo = "Repartidor";
+            }
+
         }
 
         function mostrarImagen(event) {
@@ -128,4 +150,15 @@ angular.module("app", [])
             document.getElementById('img1').src = null;
             $scope.imagen = false;
         }
+        $scope.logout = () => {
+            console.log('Entro a logout')
+            $http.post('/login/logout')
+                .then(function(respone) {
+                    $cookies.remove("tipo");
+                    location.reload();
+                }, function(respone) {
+                    alert('No se pudo cerrar sesion :(');
+                });
+        }
+
     });

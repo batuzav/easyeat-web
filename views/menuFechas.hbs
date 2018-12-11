@@ -2,9 +2,47 @@
 <html lang="en" ng-app='app'>
     {{> head}}
     {{> navbar}}
-    {{> navmenu}}
-<body ng-controller='controlador'>
-    <br>
+  <body ng-controller='controlador'>
+   <nav class="navbar navbar-default nav-colorverde col-md-offset-1 col-xs-offset-3" role="navigation">
+  <!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Desplegar navegación</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+  </div>
+ 
+  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+       otro elemento que se pueda ocultar al minimizar la barra -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+        <li id="desayunos"><a href="/menu">Desayunos</a></li>
+        <li id="comidas"><a href="/menuComidas">Comidas</a></li>
+        <li id="cenas"><a href="/menuCenas">Cenas</a></li>
+        <li id="colaciones"><a href="/menuColaciones">Colación</a></li>
+        <li id="fechas"><a href="/menuFechas">Fechas</a></li>
+    </ul>
+ 
+    <ul class="nav navbar-nav navbar-right" style="float:right"> 
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="\{{ imagenTipo }}" alt="" class="circular--squareUser"> \{{ nombreTipo }} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a href="" ng-click="logout();$event.stopPropagation();">Cerrar Sesion</a></li>
+          
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<br>
     <div class='col-md-2 col-md-offset-5 col-xs-7 col-xs-offset-3'>
         <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fecha" />
     </div>
@@ -93,7 +131,9 @@
     $('#datetimepicker4').datepicker({
                                      beforeShowDay: $.datepicker.noWeekends,
                                      dateFormat: "yy-mm-dd",
-                                     minDate: '+2d'
+                                     minDate: '+2d',
+                                     dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ],
+                                     monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
                                     });
  
 </script>

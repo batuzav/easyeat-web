@@ -56,20 +56,19 @@
     
     .loginbuttom {
         background-color: #00C7A9;
-        -moz-border-radius: 5vh;
-        -webkit-border-radius: 5vh;
-        border-radius: 5vh;
-        border: 0.35vh solid #18ab29;
-        /*display: inline-block;*/
+        -moz-border-radius: 28px;
+        -webkit-border-radius: 28px;
+        border-radius: 28px;
+        border: 1px solid #18ab29;
+        display: inline-block;
         cursor: pointer;
         color: #ffffff;
         font-family: Trebuchet MS;
-        font-size: 2vh;
-        padding: 2vh 15vh;
+        font-size: 16px;
+        padding: 7px 110px;
         text-decoration: none;
-        text-shadow: 0vh 0.25vh 0vh #2f6627;
-        margin-top: 5vh;
-        height: 5vh;
+        text-shadow: 0px 1px 0px #2f6627;
+        margin-top: 40px;
     }
     
     .loginbuttom:hover {
@@ -254,7 +253,7 @@
     .divUsuario {
         height: 90%;
         margin-top: -2vh;
-        padding-top: 0vh
+        padding-top: 0vh;
     }
     
     .headtable {
@@ -322,6 +321,8 @@
         padding-top: 3vh;
     }
     
+    .divinfocomida {}
+    
     .divinfocomida2 {
         padding: 0;
         margin: 0;
@@ -349,7 +350,17 @@
         padding-top: 3vh;
     }
     
-    .comandasT {}
+    .comandaCompleto {
+        height: 5.5vh;
+    }
+    
+    .divinfocomida21 {
+        padding: 0;
+        margin: 0;
+        height: 11vh;
+        font-weight: 2vh;
+        padding-top: 3vh;
+    }
     
     .imagenfechaD {
         width: 25vh
@@ -365,4 +376,26 @@
     
     .imagenfechaCol {
         width: 19vh;
+    }
+    
+    .circular--square {
+        width: 7vh;
+        height: 7vh;
+        border-radius: 50%;
+        margin-right: 2vh;
+    }
+    
+    .tabla-menu {
+        font-size: 2vh
+    }
+    
+    .circular--squareUser {
+        width: 4vh;
+        height: 4vh;
+        border-radius: 50%;
+        margin-right: 2vh;
+    }
+    
+    .tablaMenuCon {
+        margin-top: 2vh;
     }

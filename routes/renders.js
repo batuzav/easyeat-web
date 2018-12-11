@@ -42,7 +42,7 @@ const permisosEntregas = (req, res, next) => {
     }
     /*=============RENDERS=============*/
 
-/*------ Ruras de los renders --------*/
+/*------ Rutas de los renders --------*/
 app.post('/login/loging', (req, res) => {
     data = req.body;
     let cont = false;
@@ -64,7 +64,7 @@ app.post('/login/loging', (req, res) => {
             }
         });
 
-        if (!cont) { res.json({ ok: false, mensaje: "Usuaio no encontrado" }); }
+        if (!cont) { res.json({ ok: false, mensaje: "Usuario no encontrado" }); }
 
 
 

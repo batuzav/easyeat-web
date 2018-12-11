@@ -1,8 +1,8 @@
 var angular;
-angular.module("app", [])
-    .controller("controlador", function($scope, $http) {
+angular.module("app", ['ngCookies'])
+    .controller("controlador", function($scope, $http, $cookies) {
         document.getElementById('comandas').style = 'background-color: #B1D236; color:white'
-        document.getElementById('cenas').style = 'border-bottom-width: 0.5vh; border-bottom-color: white;'
+        document.getElementById('cenas').style = 'border-bottom: 5px solid white;'
 
         $scope.frmData = {};
         $scope.keys = [];
@@ -17,6 +17,29 @@ angular.module("app", [])
         $scope.porcionComida1 = 0;
         $scope.porcionComida2 = 0;
         $scope.porcionComida3 = 0;
+
+        $scope.imagenTipo = {};
+        $scope.nombreTipo = {};
+
+        cargarTipo();
+
+        function cargarTipo() {
+            var tipoC = $cookies.get('tipo');
+
+            if (tipoC == 1) {
+                $scope.imagenTipo = "/assets/img/usuario-adm.png";
+                $scope.nombreTipo = "Administrador";
+            }
+            if (tipoC == 2) {
+                $scope.imagenTipo = "/assets/img/usuario-chef.png";
+                $scope.nombreTipo = "Chef";
+            }
+            if (tipoC == 3) {
+                $scope.imagenTipo = "/assets/img/usuario-repartidor.png";
+                $scope.nombreTipo = "Repartidor";
+            }
+
+        }
 
         $scope.comandaLista = async function(comanda) {
             console.log('hola');
@@ -76,6 +99,18 @@ angular.module("app", [])
                     alert(respone);
                 });
         }
+
+        $scope.logout = () => {
+            console.log('Entro a logout')
+            $http.post('/login/logout')
+                .then(function(respone) {
+                    $cookies.remove("tipo");
+                    location.reload();
+                }, function(respone) {
+                    alert('No se pudo cerrar sesion :(');
+                });
+        }
+
 
 
     });

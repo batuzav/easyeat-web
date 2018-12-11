@@ -1,6 +1,6 @@
 var angular;
-angular.module("app", [])
-    .controller("controladorLogin", function($scope, $http) {
+angular.module("app", ['ngCookies'])
+    .controller("controlador", function($scope, $http, $cookies) {
         $scope.frmData = {};
         console.log('Entro viejo');
 
@@ -23,19 +23,10 @@ angular.module("app", [])
             $http.post('/loging/listo', tipo)
                 .then(function(respone) {
                     console.log(respone);
+                    $cookies.put('tipo', tipo.tipo);
                     location.href = '/usuarios';
                 }, function(respone) {
                     alert(respone.data.mensaje);
-                });
-        }
-
-        $scope.logout = () => {
-            console.log('Entro a logout')
-            $http.post('/login/logout')
-                .then(function(respone) {
-                    location.reload();
-                }, function(respone) {
-                    alert('No se pudo cerrar sesion :(');
                 });
         }
 

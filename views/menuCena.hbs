@@ -2,9 +2,48 @@
 <html lang="en" ng-app='app'>
     {{> head}}
     {{> navbar}}
-    {{> navmenu}}
-<body>
-<div class="containerComanda col-md-11 col-md-offset-1 col-xs-offset-3  col-xs-9 " ng-controller='controlador'>
+    
+<body ng-controller='controlador'>
+    <nav class="navbar navbar-default nav-colorverde col-md-offset-1 col-xs-offset-3" role="navigation">
+  <!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Desplegar navegación</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+  </div>
+ 
+  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+       otro elemento que se pueda ocultar al minimizar la barra -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+        <li id="desayunos"><a href="/menu">Desayunos</a></li>
+        <li id="comidas"><a href="/menuComidas">Comidas</a></li>
+        <li id="cenas"><a href="/menuCenas">Cenas</a></li>
+        <li id="colaciones"><a href="/menuColaciones">Colación</a></li>
+        <li id="fechas"><a href="/menuFechas">Fechas</a></li>
+    </ul>
+ 
+    <ul class="nav navbar-nav navbar-right" style="float:right"> 
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="\{{ imagenTipo }}" alt="" class="circular--squareUser"> \{{ nombreTipo }} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a href="" ng-click="logout();$event.stopPropagation();">Cerrar Sesion</a></li>
+          
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+    <div class="containerComanda col-md-11 col-md-offset-1 col-xs-offset-3  col-xs-9">
         
         <div class=" col-md-6 col-xs-12 conHorizontal1 ">
             
@@ -16,7 +55,7 @@
                         <div class="form-group">
                         <label for="titulo" style="color: black"><b> *Título</b></label>
                         <br>
-                        <input type="text" placeholder="Max 17 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="17" ng-model="frmData.nombre" pattern="[A-Za-z ]+" required>
+                        <input type="text" placeholder="Max 30 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="30" ng-model="frmData.nombre" pattern="[A-Za-z ]+" required>
                         </div>
 
                         <br>
@@ -59,7 +98,7 @@
         
         <div class="col-md-12 col-xs-12 conHorizontal2">
             <div class="table-responsive">
-                <table class="table table-condensed table-hover">
+                 <table class="table table-condensed table-hover tabla-menu">
                     <tr>
                         <th>Titulo</th>
                         <th>Descripcion</th>
@@ -68,11 +107,11 @@
                         
                     </tr>
                     <tr ng-repeat="cena in cenas track by $index">
-                       <td>\{{ cena.nombre }}</td> 
+                       <td><img src="\{{ cena.imagen || imagenDefault }}" alt="" class="circular--square">    \{{ cena.nombre }}</td> 
                        <td>\{{ cena.descripcion }}</td>
                        <td>\{{ cena.calorias }}</td>
                        <td>\{{ cena.medidas }}</td>
-                       <td class="editformComanda"><a href="#" ng-click="selectObject(cena);$event.stopPropagation();" > edit </a></td>
+                       <td class="editformComanda"><a href="#" ng-click="selectObject(cena);$event.stopPropagation();" > editar </a></td>
                        
                     </tr>    
                 </table>
