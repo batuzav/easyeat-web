@@ -25,7 +25,7 @@
         <li id="desayunos"><a href="/comandas">Desayunos</a></li>
         <li id="comidas"><a href="/comandaComidas">Comidas</a></li>
         <li id="cenas"><a href="/comandaCenas">Cenas</a></li>
-        <li id="colacion"><a href="/comandaColaciones">Colación</a></li>
+        <li id="colacion"><a href="/comandaColaciones">Completo</a></li>
     </ul>
  
     <ul class="nav navbar-nav navbar-right" style="float:right"> 
@@ -46,16 +46,16 @@
     <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario">
 
         <div class="col-md-2 col-md-offset-0 fechasreport">
-            <div class="row">
+            <div class="row" >
                 <div class="col-md-12 form-group " >
                     <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fechaReporte" ng-change="llamarComandas();$event.stopPropagation();" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row" >
                 <div class="col-md-12 comandasT " style="background-color:rgb(247, 242, 242); color:#70DEED ">
                     <center>
-                        <div class="divNumR" style="background-color: rgb(247, 242, 242); border: 2px solid #70DEED;">
-                            \{{ completos.length }}
+                        <div class="divNumR2" style="background-color: rgb(247, 242, 242); border: 2px solid #70DEED; margin-top:1vh;">
+                            \{{ comandas.length }}
                         </div>
                         <p style="font-size:2.5vh; text-decoration: underline">Completos</p>
                     </center>    
@@ -63,19 +63,19 @@
                 </div>
             </div>
 
-            <div class="row  ">
+            <div class="row  " style="margin-top: 3vh;"> 
                 <div class="col-md-12  comandaCompleto comandas" style="background-color:#F0D441; color:beige;">
-                    <div class="divNumR" style="background-color:#F0D441; float:left;">
-                        \{{ cComida1 }}
+                    <div class="divNumR2" style="background-color:#F0D441; float:left;">
+                        \{{ cDesayuno1 }}
                     </div>
 
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida1 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomDesayuno1 }}</p>
                     </div>
 
                     <div class="col-md-4  divinfocomida21" style="float:right; background-color:#F0D441;  border-left: 0.5vh solid #E2C73D;">
                         <center>
-                            \{{ porcionComida1.toFixed(2); }} <br>
+                            \{{ porcionDesayuno1.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
@@ -84,17 +84,17 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#F0D441; color:beige;">
-                    <div class="divNumR" style="background-color:#F0D441; float:left;">
-                        \{{ cComida1 }}
+                    <div class="divNumR2" style="background-color:#F0D441; float:left;">
+                        \{{ cDesayuno2 }}
                     </div>
 
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida1 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomDesayuno2 }}</p>
                     </div>
 
                     <div class="col-md-4  divinfocomida21" style="float:right; background-color:#F0D441;  border-left: 0.5vh solid #E2C73D;">
                         <center>
-                            \{{ porcionComida1.toFixed(2); }} <br>
+                            \{{ porcionDesayuno2.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
@@ -103,16 +103,35 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#F0D441; color:beige;">
-                    <div class="divNumR" style="background-color:#F0D441; float:left;">
-                        \{{ cComida1 }}
+                    <div class="divNumR2" style="background-color:#F0D441; float:left;">
+                        \{{ cDesayuno3 }}
                     </div>
 
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida1 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomDesayuno3 }}</p>
                     </div>
 
                     <div class="col-md-4  divinfocomida21" style="float:right; background-color:#F0D441;  border-left: 0.5vh solid #E2C73D;">
                         <center>
+                            \{{ porcionDesayuno3.toFixed(2); }} <br>
+                            Porciones
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row " style="margin-top: 3vh;">
+                <div class="col-md-12 comandaCompleto comandas" style="background-color:#AAF9D2">
+                    <div class="divNumR2" style="background-color:#AAF9D2; float:left;">
+                        \{{ cComida1 }}
+                    </div>
+                    
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomComida1 }}</p>
+                    </div>
+
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#6FD7A5; color:white; border-left: 0.5vh solid #68CA9B;">
+                       <center>
                             \{{ porcionComida1.toFixed(2); }} <br>
                             Porciones
                         </center>
@@ -122,15 +141,15 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#AAF9D2">
-                    <div class="divNumR" style="background-color:#AAF9D2; float:left;">
+                    <div class="divNumR2" style="background-color:#AAF9D2; float:left;">
                         \{{ cComida2 }}
                     </div>
                     
-                    <div class="PComan col-md-4">
+                    <div class="PComan1 col-md-4">
                         <p >\{{ NomComida2 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5; color:white">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#6FD7A5; color:white; border-left: 0.5vh solid #68CA9B;">
                        <center>
                             \{{ porcionComida2.toFixed(2); }} <br>
                             Porciones
@@ -141,36 +160,36 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#AAF9D2">
-                    <div class="divNumR" style="background-color:#AAF9D2; float:left;">
-                        \{{ cComida2 }}
+                    <div class="divNumR2" style="background-color:#AAF9D2; float:left;">
+                        \{{ cComida3 }}
                     </div>
                     
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida2 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomComida3 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5; color:white">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#6FD7A5; color:white; border-left: 0.5vh solid #6BD3FF;">
                        <center>
-                            \{{ porcionComida2.toFixed(2); }} <br>
+                            \{{ porcionComida3.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
                 </div>
             </div>
 
-            <div class="row ">
-                <div class="col-md-12 comandaCompleto comandas" style="background-color:#AAF9D2">
-                    <div class="divNumR" style="background-color:#AAF9D2; float:left;">
-                        \{{ cComida2 }}
+            <div class="row " style="margin-top: 3vh;">
+                <div class="col-md-12 comandaCompleto comandas" style="background-color:#C9C5FF">
+                    <div class="divNumR2" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
+                        \{{ cCena1 }}
                     </div>
                     
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida2 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomCena1 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida" style="float:right; background-color:#6FD7A5; color:white">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#9A94F3; color:white; border-left: 0.5vh solid #8F88F3;">
                        <center>
-                            \{{ porcionComida2.toFixed(2); }} <br>
+                            \{{ porcionCena1.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
@@ -179,17 +198,17 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#C9C5FF">
-                    <div class="divNumR" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
-                        \{{ cComida2 }}
+                    <div class="divNumR2" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
+                        \{{ cCena2 }}
                     </div>
                     
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida2 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomCena2 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida3" style="float:right; background-color:#9A94F3; color:white">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#9A94F3; color:white; border-left: 0.5vh solid #8F88F3;">
                        <center>
-                            \{{ porcionComida2.toFixed(2); }} <br>
+                            \{{ porcionCena2.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
@@ -198,36 +217,17 @@
 
             <div class="row ">
                 <div class="col-md-12 comandaCompleto comandas" style="background-color:#C9C5FF">
-                    <div class="divNumR" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
-                        \{{ cComida2 }}
+                    <div class="divNumR2" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
+                        \{{ cCena3 }}
                     </div>
                     
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida2 }}</p>
+                    <div class="PComan1 col-md-4">
+                        <p >\{{ NomCena3 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida3" style="float:right; background-color:#9A94F3; color:white">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#9A94F3; color:white; border-left: 0.5vh solid #8F88F3;">
                        <center>
-                            \{{ porcionComida2.toFixed(2); }} <br>
-                            Porciones
-                        </center>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row ">
-                <div class="col-md-12 comandaCompleto comandas" style="background-color:#C9C5FF">
-                    <div class="divNumR" style="background-color:#C9C5FF; float:left; border-color:#9A94F3;">
-                        \{{ cComida2 }}
-                    </div>
-                    
-                    <div class="PComan col-md-4">
-                        <p >\{{ NomComida2 }}</p>
-                    </div>
-
-                    <div class="col-md-4  divinfocomida3" style="float:right; background-color:#9A94F3; color:white">
-                       <center>
-                            \{{ porcionComida2.toFixed(2); }} <br>
+                            \{{ porcionCena3.toFixed(2); }} <br>
                             Porciones
                         </center>
                     </div>
@@ -249,11 +249,13 @@
                         <th>Unidad de Medida</th>   
                     </tr>
                     <tr ng-repeat="comanda in comandas track by $index">
-                        <td>false</td>
+                        <td><label ng-hide="\{{ comanda.status }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="comandaListaDesayuno(comanda);$event.stopPropagation();"> PENDIENTE</label>
+                            <label ng-show="\{{ comanda.status }}">✔️ ¡LISTO!</label>
+                        </td>
                         <td>\{{ comanda.nombre }}</td>
                         <td>\{{ comanda.fecha }}</td>
                         <td>\{{ comanda.calorias }}</td>
-                        <td>\{{ comanda.porciones.toFixed(2); }}</td>
+                        <td>\{{ comanda.porciones }}</td>
                         <td>\{{ comanda.menu }}</td>
                         <td>\{{ comanda.uMedida }}</td>
                         
@@ -279,5 +281,5 @@
 </body>
 </html>
 
-<script src="/assets/js/Controllers/Comandas/ComidaComandaController.js"> </script>
+<script src="/assets/js/Controllers/Comandas/CompletoComandaController.js"> </script>
 

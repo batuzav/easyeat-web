@@ -96,115 +96,140 @@ app.post('/entregas/getComandas', async(req, res) => {
             console.log('Fecha de entrega verdadera o preparacion: ', fechaComanda.val());
             const infoComanda = await db.ref("/MenuFechaPersona/" + busquedaDeFecha[x].idUsuario + "/" + fechaComanda.val() + "/").once("value");
             if (infoComanda.val()) {
+
                 if (infoComanda.val().Desayuno && infoComanda.val().Comida && infoComanda.val().Cena && infoComanda.val().Desayuno.completo === true) {
-                    console.log('hay un completo');
-
-
-                } else {
-                    if (infoComanda.val().Desayuno) {
-                        console.log('Info de la comanda de dayuno: ', infoComanda.val().Desayuno);
-                        const infoComida = await db.ref("/MenuDesayuno/" + infoComanda.val().Desayuno.id + "/").once("value");
-                        console.log('info del desayuno: ', infoComida.val());
+                    if (infoComanda.val().Desayuno.status) {
+                        console.log('hay un completo');
                         const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
                         console.log('Nombre del usuario: ', infoUsuario.val().nombre);
                         const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Desayuno.direccion + "/").once("value");
-                        if (!infoDireccion.val()) {
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Desayuno.hora || "No hay hora",
-                                direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
-                                comentarios: "No hay direccion guardada en la base de datos.",
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Desayuno.entrega,
-                                tipoComida: "Desayuno",
-                            });
-                        } else {
+                        const infoDes = await db.ref("/MenuDesayuno/" + infoComanda.val().Desayuno.id + "/").once("value");
+                        const infoCom = await db.ref("/MenuComida/" + infoComanda.val().Comida.id + "/").once("value");
+                        const infoCen = await db.ref("/MenuCena/" + infoComanda.val().Cena.id + "/").once("value");
 
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Desayuno.hora || "No hay hora",
-                                direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
-                                comentarios: infoDireccion.val().comentarios,
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Desayuno.entrega,
-                                tipoComida: "Desayuno",
-                            });
+                        data.push({
+                            nombre: infoUsuario.val().nombre,
+                            fecha: busquedaDeFecha[x].fecha,
+                            hora: infoComanda.val().Desayuno.hora || "No hay hora",
+                            direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                            comentarios: infoDireccion.val().comentarios,
+                            comida: "Des: " + infoDes.val().nombre + ", Com: " + infoCom.val().nombre + ", Cen: " + infoCen.val().nombre,
+                            idUsuario: busquedaDeFecha[x].idUsuario,
+                            entrega: infoComanda.val().Desayuno.entrega,
+                            tipoComida: "Desayuno",
+                        });
+                    }
+                } else {
+                    if (infoComanda.val().Desayuno) {
+                        if (infoComanda.val().Desayuno.status) {
+                            console.log('Info de la comanda de dayuno: ', infoComanda.val().Desayuno);
+                            const infoComida = await db.ref("/MenuDesayuno/" + infoComanda.val().Desayuno.id + "/").once("value");
+                            console.log('info del desayuno: ', infoComida.val());
+                            const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                            console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                            const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Desayuno.direccion + "/").once("value");
+                            if (!infoDireccion.val()) {
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Desayuno.hora || "No hay hora",
+                                    direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
+                                    comentarios: "No hay direccion guardada en la base de datos.",
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Desayuno.entrega,
+                                    tipoComida: "Desayuno",
+                                });
+                            } else {
+
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Desayuno.hora || "No hay hora",
+                                    direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                                    comentarios: infoDireccion.val().comentarios,
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Desayuno.entrega,
+                                    tipoComida: "Desayuno",
+                                });
+                            }
+
                         }
-
                     }
                     if (infoComanda.val().Comida) {
-                        console.log('Info de la comanda de comida: ', infoComanda.val().Comida);
-                        const infoComida = await db.ref("/MenuComida/" + infoComanda.val().Comida.id + "/").once("value");
-                        console.log('info del comida: ', infoComida.val());
-                        const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
-                        console.log('Nombre del usuario: ', infoUsuario.val().nombre);
-                        const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Comida.direccion + "/").once("value");
-                        console.log('Direccion: ', infoDireccion.val());
-                        if (!infoDireccion.val()) {
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Comida.hora || "No hay hora",
-                                direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
-                                comentarios: "No hay direccion guardada en la base de datos.",
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Comida.entrega,
-                                tipoComida: "Comida",
-                            });
-                        } else {
+                        if (infoComanda.val().Comida.status) {
+                            console.log('Info de la comanda de comida: ', infoComanda.val().Comida);
+                            const infoComida = await db.ref("/MenuComida/" + infoComanda.val().Comida.id + "/").once("value");
+                            console.log('info del comida: ', infoComida.val());
+                            const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                            console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                            const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Comida.direccion + "/").once("value");
+                            console.log('Direccion: ', infoDireccion.val());
+                            if (!infoDireccion.val()) {
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Comida.hora || "No hay hora",
+                                    direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
+                                    comentarios: "No hay direccion guardada en la base de datos.",
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Comida.entrega,
+                                    tipoComida: "Comida",
+                                });
+                            } else {
 
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Comida.hora || "No hay hora",
-                                direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
-                                comentarios: infoDireccion.val().comentarios,
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Comida.entrega,
-                                tipoComida: "Comida",
-                            });
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Comida.hora || "No hay hora",
+                                    direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                                    comentarios: infoDireccion.val().comentarios,
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Comida.entrega,
+                                    tipoComida: "Comida",
+                                });
+                            }
                         }
                     }
                     if (infoComanda.val().Cena) {
-                        console.log('Info de la comanda de cena: ', infoComanda.val().Cena);
-                        const infoComida = await db.ref("/MenuCena/" + infoComanda.val().Cena.id + "/").once("value");
-                        console.log('info del cena: ', infoComida.val());
-                        const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
-                        console.log('Nombre del usuario: ', infoUsuario.val().nombre);
-                        const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Cena.direccion + "/").once("value");
-                        console.log('Direccion: ', infoDireccion.val());
+                        if (infoComanda.val().Cena.status) {
+                            console.log('Info de la comanda de cena: ', infoComanda.val().Cena);
+                            const infoComida = await db.ref("/MenuCena/" + infoComanda.val().Cena.id + "/").once("value");
+                            console.log('info del cena: ', infoComida.val());
+                            const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
+                            console.log('Nombre del usuario: ', infoUsuario.val().nombre);
+                            const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Cena.direccion + "/").once("value");
+                            console.log('Direccion: ', infoDireccion.val());
 
-                        if (!infoDireccion.val()) {
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Cena.hora || "No hay hora",
-                                direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
-                                comentarios: "No hay direccion guardada en la base de datos.",
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Cena.entrega,
-                                tipoComida: "Cena",
-                            });
-                        } else {
+                            if (!infoDireccion.val()) {
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Cena.hora || "No hay hora",
+                                    direccion: "No hay direccion guardada en la base de datos. Llame aqui: " + infoUsuario.val().tel + ", Por favor",
+                                    comentarios: "No hay direccion guardada en la base de datos.",
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Cena.entrega,
+                                    tipoComida: "Cena",
+                                });
+                            } else {
 
-                            data.push({
-                                nombre: infoUsuario.val().nombre,
-                                fecha: busquedaDeFecha[x].fecha,
-                                hora: infoComanda.val().Cena.hora || "No hay hora",
-                                direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
-                                comentarios: infoDireccion.val().comentarios,
-                                comida: infoComida.val().nombre,
-                                idUsuario: busquedaDeFecha[x].idUsuario,
-                                entrega: infoComanda.val().Cena.entrega,
-                                tipoComida: "Cena",
-                            });
+                                data.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fecha: busquedaDeFecha[x].fecha,
+                                    hora: infoComanda.val().Cena.hora || "No hay hora",
+                                    direccion: "Calle: " + infoDireccion.val().calle + "  Colonia: " + infoDireccion.val().colonia + "  CP: " + infoDireccion.val().cp,
+                                    comentarios: infoDireccion.val().comentarios,
+                                    comida: infoComida.val().nombre,
+                                    idUsuario: busquedaDeFecha[x].idUsuario,
+                                    entrega: infoComanda.val().Cena.entrega,
+                                    tipoComida: "Cena",
+                                });
+                            }
                         }
                     }
                 }
