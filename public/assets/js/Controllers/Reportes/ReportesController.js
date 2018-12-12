@@ -61,12 +61,14 @@ angular.module("app", ['ngCookies'])
             $scope.InfoLlegoTarde.length = 0;
             $scope.InfoLlegoMal.length = 0;
             $scope.InfoNoLlego.length = 0;
+            $scope.loading = true;
             await $http.post('/getreportes', $scope.frmData)
                 .then(function(respone) {
                     $scope.reportes = respone['data'];
                     console.log($scope.reportes);
                     cargarReportes($scope.reportes);
-                    alert('Reportes listos');
+
+
                     console.log($scope.reportes.dataTardeDesayuno);
                 }, function(respone) {
                     alert(respone);
@@ -112,6 +114,12 @@ angular.module("app", ['ngCookies'])
 
             $scope.tabla = $scope.tabla.concat($scope.InfoLlegoMal, $scope.InfoNoLlego, $scope.InfoLlegoTarde);
             $scope.tabla = $scope.tabla.filter(Boolean);
+            $scope.loading = false;
+            if ($scope.tabla.length == 0) {
+                alert('No hay Reportes')
+            } else {
+                alert('Reportes listas ');
+            }
             console.log('cantidad de posiciones', $scope.tabla.length);
         }
 

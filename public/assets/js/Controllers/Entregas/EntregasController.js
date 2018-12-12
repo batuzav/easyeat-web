@@ -1,6 +1,6 @@
 var angular;
 angular.module("app", ['ngCookies'])
-    .controller("controlador", function($scope, $http, $cookies) {
+    .controller("controlador", function($scope, $http, $cookies, $filter) {
         document.getElementById('entregas').style = 'background-color: #B1D236; color:white'
         $scope.frmData = {};
         $scope.keys = [];
@@ -45,6 +45,7 @@ angular.module("app", ['ngCookies'])
 
         $scope.llamarComandas = async function() {
             console.log($scope.frmData);
+            $scope.loading = true;
             await $http.post('/entregas/getkeys')
                 .then(function(respone) {
                     $scope.keys = respone['data'];
@@ -67,6 +68,7 @@ angular.module("app", ['ngCookies'])
                     $scope.entregas = respone['data'];
                     $scope.entregas = $scope.entregas.data;
                     console.log($scope.entregas);
+                    $scope.loading = false;
                     if ($scope.entregas.length == 0) {
                         alert('No hay Entregas')
                     } else {
@@ -87,6 +89,12 @@ angular.module("app", ['ngCookies'])
                     alert('No se pudo cerrar sesion :(');
                 });
         }
+
+
+        /* Prueba tablita */
+
+
+
 
 
 

@@ -104,6 +104,7 @@ angular.module("app", ['ngCookies'])
         }
 
         $scope.llamarComandas = async function() {
+            $scope.loading = true;
             console.log($scope.frmData);
             await $http.post('/comida/getkeys')
                 .then(function(respone) {
@@ -153,7 +154,7 @@ angular.module("app", ['ngCookies'])
                     $scope.NomDesayuno2 = $scope.comandas.NomDesayuno2;
                     $scope.NomDesayuno3 = $scope.comandas.NomDesayuno3;
                     $scope.comandas = $scope.comandas.comanda;
-
+                    $scope.loading = false;
                     console.log('Esto es desayuno 3: ', $scope.porcionDesayuno3 + ", " + $scope.cDesayuno3)
                     if ($scope.comandas.length == 0) {
                         alert('No hay Comandas')

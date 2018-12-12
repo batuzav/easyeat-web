@@ -45,32 +45,37 @@
     </div>
 
     <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
+        
         <div class="table-responsive" >
-            <table class="table table-condensed table-hover">
-                <tr class="headtable">
-                    <th>Estado</th>
-                    <th>Usuario</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Dirección</th>
-                    <th>Comentarios</th>
-                    <th>Menú</th>  
-                </tr>
-                <tr ng-repeat="entrega in entregas track by $index">
-                    <td>
-                        <label ng-hide="\{{ entrega.entrega }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="entregaLista(entrega);$event.stopPropagation();"> PENDIENTE</label>
-                        <label ng-show="\{{ entrega.entrega }}">✔️ ¡LISTO!</label>
-                    </td>
-                    <td>\{{ entrega.nombre }}</td>
-                    <td>\{{ entrega.fecha }}</td>
-                    <td>\{{ entrega.nombre }}</td>
-                    <td>\{{ entrega.hora }}</td>
-                    <td>\{{ entrega.direccion }}</td>
-                    <td>\{{ entrega.comida }}</td>  
-                </tr>
+            <table id="example" class="table table-condensed table-hover">
+                <thead>
+                    <tr class="headtable">
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Dirección</th>
+                        <th>Comentarios</th>
+                        <th>Menú</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="entrega in entregas track by $index">
+                        <td>
+                            <label ng-hide="\{{ entrega.entrega }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="entregaLista(entrega);$event.stopPropagation();"> PENDIENTE</label>
+                            <label ng-show="\{{ entrega.entrega }}">✔️ ¡LISTO!</label>
+                        </td>
+                        <td>\{{ entrega.nombre }}</td>
+                        <td>\{{ entrega.fecha }}</td>
+                        <td>\{{ entrega.nombre }}</td>
+                        <td>\{{ entrega.hora }}</td>
+                        <td>\{{ entrega.direccion }}</td>
+                        <td>\{{ entrega.comida }}</td>  
+                    </tr>
+                </tbody>
             </table>
         </div>
-
+        <div ng-show="loading" class="loading col-md-2 col-md-offset-3"><img src="/assets/img/loading.gif"></div>
     </div>
 
 <script type="text/javascript">
@@ -80,10 +85,13 @@
                                      monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
                                      minDate: '0d'
                                     });
- 
+
+
+     
 </script>
     
 </body>
 </html>
+
 
 <script src="/assets/js/Controllers/Entregas/EntregasController.js"> </script>

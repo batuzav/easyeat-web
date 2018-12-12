@@ -33,7 +33,8 @@ angular.module("app", ['ngCookies'])
         }
 
         function cargarUsarios() {
-            alert('USUARIOS VARGANDO, PODR[IA TARDAR UNOS MINUTOS');
+            $scope.loading = true;
+            alert('USUARIOS CARGANDO, PODRÍA TARDAR UNOS SEGUNDOS');
             $http.post('/usuarios/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
@@ -47,6 +48,7 @@ angular.module("app", ['ngCookies'])
 
 
         async function getUsuarios(info) {
+            $scope.loading = true;
             $scope.entregas = {};
             await $http.post('/usuartios/getUsuarios', info)
                 .then(function(respone) {
@@ -55,6 +57,7 @@ angular.module("app", ['ngCookies'])
                     $scope.usuarioInactivo = $scope.usuarios.usuarioInactivo;
                     $scope.usuarios = $scope.usuarios.usuarioActivo;
                     console.log($scope.usuarios);
+                    $scope.loading = false;
                     alert('Usuarios Listos');
 
                 }, function(respone) {
@@ -86,4 +89,3 @@ angular.module("app", ['ngCookies'])
         }
 
     });
-tipotipo

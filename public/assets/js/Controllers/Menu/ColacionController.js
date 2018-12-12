@@ -54,11 +54,13 @@ angular.module("app", ['ngCookies'])
         window.addEventListener('load', init, false);
 
         async function cargarColaciones() {
+            $scope.loading = true;
             await $http.post('/comidas/getcolaciones')
                 .then(function(respone) {
                     $scope.colaciones = respone['data'];
                     $scope.colaciones = $scope.colaciones.colaciones;
                     console.log($scope.colaciones);
+                    $scope.loading = false;
                 }, function(respone) {
                     alert(respone);
                 });

@@ -168,7 +168,7 @@
                         <p >\{{ NomComida3 }}</p>
                     </div>
 
-                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#6FD7A5; color:white; border-left: 0.5vh solid #6BD3FF;">
+                    <div class="col-md-4  divinfocomida21" style="float:right; background-color:#6FD7A5; color:white; border-left: 0.5vh solid #68CA9B;">
                        <center>
                             \{{ porcionComida3.toFixed(2); }} <br>
                             Porciones
@@ -239,7 +239,7 @@
             <div class="table-responsive" >
                 <br>
                 <table class="table table-condensed table-hover">
-                    <tr class="headtable">
+                    <tr>
                         <th>Estatus</th>
                         <th>Usuario</th>
                         <th>Fecha</th>
@@ -262,6 +262,7 @@
                     </tr>
                 </table>
             </div>
+            <div ng-show="loading" class="loading col-md-2 col-md-offset-4"><img src="/assets/img/loading.gif"></div>
         </div>
 
     </div> 
