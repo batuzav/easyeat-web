@@ -163,7 +163,8 @@ angular.module("app", ['ngCookies'])
                     }
 
                 }, function(respone) {
-                    alert(respone);
+                    alert(respone.data.mensaje);
+                    location.reload();
                 });
         }
 
@@ -175,6 +176,7 @@ angular.module("app", ['ngCookies'])
                     location.reload();
                 }, function(respone) {
                     alert('No se pudo cerrar sesion :(');
+                    location.reload();
                 });
         }
 

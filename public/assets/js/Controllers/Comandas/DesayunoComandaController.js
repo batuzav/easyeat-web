@@ -81,7 +81,8 @@ angular.module("app", ['ngCookies'])
                     }
 
                 }, function(respone) {
-                    alert(respone);
+                    alert(respone.data.mensaje);
+                    location.reload();
                 });
         }
 

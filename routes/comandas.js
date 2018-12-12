@@ -95,6 +95,12 @@ app.post('/comida/getComandas', async(req, res) => {
     }
     // console.log(busquedaDeFecha);
     const infoMenu = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Comida").once("value");
+    if (!infoMenu.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomComida1 = await db.ref("/MenuComida/" + infoMenu.val().comida1.id + "/nombre").once("value");
     const NomComida2 = await db.ref("/MenuComida/" + infoMenu.val().comida2.id + "/nombre").once("value");
     const NomComida3 = await db.ref("/MenuComida/" + infoMenu.val().comida3.id + "/nombre").once("value");
@@ -221,6 +227,13 @@ app.post('/desayuno/getComandas', async(req, res) => {
     }
     // console.log(busquedaDeFecha);
     const infoMenu = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Desayuno").once("value");
+    console.log(infoMenu.val())
+    if (!infoMenu.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomComida1 = await db.ref("/MenuDesayuno/" + infoMenu.val().comida1.id + "/nombre").once("value");
     const NomComida2 = await db.ref("/MenuDesayuno/" + infoMenu.val().comida2.id + "/nombre").once("value");
     const NomComida3 = await db.ref("/MenuDesayuno/" + infoMenu.val().comida3.id + "/nombre").once("value");
@@ -348,6 +361,12 @@ app.post('/cena/getComandas', async(req, res) => {
     }
     // console.log(busquedaDeFecha);
     const infoMenu = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Cena").once("value");
+    if (!infoMenu.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomComida1 = await db.ref("/MenuCena/" + infoMenu.val().comida1.id + "/nombre").once("value");
     const NomComida2 = await db.ref("/MenuCena/" + infoMenu.val().comida2.id + "/nombre").once("value");
     const NomComida3 = await db.ref("/MenuCena/" + infoMenu.val().comida3.id + "/nombre").once("value");
@@ -458,18 +477,42 @@ app.post('/completas/getComandas', async(req, res) => {
     }
 
     const infoMenuCe = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Cena").once("value");
+    if (!infoMenuCe.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomCena1 = await db.ref("/MenuCena/" + infoMenuCe.val().comida1.id + "/nombre").once("value");
     const NomCena2 = await db.ref("/MenuCena/" + infoMenuCe.val().comida2.id + "/nombre").once("value");
     const NomCena3 = await db.ref("/MenuCena/" + infoMenuCe.val().comida3.id + "/nombre").once("value");
     const infoMenuDe = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Desayuno").once("value");
+    if (!infoMenuDe.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomDesayuno1 = await db.ref("/MenuDesayuno/" + infoMenuDe.val().comida1.id + "/nombre").once("value");
     const NomDesayuno2 = await db.ref("/MenuDesayuno/" + infoMenuDe.val().comida2.id + "/nombre").once("value");
     const NomDesayuno3 = await db.ref("/MenuDesayuno/" + infoMenuDe.val().comida3.id + "/nombre").once("value");
     const infoMenuCo = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Comida").once("value");
+    if (!infoMenuCo.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomComida1 = await db.ref("/MenuComida/" + infoMenuCo.val().comida1.id + "/nombre").once("value");
     const NomComida2 = await db.ref("/MenuComida/" + infoMenuCo.val().comida2.id + "/nombre").once("value");
     const NomComida3 = await db.ref("/MenuComida/" + infoMenuCo.val().comida3.id + "/nombre").once("value");
     const infoMenuCol = await db.ref("/MenuHistorial/" + info.fecha.fechaReporte + "/Colacion").once("value");
+    if (!infoMenuCol.val()) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "No existe comidas asignadas a este día :("
+        });
+    }
     const NomColacion1 = await db.ref("/MenuColacion/" + infoMenuCol.val().comida1.id + "/nombre").once("value");
     const NomColacion2 = await db.ref("/MenuColacion/" + infoMenuCol.val().comida2.id + "/nombre").once("value");
 

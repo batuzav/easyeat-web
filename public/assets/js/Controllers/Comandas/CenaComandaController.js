@@ -69,7 +69,8 @@ angular.module("app", ['ngCookies'])
                     }
                     getComandas($scope.info);
                 }, function(respone) {
-                    alert(respone.err);
+                    alert(respone.data.mensaje);
+
                 });
         }
 
@@ -97,7 +98,8 @@ angular.module("app", ['ngCookies'])
                     }
 
                 }, function(respone) {
-                    alert(respone);
+                    alert(respone.data.mensaje);
+                    location.reload();
                 });
         }
 
