@@ -5,13 +5,18 @@ const bodyParser = require('body-parser');
 var session = require('express-session');
 const { db } = require("../config/firebase");
 const _ = require('underscore');
+const paypal = require("paypal-rest-sdk");
 
 let array = [];
 let sesion = {};
 
 app.use(session({ secret: "iloveeasyeat" }));
 
-
+paypal.configure({
+    mode: "sandbox", //sandbox or live
+    client_id: "ATEQENk06mNE2p1mLr1bhewoxdiHP82s1FK9jsZun-TzHor6x08EcXqqS2ME7SJP9V5c-SmXN1_hagoE",
+    client_secret: "EOCKLrvxEui1DZH9SxbsvW5R79JOBLKC_H_4qhVBNj0I5s4reYnAVcXbEUfQ70UZl9NEHCD3URd9Hq3h"
+});
 
 //middlewatre
 const usuarioRegistrado = (req, res, next) => {
