@@ -1,7 +1,7 @@
 var angular;
 angular.module("app", ['ngCookies'])
     .controller("controlador", function($scope, $http, $cookies) {
-        document.getElementById('reportes').style = 'background-color: #18ab29; color:white'
+        document.getElementById('reportes').style = 'background-color: #B1D236; color:white'
         $scope.reportes = {};
         $scope.tabla = [];
         $scope.frmData = {};

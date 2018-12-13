@@ -51,7 +51,7 @@
                         <div class="form-group">
                         <label for="titulo" style="color: black"><b> *Título</b></label>
                         <br>
-                        <input type="text" placeholder="Max 30 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="30" ng-model="frmData.nombre" pattern="[A-Za-z ]+" required>
+                        <input type="text" placeholder="Max 30 caracteres" name="nombre" id="nombre"  class="inputalim form-control" maxlength="30" ng-model="frmData.nombre" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ, ]+" required>
                             
 
                         </div>
@@ -59,18 +59,18 @@
                         <div class="form-group">
                             <label for="descripcion" style="color: black"><b>*Descripción</b></label>
                             <br>
-                            <input type="text" placeholder="Max 60 caracteres" name="descripcion" id="descripcion" class="inputalim form-control" maxlength="60" ng-model="frmData.descripcion" pattern="[A-Za-z0-9 ]+" required >
+                            <input type="text" placeholder="Max 60 caracteres" name="descripcion" id="descripcion" class="inputalim form-control" maxlength="60" ng-model="frmData.descripcion" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ, ]+" required >
                         </div>
                         <br>
                         <div class="form-group col-md-6 col-xs-12">
                             <label for="calorias" style="color: black"><b>*Calorias por porción</b></label>
                             <br>
-                            <input type="text" placeholder="Max 17 caracteres" name="calorias" id="calorias" class="inputalim form-control" maxlength="7" ng-model="frmData.calorias" pattern="[0-9]+" required  >
+                            <input type="text" placeholder="Max 17 caracteres" name="calorias" id="calorias" class="inputalim form-control" maxlength="7" ng-model="frmData.calorias" pattern="[0-9.]+" required  >
                         </div>
                         <div class="form-group col-md-6  col-xs-12" style="float:left">
                             <label for="medidas" style="color: black"><b>*Unidades de medida</b></label>
                             <br>
-                            <input type="text" placeholder="Max 17 caracteres" name="medidas" id="medidas" class="inputalim form-control" maxlength="17" ng-model="frmData.medidas" pattern="[A-Za-z ]+" required >
+                            <input type="text" placeholder="Max 17 caracteres" name="medidas" id="medidas" class="inputalim form-control" maxlength="17" ng-model="frmData.medidas" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ, ]+" required >
                         </div>
                     </div>
             </form>

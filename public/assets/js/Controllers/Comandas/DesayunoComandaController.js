@@ -20,6 +20,10 @@ angular.module("app", ['ngCookies'])
         $scope.imagenTipo = {};
         $scope.nombreTipo = {};
 
+        $scope.now = new Date();
+        console.log($scope.now);
+        //  $scope.llamarComandas();
+
         cargarTipo();
 
         function cargarTipo() {
@@ -39,6 +43,9 @@ angular.module("app", ['ngCookies'])
             }
 
         }
+
+        $scope.frmData.fechaReporte = $scope.now.toISOString().substring(0, 10);
+
 
         $scope.llamarComandas = async function() {
             console.log($scope.frmData);

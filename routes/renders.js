@@ -160,6 +160,127 @@ app.get('/', usuarioRegistrado, permisosUsuarios, (req, res) => {
     res.redirect('/usuarios');
 });
 
+app.get("/pagopaypal", (req, res) => {
+    res.render("indexpaypal");
+});
+
+
+//sesion//
+
+
+
+app.get("/paypal", async(req, res) => {
+    console.log('AQui debe ir la id:', req.query.id);
+    const idCliente = req.query.id;
+    let data = [];
+    let cont = 0;
+    let total = 0;
+    let totalString = 0;
+    console.log('Total: ', req.query.total);
+    totalventa = req.query.total;
+    db.ref("/Carrito/" + idCliente + "/productos").once("value", async function(snapshot) {
+
+        if (!snapshot.val()) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        await snapshot.forEach((child) => {
+            console.log('Este el valor del hijo del carrtio', child.val());
+            const conver = Number(child.val().precio);
+            data.push({
+                name: child.val().nombre,
+                sku: child.val().nombre,
+                price: child.val().precio,
+                /**/
+                currency: "MXN",
+                quantity: 1
+            });
+            cont++;
+            total = total + child.val().precio;
+
+
+        });
+        console.log('esta es numero de carrito: ', data.length);
+        console.log('Este es total de suma: ', total);
+
+        //totalventa = totalventa.toString();
+        console.log('Este es el string de total: ', totalventa);
+        console.log('Contador ' + cont + ' total: ' + total);
+
+        var create_payment_json = {
+            intent: "sale",
+            payer: {
+                payment_method: "paypal"
+            },
+            redirect_urls: {
+                return_url: "http://easyeatapp.com/success",
+                cancel_url: "http://easyeatapp.com/cancel"
+            },
+            transactions: [{
+                item_list: {
+                    items: data
+                },
+                amount: {
+                    currency: "MXN",
+                    total: totalventa
+                },
+                description: "This is the payment description."
+            }]
+        };
+
+        paypal.payment.create(create_payment_json, function(error, payment) {
+            if (error) {
+                throw error;
+            } else {
+                console.log("Create Payment Response");
+                console.log(payment);
+                res.redirect(payment.links[1].href);
+            }
+        });
+    });
+
+
+    console.log('Este es el string de total fuera: ', totalventa);
+
+});
+
+app.get("/success", (req, res) => {
+    var PayerID = req.query.PayerID;
+    var paymentId = req.query.paymentId;
+    console.log('total en succes: ', totalventa);
+    var execute_payment_json = {
+        payer_id: PayerID,
+        transactions: [{
+            amount: {
+                currency: "MXN",
+                total: totalventa
+            }
+        }]
+    };
+
+    paypal.payment.execute(paymentId, execute_payment_json, function(
+        error,
+        payment
+    ) {
+        if (error) {
+            console.log(error.response);
+            throw error;
+        } else {
+            console.log("Get Payment Response");
+            console.log(JSON.stringify(payment));
+            res.render("success");
+
+        }
+    });
+});
+
+app.get("/cancel", (req, res) => {
+
+    res.render("cancel");
+});
+
 app.get('*', (req, res) => {
     return res.status(404).send("<h1> NO HAY PAGINA </h1>");
 });
