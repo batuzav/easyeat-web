@@ -106,7 +106,7 @@
                         <th>Unidades de medida</th>
                         
                     </tr>
-                    <tr ng-repeat="cena in cenas track by $index">
+                    <tr ng-repeat="cena in cenas track by $index" ng-hide="loading">
                        <td><img src="\{{ cena.imagen || imagenDefault }}" alt="" class="circular--square">    \{{ cena.nombre }}</td> 
                        <td>\{{ cena.descripcion }}</td>
                        <td>\{{ cena.calorias }}</td>

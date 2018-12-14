@@ -76,21 +76,23 @@ angular.module("app", ['ngCookies'])
 
                 console.log($scope.img.src);
             }
+            $scope.loading = true;
             await $http.post('/comidas/insertcenas', $scope.frmData, {
                     // headers: { 'Content-Type': undefined }
                 })
                 .then(function(respone) {
                     $scope.frmData = {};
-                    alert('Cena agregada');
+
                     console.log(respone);
                     $scope.imagen = false;
-                    console.log('Desayuno agregado');
+
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
                     cargarCenas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         };
@@ -109,6 +111,7 @@ angular.module("app", ['ngCookies'])
             }
 
             console.log($scope.frmData);
+            $scope.loading = true;
             $http.put('/comidas/modifycena', $scope.frmData)
                 .then(function(respone) {
                     $scope.frmData = {};
@@ -118,11 +121,12 @@ angular.module("app", ['ngCookies'])
 
                     console.log(document.getElementById('img1'));
                     console.log(respone);
-                    alert('Cena modificada');
+
                     console.log(respone);
                     cargarCenas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         }

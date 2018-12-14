@@ -34,7 +34,7 @@ angular.module("app", ['ngCookies'])
 
         function cargarUsarios() {
             $scope.loading = true;
-            alert('USUARIOS CARGANDO, PODRÍA TARDAR UNOS SEGUNDOS');
+
             $http.post('/usuarios/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
@@ -58,7 +58,7 @@ angular.module("app", ['ngCookies'])
                     $scope.usuarios = $scope.usuarios.usuarioActivo;
                     console.log($scope.usuarios);
                     $scope.loading = false;
-                    alert('Usuarios Listos');
+
 
                 }, function(respone) {
                     alert(respone);

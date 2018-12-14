@@ -44,7 +44,7 @@
 
 <br>
     <div class='col-md-2 col-md-offset-5 col-xs-7 col-xs-offset-3'>
-        <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fecha" />
+        <input type='text' class="form-control" id='datetimepicker4' ng-model="frmData.fecha" ng-change="llamarMenu();$event.stopPropagation();"/>
     </div>
     <br> 
     
@@ -112,9 +112,9 @@
 
             <div class=" from-group anchoboton btn button" style="width:100%">
                 <br>
-                <button type="submit" class="formbuttom btn" ng-click="agregarMenu();$event.stopPropagation();">Subir menú</button>
+                <button ng-hide="loading" type="submit" class="formbuttom btn" ng-click="agregarMenu();$event.stopPropagation();">Subir menú</button>
             </div>
-
+            <div ng-show="loading" class="loading col-md-2 col-md-offset-4"><img src="/assets/img/loading.gif"></div>
         </div>
             
             

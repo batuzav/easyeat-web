@@ -63,7 +63,7 @@ angular.module("app", ['ngCookies'])
                     alert(respone.err);
                 });
         }
-
+        $scope.llamarComandas();
         async function getComandas(info) {
             $scope.comandas = {};
             await $http.post('/desayuno/getComandas', info)
@@ -83,8 +83,6 @@ angular.module("app", ['ngCookies'])
                     $scope.loading = false;
                     if ($scope.comandas.length == 0) {
                         alert('No hay Comandas')
-                    } else {
-                        alert('Comandas listas ');
                     }
 
                 }, function(respone) {
@@ -92,6 +90,8 @@ angular.module("app", ['ngCookies'])
                     location.reload();
                 });
         }
+
+
 
         $scope.comandaLista = async function(comanda) {
             console.log('hola');

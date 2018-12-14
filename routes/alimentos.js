@@ -504,6 +504,102 @@ app.post('/comidas/insertmenufecha', async(req, res) => {
 
 /*----------------------FINDE INTRODUCIR MENU FECHA-----------*/
 
+/*--------------------Mostrar menu po medio de la fecha----------*/
+
+app.post('/menu/getmenu', async(req, res) => {
+    let data = req.body;
+    let info = {};
+    if (!data.fecha) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "Inserte fecha"
+        });
+    }
+    const infoMenu = await db.ref("/MenuHistorial/" + data.fecha + "/").once("value");
+    console.log('Info de la consulta: ', infoMenu.val());
+    if (!infoMenu.val()) {
+        console.log('NO HAY MENU, SELECCIONE ALIMENTOS');
+        info = {
+            fecha: data.fecha,
+        }
+        res.json({
+            ok: true,
+            info
+        });
+    } else {
+        const InfoCena1 = await db.ref('/MenuCena/' + infoMenu.val().Cena.comida1.id + '/').once("value");
+        const InfoCena2 = await db.ref('/MenuCena/' + infoMenu.val().Cena.comida2.id + '/').once("value");
+        const InfoCena3 = await db.ref('/MenuCena/' + infoMenu.val().Cena.comida3.id + '/').once("value");
+        const InfoComida1 = await db.ref('/MenuComida/' + infoMenu.val().Comida.comida1.id + '/').once("value");
+        const InfoComida2 = await db.ref('/MenuComida/' + infoMenu.val().Comida.comida2.id + '/').once("value");
+        const InfoComida3 = await db.ref('/MenuComida/' + infoMenu.val().Comida.comida3.id + '/').once("value");
+        const InfoDesayuno1 = await db.ref('/MenuDesayuno/' + infoMenu.val().Desayuno.comida1.id + '/').once("value");
+        const InfoDesayuno2 = await db.ref('/MenuDesayuno/' + infoMenu.val().Desayuno.comida2.id + '/').once("value");
+        const InfoDesayuno3 = await db.ref('/MenuDesayuno/' + infoMenu.val().Desayuno.comida3.id + '/').once("value");
+        const InfoColacion1 = await db.ref('/MenuColacion/' + infoMenu.val().Colacion.comida1.id + '/').once("value");
+        const InfoColacion2 = await db.ref('/MenuColacion/' + infoMenu.val().Colacion.comida2.id + '/').once("value");
+
+        info = {
+
+            cena1: {
+                nombre: InfoCena1.val().nombre,
+                id: infoMenu.val().Cena.comida1.id
+            },
+            cena2: {
+                nombre: InfoCena2.val().nombre,
+                id: infoMenu.val().Cena.comida2.id
+            },
+            cena3: {
+                nombre: InfoCena3.val().nombre,
+                id: infoMenu.val().Cena.comida3.id
+            },
+
+            comida1: {
+                nombre: InfoComida1.val().nombre,
+                id: infoMenu.val().Comida.comida1.id
+            },
+            comida2: {
+                nombre: InfoComida2.val().nombre,
+                id: infoMenu.val().Comida.comida2.id
+            },
+            comida3: {
+                nombre: InfoComida3.val().nombre,
+                id: infoMenu.val().Comida.comida3.id
+            },
+
+            desayuno1: {
+                nombre: InfoDesayuno1.val().nombre,
+                id: infoMenu.val().Desayuno.comida1.id
+            },
+            desayuno2: {
+                nombre: InfoDesayuno2.val().nombre,
+                id: infoMenu.val().Desayuno.comida2.id
+            },
+            desayuno3: {
+                nombre: InfoDesayuno3.val().nombre,
+                id: infoMenu.val().Desayuno.comida3.id
+            },
+
+            colacion1: {
+                nombre: InfoColacion1.val().nombre,
+                id: infoMenu.val().Colacion.comida1.id
+            },
+            colacion2: {
+                nombre: InfoColacion2.val().nombre,
+                id: infoMenu.val().Colacion.comida2.id
+            },
+            fecha: data.fecha,
+
+        }
+        console.log(info);
+        res.json({
+            ok: true,
+            info
+        });
+    }
+});
+/*----------------- Fin de mostrar menu por fecha-----------------*/
+
 
 //exportacion de app para poder usarla en cualquier parte del proyecto
 module.exports = app;

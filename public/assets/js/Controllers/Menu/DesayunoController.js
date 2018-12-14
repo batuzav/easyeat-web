@@ -77,7 +77,7 @@ angular.module("app", ['ngCookies'])
 
                 console.log($scope.img.src);
             }
-
+            $scope.loading = true;
             await $http.post('/comidas/insertdesayunos', $scope.frmData, )
                 .then(function(respone) {
                     $scope.frmData = {};
@@ -91,6 +91,7 @@ angular.module("app", ['ngCookies'])
                 }, function(respone) {
                     console.log('respuesta mala', respone)
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         };
@@ -110,6 +111,7 @@ angular.module("app", ['ngCookies'])
             }
 
             console.log($scope.frmData);
+            $scope.loading = true;
             $http.put('/comidas/modifydesayunos', $scope.frmData)
                 .then(function(respone) {
                     $scope.frmData = {};
@@ -124,6 +126,7 @@ angular.module("app", ['ngCookies'])
                     alert("Desayuno modificado perfectamente");
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         }

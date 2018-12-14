@@ -106,7 +106,7 @@
                         <th>Unidades de medida</th>
                         
                     </tr>
-                    <tr ng-repeat="desayuno in desayunos track by $index">
+                    <tr ng-repeat="desayuno in desayunos track by $index" ng-hide="loading">
                        <td><img src="\{{ desayuno.imagen || imgenDefault }}" alt="" class="circular--square">    \{{ desayuno.nombre }}</td> 
                        <td >\{{ desayuno.descripcion }}</td>
                        <td >\{{ desayuno.calorias }}</td>

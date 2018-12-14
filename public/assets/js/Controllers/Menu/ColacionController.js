@@ -76,6 +76,7 @@ angular.module("app", ['ngCookies'])
 
                 console.log($scope.img.src);
             }
+            $scope.loading = true;
             await $http.post('/comidas/insertcolacion', $scope.frmData, {
                     // headers: { 'Content-Type': undefined }
                 })
@@ -83,13 +84,14 @@ angular.module("app", ['ngCookies'])
                     $scope.frmData = {};
                     alert('Colacion agregada');
                     $scope.imagen = false;
-                    console.log('Desayuno agregado');
+
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
                     cargarColaciones();
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         };
@@ -108,6 +110,7 @@ angular.module("app", ['ngCookies'])
                 console.log($scope.img.src);
             }
             console.log($scope.frmData);
+            $scope.loading = true;
             $http.put('/comidas/modifycolacion', $scope.frmData)
                 .then(function(respone) {
                     $scope.frmData = {};
@@ -115,13 +118,14 @@ angular.module("app", ['ngCookies'])
                     alert('Colacion modificada');
                     $scope.modify = false;
                     $scope.imagen = false;
-                    console.log('Desayuno agregado');
+
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
                     cargarColaciones();
                 }, function(respone) {
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
         }

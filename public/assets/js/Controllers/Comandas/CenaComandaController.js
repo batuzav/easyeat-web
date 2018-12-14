@@ -73,6 +73,9 @@ angular.module("app", ['ngCookies'])
 
                 });
         }
+        $scope.now = new Date();
+        $scope.frmData.fechaReporte = $scope.now.toISOString().substring(0, 10);
+        $scope.llamarComandas();
 
         async function getComandas(info) {
             $scope.comandas = {};
@@ -93,8 +96,6 @@ angular.module("app", ['ngCookies'])
                     $scope.loading = false;
                     if ($scope.comandas.length == 0) {
                         alert('No hay Comandas')
-                    } else {
-                        alert('Comandas listas ');
                     }
 
                 }, function(respone) {

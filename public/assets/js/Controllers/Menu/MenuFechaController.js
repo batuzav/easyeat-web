@@ -35,7 +35,28 @@ angular.module("app", ['ngCookies'])
 
         }
 
+        $scope.llamarMenu = () => {
+            $scope.loading = true;
+            $http.post('/menu/getmenu', $scope.frmData)
+                .then(function(respone) {
+                    $scope.prueba = respone['data'];
+                    $scope.loading = false;
+                    console.log('Prueba: ', $scope.prueba);
+                    $scope.frmData = $scope.prueba.info;
+
+                }, function(respone) {
+                    $scope.loading = false;
+                    alert(respone.data.mensaje);
+
+                });
+        }
+
+        $scope.now = new Date();
+        $scope.frmData.fecha = $scope.now.toISOString().substring(0, 10);
+        $scope.llamarMenu();
+
         function cargarCenas() {
+            $scope.loading = true;
             $http.post('/comidas/getcenas')
                 .then(function(respone) {
                     $scope.cenas = respone['data'];
@@ -74,20 +95,24 @@ angular.module("app", ['ngCookies'])
                     $scope.comidas = respone['data'];
                     $scope.comidas = $scope.comidas.comidas;
                     console.log($scope.comidas);
+                    $scope.loading = false;
                 }, function(respone) {
                     alert(respone.data.err);
                 });
         }
 
         $scope.agregarMenu = async function() {
+            $scope.loading = true;
             $http.post('/comidas/insertmenufecha', $scope.frmData)
                 .then(function(respone) {
                     console.log(respone.data.ok);
                     $scope.frmData = {};
+                    $scope.loading = false;
                     alert('¡HECHO!');
                 }, function(respone) {
                     console.log(respone);
                     alert(respone.data.mensaje);
+                    $scope.loading = false;
                 });
 
 

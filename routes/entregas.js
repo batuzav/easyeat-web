@@ -31,6 +31,7 @@ app.post('/entregas/getkeys', async(req, res) => {
 });
 
 app.put('/entregas/entregaLista', async(req, res) => {
+    console.log('ENTREGA LISTA ', req.body);
     const id = req.body.idUsuario;
     const fecha = req.body.fecha;
     const tipo = req.body.tipoComida;
@@ -41,23 +42,74 @@ app.put('/entregas/entregaLista', async(req, res) => {
     console.log('entrega lista fech de comida: ', fecha);
     console.log('entrega lista id de comida: ', id);
 
-    await db.ref("/MenuFechaPersona/" + id + "/" + fecha + "/").child(tipo).update(data, async function(err) {
-        console.log('entro aqui');
-        if (err) {
-            console.log('entro en error');
-            return res.status(400).json({
-                ok: false,
-                err,
-                Mensaje: "Error con la base de datos"
-            });
-        } else {
+    if (req.body.completo) {
+        console.log('entro a completo');
+        const fechaComanda = await db.ref("/FechaEntrega/" + id + "/" + fecha + "/id_menuFechaPersona").once("value");
+        console.log('Fecha de entrega: ' + fecha + ", Fecha de Comanda: ", fechaComanda.val());
 
-            res.json({
-                ok: true,
+        await db.ref("/MenuFechaPersona/" + id + "/" + fechaComanda.val() + "/").child('Desayuno').update(data, async function(err) {
+            console.log('entro aqui');
+            if (err) {
+                console.log('entro en error');
+                return res.status(400).json({
+                    ok: false,
+                    err,
+                    Mensaje: "Error con la base de datos"
+                });
+            } else {
+                await db.ref("/MenuFechaPersona/" + id + "/" + fechaComanda.val() + "/").child('Comida').update(data, async function(err) {
+                    console.log('entro aqui');
+                    if (err) {
+                        console.log('entro en error');
+                        return res.status(400).json({
+                            ok: false,
+                            err,
+                            Mensaje: "Error con la base de datos"
+                        });
+                    } else {
 
-            });
-        }
-    });
+                        await db.ref("/MenuFechaPersona/" + id + "/" + fechaComanda.val() + "/").child('Cena').update(data, async function(err) {
+                            console.log('entro aqui');
+                            if (err) {
+                                console.log('entro en error');
+                                return res.status(400).json({
+                                    ok: false,
+                                    err,
+                                    Mensaje: "Error con la base de datos"
+                                });
+                            } else {
+
+                                res.json({
+                                    ok: true,
+
+                                });
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+
+    } else {
+        await db.ref("/MenuFechaPersona/" + id + "/" + fecha + "/").child(tipo).update(data, async function(err) {
+            console.log('entro aqui');
+            if (err) {
+                console.log('entro en error');
+                return res.status(400).json({
+                    ok: false,
+                    err,
+                    Mensaje: "Error con la base de datos"
+                });
+            } else {
+
+                res.json({
+                    ok: true,
+
+                });
+            }
+        });
+    }
 });
 
 app.post('/entregas/getComandas', async(req, res) => {
@@ -93,7 +145,7 @@ app.post('/entregas/getComandas', async(req, res) => {
         console.log('Fecha por analizar: ', busquedaDeFecha[x].fecha);
         const fechaComanda = await db.ref("/FechaEntrega/" + busquedaDeFecha[x].idUsuario + "/" + busquedaDeFecha[x].fecha + "/id_menuFechaPersona").once("value");
         if (fechaComanda.val()) {
-            console.log('Fecha de entrega verdadera o preparacion: ', fechaComanda.val());
+            //console.log('Fecha de entrega verdadera o preparacion: ', fechaComanda.val());
             const infoComanda = await db.ref("/MenuFechaPersona/" + busquedaDeFecha[x].idUsuario + "/" + fechaComanda.val() + "/").once("value");
             if (infoComanda.val()) {
 
@@ -117,6 +169,7 @@ app.post('/entregas/getComandas', async(req, res) => {
                             idUsuario: busquedaDeFecha[x].idUsuario,
                             entrega: infoComanda.val().Desayuno.entrega,
                             tipoComida: "Desayuno",
+                            completo: true,
                         });
                     }
                 } else {
@@ -124,7 +177,7 @@ app.post('/entregas/getComandas', async(req, res) => {
                         if (infoComanda.val().Desayuno.status) {
                             console.log('Info de la comanda de dayuno: ', infoComanda.val().Desayuno);
                             const infoComida = await db.ref("/MenuDesayuno/" + infoComanda.val().Desayuno.id + "/").once("value");
-                            console.log('info del desayuno: ', infoComida.val());
+                            // console.log('info del desayuno: ', infoComida.val());
                             const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
                             console.log('Nombre del usuario: ', infoUsuario.val().nombre);
                             const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Desayuno.direccion + "/").once("value");
@@ -161,7 +214,7 @@ app.post('/entregas/getComandas', async(req, res) => {
                         if (infoComanda.val().Comida.status) {
                             console.log('Info de la comanda de comida: ', infoComanda.val().Comida);
                             const infoComida = await db.ref("/MenuComida/" + infoComanda.val().Comida.id + "/").once("value");
-                            console.log('info del comida: ', infoComida.val());
+                            //console.log('info del comida: ', infoComida.val());
                             const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
                             console.log('Nombre del usuario: ', infoUsuario.val().nombre);
                             const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Comida.direccion + "/").once("value");
@@ -198,11 +251,11 @@ app.post('/entregas/getComandas', async(req, res) => {
                         if (infoComanda.val().Cena.status) {
                             console.log('Info de la comanda de cena: ', infoComanda.val().Cena);
                             const infoComida = await db.ref("/MenuCena/" + infoComanda.val().Cena.id + "/").once("value");
-                            console.log('info del cena: ', infoComida.val());
+                            //  console.log('info del cena: ', infoComida.val());
                             const infoUsuario = await db.ref("/usuarios/" + busquedaDeFecha[x].idUsuario + "/").once("value");
                             console.log('Nombre del usuario: ', infoUsuario.val().nombre);
                             const infoDireccion = await db.ref("/direccion/" + busquedaDeFecha[x].idUsuario + "/" + infoComanda.val().Cena.direccion + "/").once("value");
-                            console.log('Direccion: ', infoDireccion.val());
+                            //console.log('Direccion: ', infoDireccion.val());
 
                             if (!infoDireccion.val()) {
                                 data.push({

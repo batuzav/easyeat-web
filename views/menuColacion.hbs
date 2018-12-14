@@ -46,8 +46,9 @@
     <div class="containerComanda col-md-11 col-md-offset-1 col-xs-offset-3  col-xs-9">
         
         <div class=" col-md-6 col-xs-12 conHorizontal1 ">
-           <form action="">
+           
                      <div class="col-md-5 col-md-offset-1 col-xs-12 formcomi centroformandbutom" >
+                         <form action="">
                         <div class="form-group">
                         <label for="titulo" style="color: black"><b> *Título</b></label>
                         <br>
@@ -76,7 +77,8 @@
             </form>
         </div>
         <br>
-        <div class="col-md-6 col-xs-12 imagenform centroformandbutom">                                            
+        <div class="col-md-6 col-xs-12 imagenform centroformandbutom">  
+            <br>                                          
             <div>
                 <img id="img1" ng-show="imagen" class="imagencomida" ng-click="cancelarImagen();$event.stopPropagation();"><br/>
                 <input id="inputFile1" type="file" ng-show="imagen" name="inputFile1" ng-model="frmData.inputFile1">
@@ -87,6 +89,7 @@
             <button type="submit" class="formbuttom btn" ng-show="!modify" ng-click="agregarColacion();$event.stopPropagation();">Subir menú</button>
             <button type="submit" class="formbuttom btn" ng-show="modify" ng-click="modifyColacion();$event.stopPropagation();">Modificar Menu</button>
             <button type="submit" class="cancelarbtn btn" ng-show="modify" ng-click="cancelarModify();$event.stopPropagation();">Cancelar</button>
+            
             </div>                 
         </div>
         
@@ -100,7 +103,7 @@
                         <th>Unidades de medida</th>
                         
                     </tr>
-                    <tr ng-repeat="colacion in colaciones track by $index">
+                    <tr ng-repeat="colacion in colaciones track by $index" ng-hide="loading">
                        <td><img src="\{{ colacion.imagen || imagenDefault }}" alt="" class="circular--square">    \{{ colacion.nombre }}</td> 
                        <td>\{{ colacion.descripcion }}</td>
                        <td>\{{ colacion.calorias }}</td>
@@ -109,6 +112,7 @@
                        
                     </tr>    
                 </table>
+                
             </div>
             <div ng-show="loading" class="loading col-md-2 col-md-offset-4"><img src="/assets/img/loading.gif"></div>
         </div>

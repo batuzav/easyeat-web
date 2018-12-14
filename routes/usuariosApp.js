@@ -81,7 +81,8 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                                 plan: pedido[pedido.length - 1].plan,
                                 metodoPago: pedido[pedido.length - 1].metodoPago,
                                 total: pedido[pedido.length - 1].total,
-                                estatura: infoPlanAlimenticio.val().estatura
+                                estatura: infoPlanAlimenticio.val().estatura,
+                                id: keys[x].id
 
                             });
                         }

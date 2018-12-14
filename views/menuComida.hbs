@@ -101,7 +101,7 @@
                         <th>Unidades de medida</th>
                         
                     </tr>
-                    <tr ng-repeat="comida in comidas track by $index">
+                    <tr ng-repeat="comida in comidas track by $index" ng-hide="loading">
                        <td><img src="\{{ comida.imagen || imagenDefault }}" alt="" class="circular--square">    \{{ comida.nombre }}</td> 
                        <td>\{{ comida.descripcion }}</td>
                        <td>\{{ comida.calorias }}</td>
