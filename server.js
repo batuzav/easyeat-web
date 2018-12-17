@@ -21,7 +21,7 @@ const { db } = require('./config/firebase');
 
 // Variables pars  Express
 var fs = require('fs');
-var http = require('http');
+
 var https = require('https');
 const express = require('express');
 const app = express();
@@ -240,6 +240,12 @@ io.origins('*:*');
 server.listen(process.env.PORT, () => {
     console.log('Se esta escuchando el puerto: ', process.env.PORT);
 });
+
+var http = require('http');
+http.createServer(function(req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
 
 
 io.on('connection', function(socket) { //habla al metodo connection
