@@ -51,9 +51,9 @@ angular.module("app", ['ngCookies'])
                 });
         }
 
-        $scope.now = new Date();
-        $scope.frmData.fecha = $scope.now.toISOString().substring(0, 10);
-        $scope.llamarMenu();
+        //$scope.now = new Date();
+        //$scope.frmData.fecha = $scope.now.toISOString().substring(0, 10);
+        //$scope.llamarMenu();
 
         function cargarCenas() {
             $scope.loading = true;

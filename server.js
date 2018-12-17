@@ -217,10 +217,6 @@ app.get("/cancel", (req, res) => {
     res.render("cancel");
 });
 
-app.get("/pureba", (req, res) => {
-
-
-});
 
 ///COnectar al puerto y subir los servicios
 
