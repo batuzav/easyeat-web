@@ -227,13 +227,13 @@ app.get('*', (req, res) => {
     return res.status(404).send("<h1> NO HAY PAGINA </h1>");
 });
 
-var optionsCERT = {
+/*var optionsCERT = {
     key: fs.readFileSync('./config/easyeatapp.key'),
     cert: fs.readFileSync('./config/f3697fa4cb2a78eb.crt'),
-};
+};*/
 
 //constantes para el socket
-let server = require('https').Server(optionsCERT, app); //  
+let server = require('http').Server(app); //  
 let io = require('socket.io')(server); //ligamos el web socket con el servidor
 io.origins('*:*');
 
