@@ -59,7 +59,9 @@ angular.module("app", ['ngCookies'])
                     alert(respone.err);
                 });
         }
-
+        $scope.now = new Date();
+        $scope.frmData.fechaReporte = $scope.now.toISOString().substring(0, 10);
+        $scope.llamarComandas();
 
         async function getComandas(info) {
             $scope.entregas = {};

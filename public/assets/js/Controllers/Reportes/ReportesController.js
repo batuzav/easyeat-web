@@ -134,6 +134,12 @@ angular.module("app", ['ngCookies'])
                 });
 
         }
+
+        $scope.now = new Date();
+        $scope.frmData.fechaReporte = $scope.now.toISOString().substring(0, 10);
+        $scope.llamarReportes();
+
+
         $scope.logout = () => {
             console.log('Entro a logout')
             $http.post('/login/logout')

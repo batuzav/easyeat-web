@@ -2,7 +2,7 @@ var angular;
 angular.module("app", ['ngCookies'])
     .controller("controlador", function($scope, $http, $cookies) {
         document.getElementById('usuarios').style = 'background-color: #B1D236; color:white';
-        document.getElementById('AC').style = 'border-bottom: 5px solid white;';
+        document.getElementById('IN').style = 'border-bottom: 5px solid white;';
         $scope.usuarios = [];
         $scope.hola = "hola soy batuza";
         $scope.hh = [];
@@ -52,12 +52,12 @@ angular.module("app", ['ngCookies'])
         async function getUsuarios(info) {
             $scope.loading = true;
             $scope.entregas = {};
-            await $http.post('/usuartios/getUsuarios', info)
+            await $http.post('/usuartios/getUsuariosIn', info)
                 .then(function(respone) {
                     $scope.usuarios = respone['data'];
                     $scope.usuarioActivo = $scope.usuarios.usuarioActivo;
                     $scope.usuarioInactivo = $scope.usuarios.usuarioInactivo;
-                    $scope.usuarios = $scope.usuarios.usuarioActivo;
+                    $scope.usuarios = $scope.usuarios.usuarioInactivo;
                     console.log($scope.usuarios);
                     $scope.loading = false;
 
@@ -68,32 +68,7 @@ angular.module("app", ['ngCookies'])
                 });
         }
 
-        $scope.MostrarUsuariosAc = async() => {
-            // var Table = document.getElementById("tableUsers");
-            // $scope.tableInner = Table.innerHTML;
-            // console.log($scope.tableInner);
-            // // Table.innerHTML = "";
-            $scope.usuarios = [];
-            $scope.showEsatdo = true;
-            $scope.usuarios = $scope.usuarioActivo;
-            document.getElementById('AC').style = 'border-bottom: 5px solid white;';
-            document.getElementById('IN').style = '';
-        }
 
-        $scope.MostrarUsuariosIn = async() => {
-            // var Table = document.getElementById("tableUsers");
-            // $scope.tableInner = Table.innerHTML;
-            // console.log($scope.tableInner);
-            // Table.innerHTML = "";
-            $scope.usuarios = [];
-            $scope.showEsatdo = false;
-            //$scope.usuarios = $scope.usuarioInactivo;
-
-            document.getElementById('IN').style = 'border-bottom: 5px solid white;';
-            document.getElementById('AC').style = '';
-
-
-        }
 
         $scope.logout = () => {
             console.log('Entro a logout')

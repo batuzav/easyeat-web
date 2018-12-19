@@ -105,6 +105,10 @@ app.get('/usuarios', usuarioRegistrado, permisosUsuarios, (req, res) => {
     res.render('usuarios');
 });
 
+app.get('/usuariosInactivos', usuarioRegistrado, permisosUsuarios, (req, res) => {
+    res.render('usuariosInactivos');
+});
+
 app.get('/comandas', usuarioRegistrado, permisosAlimentos, (req, res) => {
     res.render('comandaDesayuno');
 
@@ -155,6 +159,8 @@ app.get('/comandaCenas', usuarioRegistrado, permisosAlimentos, (req, res) => {
 app.get('/comandaColaciones', usuarioRegistrado, permisosAlimentos, (req, res) => {
     res.render('comandaColaciones');
 });
+
+
 
 app.get('/', usuarioRegistrado, permisosUsuarios, (req, res) => {
     res.redirect('/usuarios');

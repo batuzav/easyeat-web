@@ -56,6 +56,10 @@ app.use(bodyParser.json({ limit: '50mb' }));
 //compartir la carpeta publica 
 app.use(express.static(__dirname + '/public'));
 
+
+//favicon 
+
+
 //EXpress HBS engne
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');

@@ -70,25 +70,79 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                                 });
                             });
 
+                            if (pedido[pedido.length - 1].metodoPago === '  Oxxo Pay') {
 
-                            usuarioActivo.push({
-                                nombre: infoUsuario.val().nombre,
-                                fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
-                                imc: infoPlanAlimenticio.val().imc,
-                                peso: infoPlanAlimenticio.val().peso,
-                                dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
-                                genero: infoPlanAlimenticio.val().genero,
-                                plan: pedido[pedido.length - 1].plan,
-                                metodoPago: pedido[pedido.length - 1].metodoPago,
-                                total: pedido[pedido.length - 1].total,
-                                estatura: infoPlanAlimenticio.val().estatura,
-                                id: keys[x].id
 
-                            });
+                                console.log(pedido[pedido.length - 1].metodoPago);
+                                usuarioActivo.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
+                                    imc: infoPlanAlimenticio.val().imc,
+                                    peso: infoPlanAlimenticio.val().peso,
+                                    dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
+                                    genero: infoPlanAlimenticio.val().genero,
+                                    plan: pedido[pedido.length - 1].plan,
+                                    metodoPago: pedido[pedido.length - 1].metodoPago,
+                                    total: pedido[pedido.length - 1].total,
+                                    estatura: infoPlanAlimenticio.val().estatura,
+                                    id: keys[x].id,
+                                    pagado: pedido[pedido.length - 1].pagado
+
+                                });
+
+                            } else {
+                                usuarioActivo.push({
+                                    nombre: infoUsuario.val().nombre,
+                                    fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
+                                    imc: infoPlanAlimenticio.val().imc,
+                                    peso: infoPlanAlimenticio.val().peso,
+                                    dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
+                                    genero: infoPlanAlimenticio.val().genero,
+                                    plan: pedido[pedido.length - 1].plan,
+                                    metodoPago: pedido[pedido.length - 1].metodoPago,
+                                    total: pedido[pedido.length - 1].total,
+                                    estatura: infoPlanAlimenticio.val().estatura,
+                                    id: keys[x].id,
+                                    pagado: true
+
+                                });
+                            }
                         }
 
                     });
                 }
+            }
+
+
+        }
+
+    }
+    res.json({
+        ok: true,
+        usuarioInactivo,
+        usuarioActivo
+
+    })
+
+});
+
+
+
+app.post('/usuartios/getUsuariosIn', async(req, res) => {
+    let keys = req.body.data;
+    let usuarioActivo = [];
+    let usuarioInactivo = [];
+    console.log('ids de usuarios: ', keys.length);
+    for (let x = 0; x < keys.length; x++) {
+        const infoUsuario = await db.ref("/usuarios/" + keys[x].id + "/").once("value");
+        if (infoUsuario.val()) {
+            const fechaCena = new Date(infoUsuario.val().ultimacena);
+            const fechaDesayuno = new Date(infoUsuario.val().ultimodesayuno);
+            const fechaComida = new Date(infoUsuario.val().ultimacomida);
+            const fechaCompleto = new Date(infoUsuario.val().ultimocompleto);
+            let now = new Date();
+            if (fechaCena.getTime() >= now.getTime() || fechaDesayuno.getTime() >= now.getTime() || fechaComida.getTime() >= now.getTime() || fechaCompleto.getTime() >= now.getTime()) {
+
             } else {
                 const infoPlanAlimenticio = await db.ref("/planAlimenticio/" + keys[x].id + "/").once("value");
                 if (infoPlanAlimenticio.val()) {
@@ -99,11 +153,13 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                         peso: infoPlanAlimenticio.val().peso,
                         dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
                         genero: infoPlanAlimenticio.val().genero,
+                        pagado: true
                     });
                 } else {
                     usuarioInactivo.push({
                         nombre: infoUsuario.val().nombre,
                         fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
+                        pagado: true
                     })
                 }
             }

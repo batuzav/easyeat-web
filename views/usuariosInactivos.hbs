@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
                     <li id="AC" style="color: white"><a href="/usuarios" >Activos</a></li>
-                    <li id="IN" style="color: white"><a href="/usuariosInactivos" >Inactivos</a></li>
+                    <li id="IN" style="color: white"><a href="/usuariosInactivos">Inactivos</a></li>
                 
                 </ul>
                 <ul class="nav navbar-nav navbar-right" style="float:right"> 
@@ -48,10 +48,9 @@
         <div class="col-md-11 col-md-offset-1 col-xs-9 col-xs-offset-3 divUsuario" >
             <div class="table-responsive" >
                 
-               
-                <table class="table table-condensed table-hover" ng-show="\{{ showEsatdo }}">
+                <table class="table table-condensed table-hover">
                     <tr class="headtable">
-                        <th >Estado</th>
+                       
                         <th>Usuario</th>
                         <th>Método de pago</th>
                         <th>Plan contratado</th>
@@ -70,9 +69,6 @@
 
 
                     <tr ng-repeat="usuario in usuarios track by $index">
-                        <td id="tableUsers" ><label ng-hide="\{{ usuario.pagado }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="comandaLista(comanda);$event.stopPropagation();"> PENDIENTE</label>
-                            <label ng-show="\{{ usuario.pagado }}">✔️ ¡LISTO!</label>
-                        </td>
                         <td>\{{ usuario.nombre }}</td>
                         <td>\{{ usuario.metodoPago }}</td>
                         <td>\{{ usuario.plan }}</td>
@@ -91,4 +87,4 @@
     </body>
 </html>
 
-<script src="/assets/js/UsarioController.js"></script>
+<script src="/assets/js/UsarioInactivoController.js"></script>
