@@ -117,8 +117,6 @@ angular.module("app", ['ngCookies'])
             $scope.loading = false;
             if ($scope.tabla.length == 0) {
                 alert('No hay Reportes')
-            } else {
-                alert('Reportes listas ');
             }
             console.log('cantidad de posiciones', $scope.tabla.length);
         }

@@ -102,9 +102,46 @@ app.put('/entregas/entregaLista', async(req, res) => {
                     Mensaje: "Error con la base de datos"
                 });
             } else {
+                const infoContUsuario = await db.ref("/usuarios/" + id + "/").once("value");
+                if (infoContUsuario.val()) {
+                    if (tipo === 'Desayuno') {
+                        let cont = infoContUsuario.val().ContDesayuno;
+                        cont--;
+                        let data = {
+                            ContDesayuno: cont
 
+                        }
+                        await db.ref("/usuarios/").child(id).update(data, async function(err) {
+
+                        });
+                    }
+                    if (tipo === 'Comida') {
+                        let cont = infoContUsuario.val().ContComida;
+                        cont--;
+                        let data = {
+                            ContComida: cont
+
+                        }
+                        await db.ref("/usuarios/").child(id).update(data, async function(err) {
+
+                        });
+
+                    }
+                    if (tipo === 'Cena') {
+                        let cont = infoContUsuario.val().ContCena;
+                        cont--;
+                        let data = {
+                            ContCena: cont
+
+                        }
+                        await db.ref("/usuarios/").child(id).update(data, async function(err) {
+
+                        });
+                    }
+                }
                 res.json({
                     ok: true,
+
 
                 });
             }

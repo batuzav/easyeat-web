@@ -73,8 +73,6 @@ angular.module("app", ['ngCookies'])
                     $scope.loading = false;
                     if ($scope.entregas.length == 0) {
                         alert('No hay Entregas')
-                    } else {
-                        alert('Entregas listas ');
                     }
 
                 }, function(respone) {

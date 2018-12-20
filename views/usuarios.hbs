@@ -26,6 +26,7 @@
                 <ul class="nav navbar-nav">
                     <li id="AC" style="color: white"><a href="/usuarios" >Activos</a></li>
                     <li id="IN" style="color: white"><a href="/usuariosInactivos" >Inactivos</a></li>
+                    <li id="OX" style="color: white"><a href="/usuariosOxxoPay" >Oxxo Pay</a></li>
                 
                 </ul>
                 <ul class="nav navbar-nav navbar-right" style="float:right"> 
@@ -70,7 +71,7 @@
 
 
                     <tr ng-repeat="usuario in usuarios track by $index">
-                        <td id="tableUsers" ><label ng-hide="\{{ usuario.pagado }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="comandaLista(comanda);$event.stopPropagation();"> PENDIENTE</label>
+                        <td id="tableUsers" ><label ng-hide="\{{ usuario.pagado }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="UsuarioListo(usuario);$event.stopPropagation();"> PENDIENTE</label>
                             <label ng-show="\{{ usuario.pagado }}">✔️ ¡LISTO!</label>
                         </td>
                         <td>\{{ usuario.nombre }}</td>

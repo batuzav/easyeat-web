@@ -51,17 +51,17 @@
                 
                 <table class="table table-condensed table-hover">
                     <tr class="headtable">
-                       
+                        <th>Estado</th>
                         <th>Usuario</th>
                         <th>Método de pago</th>
                         <th>Plan contratado</th>
                         <th>Total</th>
-                        <th>Peso</th>
-                        <th>Estatura</th>
+                        <th>Factura</th>
                         <th>Fecha de nacimiento</th>
                         <th>Sexo</th>
                         <th>IMC</th>
                         <th>DietaCalorica</th>
+                        <th></th>
                         
                     
                         
@@ -70,16 +70,19 @@
 
 
                     <tr ng-repeat="usuario in usuarios track by $index">
+                        <td id="tableUsers" ><label ng-hide="\{{ usuario.pagado }}"><input type="checkbox" id="cbox1" value="first_checkbox" ng-model="checked" ng-change="UsuarioListo(usuario);$event.stopPropagation();"> PENDIENTE</label>
+                            <label ng-show="\{{ usuario.pagado }}">✔️ ¡LISTO!</label>
+                        </td>
                         <td>\{{ usuario.nombre }}</td>
                         <td>\{{ usuario.metodoPago }}</td>
                         <td>\{{ usuario.plan }}</td>
                         <td>$ \{{ usuario.total }}</td>
-                        <td>\{{ usuario.peso }} KG</td>
-                        <td>\{{ usuario.estatura }} CM</td>
+                        <td>\{{ usuario.factura}} </td>
                         <td>\{{ usuario.fechaNaci }}</td>
                         <td>\{{ usuario.genero }}</td>
                         <td>\{{ usuario.imc }}</td>
-                        <td>\{{ usuario.dietaCalorica }}</td>   
+                        <td>\{{ usuario.dietaCalorica }}</td>
+                        <td  style="color:red">Eliminar</td>   
                     </tr>
                 </table>
             </div>
@@ -88,4 +91,4 @@
     </body>
 </html>
 
-<script src="/assets/js/UsarioInactivoController.js"></script>
+<script src="/assets/js/UsuarioOxxopayController.js"></script>

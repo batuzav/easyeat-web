@@ -445,18 +445,6 @@ io.on('connection', function(socket) { //habla al metodo connection
 
                     });
 
-
-                    db.ref("/Carrito/" + msg.idcliente + "/").child('infocliente').update({
-                        status: true,
-                    }, async function(err) {
-                        if (err) {
-                            console.log('ERROR')
-                        } else {
-                            console.log('HECHO')
-
-
-                        }
-                    });
                 }
                 if (err) {
                     console.log(err);

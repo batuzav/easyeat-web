@@ -109,6 +109,10 @@ app.get('/usuariosInactivos', usuarioRegistrado, permisosUsuarios, (req, res) =>
     res.render('usuariosInactivos');
 });
 
+app.get('/usuariosOxxoPay', usuarioRegistrado, permisosUsuarios, (req, res) => {
+    res.render('usuariosOxxoPay');
+});
+
 app.get('/comandas', usuarioRegistrado, permisosAlimentos, (req, res) => {
     res.render('comandaDesayuno');
 

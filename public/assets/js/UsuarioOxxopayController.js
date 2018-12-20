@@ -2,7 +2,7 @@ var angular;
 angular.module("app", ['ngCookies'])
     .controller("controlador", function($scope, $http, $cookies) {
         document.getElementById('usuarios').style = 'background-color: #B1D236; color:white';
-        document.getElementById('AC').style = 'border-bottom: 5px solid white;';
+        document.getElementById('OX').style = 'border-bottom: 5px solid white;';
         $scope.usuarios = [];
         $scope.hola = "hola soy batuza";
         $scope.hh = [];
@@ -37,10 +37,10 @@ angular.module("app", ['ngCookies'])
         function cargarUsarios() {
             $scope.loading = true;
 
-            $http.post('/usuarios/getKeys')
+            $http.post('/oxxopay/getKeys')
                 .then(function(respone) {
                     $scope.hh = respone['data'];
-                    //console.log($scope.hh);
+                    console.log($scope.hh);
                     getUsuarios($scope.hh);
 
                 }, function(respone) {
@@ -52,12 +52,11 @@ angular.module("app", ['ngCookies'])
         async function getUsuarios(info) {
             $scope.loading = true;
             $scope.entregas = {};
-            await $http.post('/usuartios/getUsuarios', info)
+            await $http.post('/oxxopay/getUsuarios', info)
                 .then(function(respone) {
                     $scope.usuarios = respone['data'];
-                    $scope.usuarioActivo = $scope.usuarios.usuarioActivo;
-                    $scope.usuarioInactivo = $scope.usuarios.usuarioInactivo;
-                    $scope.usuarios = $scope.usuarios.usuarioActivo;
+
+                    $scope.usuarios = $scope.usuarios.pedido;
                     console.log($scope.usuarios);
                     $scope.loading = false;
 
@@ -67,35 +66,8 @@ angular.module("app", ['ngCookies'])
                     location.reload();
                 });
         }
-
-        $scope.MostrarUsuariosAc = async() => {
-            // var Table = document.getElementById("tableUsers");
-            // $scope.tableInner = Table.innerHTML;
-            // console.log($scope.tableInner);
-            // // Table.innerHTML = "";
-            $scope.usuarios = [];
-            $scope.showEsatdo = true;
-            $scope.usuarios = $scope.usuarioActivo;
-            document.getElementById('AC').style = 'border-bottom: 5px solid white;';
-            document.getElementById('IN').style = '';
-        }
-
-        $scope.MostrarUsuariosIn = async() => {
-            // var Table = document.getElementById("tableUsers");
-            // $scope.tableInner = Table.innerHTML;
-            // console.log($scope.tableInner);
-            // Table.innerHTML = "";
-            $scope.usuarios = [];
-            $scope.showEsatdo = false;
-            //$scope.usuarios = $scope.usuarioInactivo;
-
-            document.getElementById('IN').style = 'border-bottom: 5px solid white;';
-            document.getElementById('AC').style = '';
-
-
-        }
-
         $scope.UsuarioListo = async function(usuario) {
+            $scope.loading = true;
             console.log($scope.frmData);
             await $http.post('/usuario/Pago', usuario)
                 .then(function(respone) {
@@ -107,6 +79,7 @@ angular.module("app", ['ngCookies'])
                     alert(respone.err);
                 });
         }
+
 
         $scope.logout = () => {
             console.log('Entro a logout')
