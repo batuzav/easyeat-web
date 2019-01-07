@@ -234,6 +234,9 @@ app.get('*', (req, res) => {
 var optionsCERT = {
     key: fs.readFileSync('./config/easyeatapp.key'),
     cert: fs.readFileSync('./config/f3697fa4cb2a78eb.crt'),
+    ca: [
+        fs.readFileSync('./config/gd_bundle-g2-g1.crt'),
+    ]
 };
 
 //constantes para el socket
