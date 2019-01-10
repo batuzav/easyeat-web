@@ -67,7 +67,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 /*-----------------socket----------------*/
 //variables para poder usar conekta
-conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA';
+conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA'; //lave privada conekta
 conekta.api_version = '2.0.0';
 
 //configure de paypal
@@ -240,14 +240,16 @@ var optionsCERT = {
 };
 
 //constantes para el socket
-let server = require('https').Server(optionsCERT, app); //  
+let server = require('https').Server(optionsCERT, app); //ESTA LINEA HAY QUE COMENTARLA CUANDO ESTES EN LOCALHOST
+// const http = require('http'); //ERICK ESTAS SIRVEN PARA DESARROLLO EN LOCALHOST
+// let server = http.createServer(app); //ERICK ESTAS SIRVEN PARA DESARROLLO EN LOCALHOST
 let io = require('socket.io')(server); //ligamos el web socket con el servidor
 io.origins('*:*');
 
 server.listen(process.env.PORT, () => {
     console.log('Se esta escuchando el puerto: ', process.env.PORT);
 });
-
+//ERICK HAY QUE COMENTAR ESTAS LINEAS DE CODIGO CUANDO ESTES EN LOCALHOST
 var http = require('http');
 http.createServer(function(req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
@@ -465,6 +467,36 @@ io.on('connection', function(socket) { //habla al metodo connection
                 }
             })
 
+        }
+        //Envio de correo del formulario de contactanos
+        if (msg.contacnos === true) {
+            //console.log(msg);
+
+            function sendEmail(obj) {
+                return transporter.sendMail(obj);
+            }
+
+            sendEmail({
+                to: 'atencion@easyeat.mx',
+                from: 'EASYEAT-APP',
+                subject: 'Contáctanos App EasyEat',
+                html: '<<!DOCTYPE html><html><head><title>Formulario de contacto App EasyEat</title></head><body><p>Formulario de contacto App EasyEat</p><p>Nombre:</p><p>' + msg.nombre + '</p><p>Teléfono:</p><p>' + msg.telefono + '</p><p>Correo electrónico:</p><p>' + msg.correo + '</p><p>Mensaje:</p><p>' + msg.comentarios + '</p></body></html>',
+            });
+        }
+        //Envio de correo para solicitar factura
+        if (msg.rfc) {
+            //console.log(msg);
+
+            function sendEmail(obj) {
+                return transporter.sendMail(obj);
+            }
+
+            sendEmail({
+                to: 'facturacion@easyeat.mx',
+                from: 'EASYEAT-APP',
+                subject: 'Solicitud de factura EasyEat',
+                html: '<<!DOCTYPE html><html><head><title>Formulario de contacto App EasyEat</title></head><body><p>Facturación EasyEat</p><p>RFC:</p><p>' + msg.rfc + '</p><p>Razón social:</p><p>' + msg.razonsocial + '</p><p>Dirección:</p><p>' + msg.calle + ' #ext ' + msg.numeroex + ' #int ' + (msg.numeroIn === undefined ? 'N/A' : msg.numeroIn) + ', Colonia: ' + msg.colonia + ', Municipio ' + msg.municipio + ', Estado ' + msg.estado + ', C.P. ' + msg.cp + '</p><p>Correo electrónico:</p><p>' + msg.email + '</p><br><p>Producto:</p><p>' + msg.nombre + '</p><p>Fecha de compra:</p><p>' + msg.fecha + '</p><p>Monto:</p><p>' + '$' + msg.monto + '.00' + '</p><<</body></html>',
+            });
         }
 
     });
