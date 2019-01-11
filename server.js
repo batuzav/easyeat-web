@@ -240,7 +240,7 @@ var optionsCERT = {
 };
 
 //constantes para el socket
-let server = require('https').Server(optionsCERT, app); //ESTA LINEA HAY QUE COMENTARLA CUANDO ESTES EN LOCALHOST
+let server = require('https').Server(optionsCERT, app); //ERICK ESTA LINEA HAY QUE COMENTARLA CUANDO ESTES EN LOCALHOST
 // const http = require('http'); //ERICK ESTAS SIRVEN PARA DESARROLLO EN LOCALHOST
 // let server = http.createServer(app); //ERICK ESTAS SIRVEN PARA DESARROLLO EN LOCALHOST
 let io = require('socket.io')(server); //ligamos el web socket con el servidor

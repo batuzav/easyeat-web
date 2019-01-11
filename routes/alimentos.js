@@ -196,7 +196,7 @@ app.post('/comidas/getcomidas', (req, res) => {
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
-                err
+                // err
             });
         }
         await snapshot.forEach((child) => {
@@ -286,7 +286,7 @@ app.post('/comidas/getcenas', (req, res) => {
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
-                err
+                //err
             });
         }
         await snapshot.forEach((child) => {
@@ -378,7 +378,7 @@ app.post('/comidas/getcolaciones', (req, res) => {
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
-                err
+                // err
             });
         }
         await snapshot.forEach((child) => {

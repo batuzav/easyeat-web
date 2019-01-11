@@ -65,6 +65,7 @@ angular.module("app", ['ngCookies'])
                 }, function(respone) {
                     alert(respone);
                     location.reload();
+                    $scope.loading = false;
                 });
         }
 

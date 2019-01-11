@@ -99,8 +99,9 @@ angular.module("app", ['ngCookies'])
                     }
 
                 }, function(respone) {
+                    $scope.loading = false;
                     alert(respone.data.mensaje);
-                    location.reload();
+                    // location.reload();
                 });
         }
 

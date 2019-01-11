@@ -83,11 +83,13 @@ angular.module("app", ['ngCookies'])
                     $scope.loading = false;
                     if ($scope.comandas.length == 0) {
                         alert('No hay Comandas')
+                        $scope.loading = false;
                     }
 
                 }, function(respone) {
+                    $scope.loading = false;
                     alert(respone.data.mensaje);
-                    location.reload();
+                    // location.reload();
                 });
         }
 

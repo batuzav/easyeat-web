@@ -44,7 +44,8 @@ angular.module("app", ['ngCookies'])
                     getUsuarios($scope.hh);
 
                 }, function(respone) {
-                    alert(respone);
+                    $scope.loading = false;
+                    alert('No hay pedidos por OxxoPay');
                 });
         }
 
@@ -63,7 +64,7 @@ angular.module("app", ['ngCookies'])
 
                 }, function(respone) {
                     alert(respone);
-                    location.reload();
+                    $scope.loading = false;
                 });
         }
         $scope.UsuarioListo = async function(usuario) {

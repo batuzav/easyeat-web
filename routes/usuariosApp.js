@@ -4,7 +4,7 @@ const app = express();
 const { db } = require("../config/firebase");
 const _ = require('underscore');
 const moment = require('moment');
-
+moment.locale('es');
 
 
 app.post('/usuarios/getKeys', async(req, res) => {
@@ -35,15 +35,15 @@ app.post('/usuarios/getKeys', async(req, res) => {
 app.post('/oxxopay/getKeys', async(req, res) => {
     let data = [];
     await db.ref("/OxxoPay").once("value", async function(snapshot) {
-        console.log('entro a usaurios');
+        // console.log('entro a usaurios getKey');
         if (!snapshot.val()) {
             return res.status(400).json({
                 ok: false,
-                err
+
             });
         }
         await snapshot.forEach((child) => {
-                console.log(child.key)
+                // console.log(child.key)
                 data.push({
                     id: child.key
                 });
@@ -61,9 +61,9 @@ app.post('/oxxopay/getUsuarios', async(req, res) => {
     let usuarioActivo = [];
     let usuarioInactivo = [];
     let pedido = [];
-    console.log('ids de usuarios: ', keys.length);
+    // console.log('ids de usuarios: ', keys.length);
     for (let x = 0; x < keys.length; x++) {
-        console.log('En get usuario de oxxopay: ', keys[x].id);
+        // console.log('En get usuario de oxxopay: ', keys[x].id);
         const infoUsuario = await db.ref("/usuarios/" + keys[x].id + "/").once("value");
         if (infoUsuario.val()) {
             const infoPlanAlimenticio = await db.ref("/planAlimenticio/" + keys[x].id + "/").once("value");
@@ -71,7 +71,7 @@ app.post('/oxxopay/getUsuarios', async(req, res) => {
                 await db.ref("/OxxoPay/" + keys[x].id + "/").once("value", async function(snapshot) {
                     if (snapshot.val()) {
                         await snapshot.forEach((child) => {
-                            console.log('id del child', child.key);
+                            // console.log('id del child', child.key);
                             pedido.push({
                                 nombre: infoUsuario.val().nombre,
                                 fechaNaci: new Date(infoUsuario.val().fechanaci).toISOString().substring(0, 10),
@@ -82,8 +82,14 @@ app.post('/oxxopay/getUsuarios', async(req, res) => {
                                 imc: infoPlanAlimenticio.val().imc,
                                 dietaCalorica: infoPlanAlimenticio.val().dietaCalorica,
                                 genero: infoPlanAlimenticio.val().genero,
-                                plan: 'Plan Alimenticio'
+                                plan: 'Plan Alimenticio',
+                                id_fichaOxxoPay: child.key
                             })
+                        });
+                    } else {
+                        return res.status(400).json({
+                            ok: false,
+                            Mensaje: "Error con la base de datos"
                         });
                     }
                 })
@@ -94,7 +100,9 @@ app.post('/oxxopay/getUsuarios', async(req, res) => {
             console.log('No hay info de usuario');
         }
     }
-    console.log('Pedico completo: ', pedido)
+
+
+    // console.log('Pedico completo: ', pedido)
     res.json({
         ok: true,
         pedido,
@@ -108,7 +116,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
     let keys = req.body.data;
     let usuarioActivo = [];
     let usuarioInactivo = [];
-    console.log('ids de usuarios: ', keys.length);
+    // console.log('ids de usuarios: ', keys.length);
     for (let x = 0; x < keys.length; x++) {
         const infoUsuario = await db.ref("/usuarios/" + keys[x].id + "/").once("value");
         if (infoUsuario.val()) {
@@ -176,7 +184,7 @@ app.post('/usuartios/getUsuariosIn', async(req, res) => {
     let keys = req.body.data;
     let usuarioActivo = [];
     let usuarioInactivo = [];
-    console.log('ids de usuarios: ', keys.length);
+    // console.log('ids de usuarios: ', keys.length);
     for (let x = 0; x < keys.length; x++) {
         const infoUsuario = await db.ref("/usuarios/" + keys[x].id + "/").once("value");
         if (infoUsuario.val()) {
@@ -232,7 +240,7 @@ let asignarComidas = (key) => {
 }
 
 
-async function validacionCompleto(dias, ultimo, hora, direc) {
+async function validacionCompleto(dias, ultimo, hora, direc, key, id_fichaOxxoPay) {
     ff = new Date();
     hh = ff.getHours();
     ccc = moment(ff).format('YYYY-MM-DD');
@@ -244,12 +252,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -261,12 +269,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -278,12 +286,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -297,12 +305,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -314,12 +322,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -331,12 +339,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -352,12 +360,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -369,12 +377,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                 gg = moment(ccc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
                     } else {
-                        await asignarFechaCompleto(ccc, hora, direc, dias);
+                        await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                         ccc = gg2
                         gg = moment(ccc).format('dddd');
@@ -389,12 +397,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                     gg = moment(ccc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
                         } else {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
@@ -406,12 +414,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                     gg = moment(ccc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
                         } else {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
@@ -425,12 +433,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                     gg = moment(ccc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
                         } else {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
@@ -442,12 +450,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                     gg = moment(ccc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
                         } else {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
@@ -459,12 +467,12 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
                     gg = moment(ccc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(1, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
                         } else {
-                            await asignarFechaCompleto(ccc, hora, direc, dias);
+                            await asignarFechaCompleto(ccc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ccc).add(3, 'day').format('YYYY-MM-DD')
                             ccc = gg2
                             gg = moment(ccc).format('dddd');
@@ -476,11 +484,19 @@ async function validacionCompleto(dias, ultimo, hora, direc) {
     }
 }
 
-async function validacionDesayuno(dias, ultimo, hora, direc) {
+async function validacionDesayuno(dias, ultimo, hora, direc, key, id_fichaOxxoPay) {
+    console.log('ENTRO A VALIDACION DESAYUNO');
     ff = new Date();
     hh = ff.getHours();
     dd = moment(ff).format('YYYY-MM-DD');
+    console.log('Dias: ' + dias);
+    console.log('ultimo: ' + ultimo);
+    console.log('Hora: ' + hora);
+    console.log('Direccion: ' + direc);
+    console.log('Hora en numero: ' + hh);
+    console.log('fecha hoy: ' + dd);
     if (ultimo == null || ultimo <= dd) {
+        console.log('ULTIMO DESAYUNO ES FECHA ANTERIOR A HOY');
         if (hh < 14) {
             ggg = moment(ff).format('dddd');
             if (ggg == 'lunes' || ggg == 'martes' || ggg == 'miércoles') {
@@ -488,12 +504,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -505,12 +521,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -522,12 +538,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -541,12 +557,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -558,12 +574,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -575,12 +591,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -589,19 +605,25 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
             }
         }
     } else {
+        console.log('ULTIMO DESAYUNO ES FECHA POSTERIOR A HOY');
         if (hh < 14) {
             ggg = moment(ultimo).format('dddd');
+            console.log('Dia Semana de Ultimo: ' + ggg);
             if (ggg == 'lunes' || ggg == 'martes' || ggg == 'miércoles' || ggg == 'jueves') {
+                console.log('ENTRO A MARTES');
                 dd = moment(ultimo).add(1, 'days').format('YYYY-MM-DD');
                 gg = moment(dd).format('dddd');
+                // console.log('Dia gg: ' + gg);
                 for (let i = 0; i < dias; i++) {
+                    console.log('CICLO FOR LISTO PARA ASIGNAR');
+                    console.log('Dia gg: ' + gg);
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -613,12 +635,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                 gg = moment(dd).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
                     } else {
-                        await asignarFechaDesayuno(dd, hora, direc, dias);
+                        await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                         dd = gg2
                         gg = moment(dd).format('dddd');
@@ -633,12 +655,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                     gg = moment(dd).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
                         } else {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
@@ -650,12 +672,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                     gg = moment(dd).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
                         } else {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
@@ -669,12 +691,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                     gg = moment(dd).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
                         } else {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
@@ -686,12 +708,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                     gg = moment(dd).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
                         } else {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
@@ -703,12 +725,12 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
                     gg = moment(dd).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(1, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
                         } else {
-                            await asignarFechaDesayuno(dd, hora, direc, dias);
+                            await asignarFechaDesayuno(dd, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(dd).add(3, 'day').format('YYYY-MM-DD')
                             dd = gg2
                             gg = moment(dd).format('dddd');
@@ -720,7 +742,7 @@ async function validacionDesayuno(dias, ultimo, hora, direc) {
     }
 }
 
-async function validacionComida(dias, ultimo, hora, direc) {
+async function validacionComida(dias, ultimo, hora, direc, key, id_fichaOxxoPay) {
     ff = new Date();
     hh = ff.getHours();
     cc = moment(ff).format('YYYY-MM-DD');
@@ -732,12 +754,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -749,12 +771,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -766,12 +788,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -785,12 +807,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -802,12 +824,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -819,12 +841,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -840,12 +862,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -857,12 +879,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                 gg = moment(cc).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
                     } else {
-                        await asignarFechaComida(cc, hora, direc, dias);
+                        await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                         cc = gg2
                         gg = moment(cc).format('dddd');
@@ -877,12 +899,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                     gg = moment(cc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
                         } else {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
@@ -894,12 +916,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                     gg = moment(cc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
                         } else {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
@@ -913,12 +935,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                     gg = moment(cc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
                         } else {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
@@ -930,12 +952,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                     gg = moment(cc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
                         } else {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
@@ -947,12 +969,12 @@ async function validacionComida(dias, ultimo, hora, direc) {
                     gg = moment(cc).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(1, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
                         } else {
-                            await asignarFechaComida(cc, hora, direc, dias);
+                            await asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(cc).add(3, 'day').format('YYYY-MM-DD')
                             cc = gg2
                             gg = moment(cc).format('dddd');
@@ -964,7 +986,7 @@ async function validacionComida(dias, ultimo, hora, direc) {
     }
 }
 
-async function validacionCena(dias, ultimo, hora, direc) {
+async function validacionCena(dias, ultimo, hora, direc, key, id_fichaOxxoPay) {
     console.log("ENTRO A FUNCION VALIDACIONCENA")
     console.log("Dias: " + dias)
     console.log("Ultimo: " + ultimo)
@@ -985,13 +1007,13 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
                         console.log("ENTRO A VIERNES Y SE DEBE IR A ASIGNARFECHA CENA")
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1003,12 +1025,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1020,12 +1042,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1043,13 +1065,13 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 console.log("DIA DE LA SEMANA GG : " + gg)
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
                         console.log("GG HOY ES VIERNES, DEBERIA ENTRAR A ASIGNAR FECHA")
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1061,12 +1083,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1078,12 +1100,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1099,12 +1121,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1116,12 +1138,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                 gg = moment(ce).format('dddd');
                 for (let i = 0; i < dias; i++) {
                     if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
                     } else {
-                        await asignarFechaCena(ce, hora, direc, dias);
+                        await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                         gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                         ce = gg2
                         gg = moment(ce).format('dddd');
@@ -1136,12 +1158,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                     gg = moment(ce).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
                         } else {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
@@ -1153,12 +1175,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                     gg = moment(ce).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
                         } else {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
@@ -1172,12 +1194,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                     gg = moment(ce).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
                         } else {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
@@ -1189,12 +1211,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                     gg = moment(ce).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
                         } else {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
@@ -1206,12 +1228,12 @@ async function validacionCena(dias, ultimo, hora, direc) {
                     gg = moment(ce).format('dddd');
                     for (let i = 0; i < dias; i++) {
                         if (gg == 'lunes' || gg == 'martes' || gg == 'miércoles' || gg == 'jueves') {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(1, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
                         } else {
-                            await asignarFechaCena(ce, hora, direc, dias);
+                            await asignarFechaCena(ce, hora, direc, key, id_fichaOxxoPay);
                             gg2 = moment(ce).add(3, 'day').format('YYYY-MM-DD')
                             ce = gg2
                             gg = moment(ce).format('dddd');
@@ -1223,10 +1245,10 @@ async function validacionCena(dias, ultimo, hora, direc) {
     }
 }
 
-function asignarFechaCompleto(key, cc, hora, direc, dias) {
+async function asignarFechaCompleto(cc, hora, direc, key, id_fichaOxxoPay) {
     let cont = 1
 
-    db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+    await db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
         if (snapshot.val) {
             use = snapshot.val();
             if (use.ultimocompleto != null) {
@@ -1264,34 +1286,40 @@ function asignarFechaCompleto(key, cc, hora, direc, dias) {
     })
 
     //firebase.database().ref("usuarios/"+ key +"/").update({ultimocompleto: cc, ultimacena: cc, ultimacomida: cc, ultimodesayuno: cc});
-    db.ref('MenuHistorial/' + cc + '/Desayuno/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Desayuno/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objD = snapshot.val();
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Desayuno/').update({ id: objD.id, completo: true, hora: hora, direccion: direc });
         }
     })
-    db.ref('MenuHistorial/' + cc + '/Comida/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Comida/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objCo = snapshot.val();
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Comida/').update({ id: objCo.id, completo: true, hora: hora, direccion: direc });
         }
     })
-    db.ref('MenuHistorial/' + cc + '/Cena/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Cena/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objCe = snapshot.val();
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Cena/').update({ id: objCe.id, completo: true, hora: hora, direccion: direc });
         }
     })
 
-    db.ref('Carrito/' + key + '/').remove();
+    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
-function asignarFechaDesayuno(key, cc, hora, direc) {
+async function asignarFechaDesayuno(cc, hora, direc, key, id_fichaOxxoPay) {
     let cont2 = 1
+        // console.log('CC: ' + cc);
+        // console.log('KEY: ' + key);
+        // console.log('HORA: ' + hora);
+        // console.log('DIRECCION: ' + direc);
 
-    db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+    await db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+            console.log("ENTRO A BASE DE DAOTS");
             if (snapshot.val) {
                 use = snapshot.val();
+                console.log(use);
                 if (use.ultimocompleto != null) {
                     if (use.ultimocompleto > cc) {
                         db.ref("usuarios/" + key + "/").update({ ultimodesayuno: cc });
@@ -1313,20 +1341,22 @@ function asignarFechaDesayuno(key, cc, hora, direc) {
             }
         })
         //firebase.database().ref("usuarios/"+ key +"/").update({ultimodesayuno: cc, ultimocompleto: cc});
-    db.ref('MenuHistorial/' + cc + '/Desayuno/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Desayuno/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objD = snapshot.val();
+            console.log(objD.id);
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Desayuno/').update({ id: objD.id, completo: false, hora: hora, direccion: direc });
         }
     })
 
-    db.ref('Carrito/' + key + '/').remove();
+    //AQUI SE TIENE QUE ELIMINAR DE LA TABLA OXXOPAY TODA LA INFO
+    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
-function asignarFechaComida(key, cc, hora, direc) {
+async function asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay) {
     let cont3 = 1
 
-    db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+    await db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
             if (snapshot.val) {
                 use = snapshot.val();
                 if (use.ultimocompleto != null) {
@@ -1350,24 +1380,24 @@ function asignarFechaComida(key, cc, hora, direc) {
             }
         })
         //firebase.database().ref("usuarios/"+ key +"/").update({ultimacomida: cc, ultimocompleto: cc});
-    db.ref('MenuHistorial/' + cc + '/Comida/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Comida/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objCo = snapshot.val();
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Comida/').update({ id: objCo.id, completo: false, hora: hora, direccion: direc });
         }
     })
 
-    db.ref('Carrito/' + key + '/').remove();
+    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
-function asignarFechaCena(key, cc, hora, direc) {
+async function asignarFechaCena(cc, hora, direc, key, id_fichaOxxoPay) {
     console.log("ENTRO A ASIGNAR FECHE CENA")
     console.log("FECHA: " + cc)
     console.log("hora: " + hora)
     console.log("Direccion: " + direc)
     let cont4 = 1
 
-    db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+    await db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
             if (snapshot.val) {
                 use = snapshot.val();
                 if (use.ultimocompleto != null) {
@@ -1391,19 +1421,22 @@ function asignarFechaCena(key, cc, hora, direc) {
             }
         })
         //firebase.database().ref("usuarios/"+ key +"/").update({ultimacena: cc, ultimocompleto: cc});
-    db.ref('MenuHistorial/' + cc + '/Cena/comida1/').once('value', (snapshot) => {
+    await db.ref('MenuHistorial/' + cc + '/Cena/comida1/').once('value', (snapshot) => {
         if (snapshot.val) {
             objCe = snapshot.val();
             db.ref('MenuFechaPersona/' + key + '/' + cc + '/Cena/').update({ id: objCe.id, completo: false, hora: hora, direccion: direc });
         }
     })
 
-    db.ref('Carrito/' + key + '/').remove();
+    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
 
-app.post('/usuario/Pago', async(req, res) => {
+app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
+    console.log("Entro a USUARIO PAGO");
+    //console.log("Ficha Oxxo Pay: " + req.body.id_fichaOxxoPay);
     const key = req.body.id;
+    const id_fichaOxxoPay = req.body.id_fichaOxxoPay;
     let diasCompleto = 0;
     let completo = '';
     let ultimocom = '';
@@ -1416,12 +1449,14 @@ app.post('/usuario/Pago', async(req, res) => {
     let diasCena = 0;
     let cena = '';
     let ultimacen = '';
-    await db.ref("Carrito/" + key + '/infocliente/').once('value', async(snapshot) => {
+    await db.ref("OxxoPay/" + key + '/' + id_fichaOxxoPay + '/objNewCar/infocliente/').once('value', async(snapshot) => { //Aqui debe entrar a infocliente
         if (snapshot.val) {
             objx = snapshot.val();
+            console.log('Valor de objx');
             console.log(objx)
             if (objx != null) {
-                await db.ref("Carrito/" + key + '/productos/').once('value', (snapshot) => {
+                await db.ref("OxxoPay/" + key + '/' + id_fichaOxxoPay + '/objNewCar/productos/').once('value', (snapshot) => {
+                    console.log("Entro a consultar Productos");
                     if (snapshot.val) {
                         valA = 0
                         valB = 0
@@ -1430,6 +1465,7 @@ app.post('/usuario/Pago', async(req, res) => {
                         snapshot.forEach((child) => {
                             console.log("Entro a Child del Carrito")
                             if (child.val().plan == 'Completo') {
+                                console.log("Entro a Child --> Completo")
                                 TotalDias = valA + child.val().dias
                                 valA = TotalDias
                                 diasCompleto = TotalDias;
@@ -1445,6 +1481,7 @@ app.post('/usuario/Pago', async(req, res) => {
                             }
 
                             if (child.val().plan == 'Desayuno') {
+                                console.log("Entro a Child --> Desayuno")
                                 TotalDiasDe = valB + child.val().dias
                                 valB = TotalDiasDe
                                 diasDesayuno = TotalDiasDe;
@@ -1460,6 +1497,7 @@ app.post('/usuario/Pago', async(req, res) => {
                             }
 
                             if (child.val().plan == 'Comida') {
+                                console.log("Entro a Child --> Comida")
                                 TotalDiasCo = valC + child.val().dias
                                 valC = TotalDiasCo
                                 diasComida = TotalDiasCo;
@@ -1475,7 +1513,7 @@ app.post('/usuario/Pago', async(req, res) => {
                             }
 
                             if (child.val().plan == 'Cena') {
-                                console.log("Dentro del Child entro a CENA")
+                                console.log("Entro a Child --> Cena")
                                 TotalDiasCe = valD + child.val().dias
                                 valD = TotalDiasCe
                                 diasCena = TotalDiasCe;
@@ -1492,35 +1530,43 @@ app.post('/usuario/Pago', async(req, res) => {
                         })
 
                         if (completo == 'Completo') {
+                            console.log("Paso el Child -->Va a entrar a Validacion Completo")
                             db.ref("usuarios/" + key + "/").once('value', async(snapshot) => {
                                 if (snapshot.val) {
                                     use = snapshot.val();
-                                    await validacionCompleto(key, diasCompleto, ultimocom, objx.horaplanCompleto, objx.direccion);
+                                    await validacionCompleto(diasCompleto, use.ultimocompleto, objx.horaplanCompleto, objx.direccion, key, id_fichaOxxoPay);
                                 }
                             })
                         }
                         if (desayuno == 'Desayuno') {
+                            console.log("Paso el Child -->Va a entrar a Validacion Desayuno")
                             db.ref("usuarios/" + key + "/").once('value', async(snapshot) => {
                                 if (snapshot.val) {
                                     use = snapshot.val();
-                                    await validacionDesayuno(key, diasDesayuno, ultimodes, objx.horaplanDesayuno, objx.direccion);
+                                    // console.log('Key: ' + key);
+                                    // console.log('Dias Desayuno: ' + diasDesayuno);
+                                    // console.log('Ultimo desayuno: ' + use.ultimodesayuno);
+                                    // console.log('Hora Desayuno: ' + objx.horaplanDesayuno);
+                                    // console.log('Direccion: ' + objx.direccion);
+                                    await validacionDesayuno(diasDesayuno, use.ultimodesayuno, objx.horaplanDesayuno, objx.direccion, key, id_fichaOxxoPay);
                                 }
                             })
                         }
                         if (comida == 'Comida') {
+                            console.log("Paso el Child -->Va a entrar a Validacion Comida")
                             db.ref("usuarios/" + key + "/").once('value', async(snapshot) => {
                                 if (snapshot.val) {
                                     use = snapshot.val();
-                                    await validacionComida(key, diasComida, ultimacom, objx.horaplanComida, objx.direccion);
+                                    await validacionComida(diasComida, use.ultimacomida, objx.horaplanComida, objx.direccion, key, id_fichaOxxoPay);
                                 }
                             })
                         }
                         if (cena == 'Cena') {
-                            console.log("ENTRO AL IF DE CENA")
+                            console.log("Paso el Child -->Va a entrar a Validacion Cena")
                             db.ref("usuarios/" + key + "/").once('value', async(snapshot) => {
                                 if (snapshot.val) {
                                     use = snapshot.val();
-                                    await validacionCena(key, diasCena, ultimacen, objx.horaplanCena, objx.direccion);
+                                    await validacionCena(diasCena, use.ultimacena, objx.horaplanCena, objx.direccion, key, id_fichaOxxoPay);
                                 }
                             })
                         }
