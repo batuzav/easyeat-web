@@ -6,6 +6,19 @@ const _ = require('underscore');
 const moment = require('moment');
 moment.locale('es');
 
+//config de mailg
+const nodemailer = require('nodemailer'),
+    creds = require('../creds'),
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'easyeatapp.random@gmail.com',
+            pass: '*#Easy$13#*',
+        },
+    }),
+    EmailTemplate = require('email-templates-v2').EmailTemplate,
+    path = require('path'),
+    Promise = require('bluebird');
 
 app.post('/usuarios/getKeys', async(req, res) => {
     let now = new Date('2018-12-05');
@@ -1449,6 +1462,7 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
     let diasCena = 0;
     let cena = '';
     let ultimacen = '';
+    let TotalCompra = 0;
     await db.ref("OxxoPay/" + key + '/' + id_fichaOxxoPay + '/objNewCar/infocliente/').once('value', async(snapshot) => { //Aqui debe entrar a infocliente
         if (snapshot.val) {
             objx = snapshot.val();
@@ -1464,6 +1478,10 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                         valD = 0
                         snapshot.forEach((child) => {
                             console.log("Entro a Child del Carrito")
+                            console.log(child.val());
+
+                            TotalCompra = TotalCompra + child.val().precio;
+
                             if (child.val().plan == 'Completo') {
                                 console.log("Entro a Child --> Completo")
                                 TotalDias = valA + child.val().dias
@@ -1471,13 +1489,13 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                                 diasCompleto = TotalDias;
                                 completo = 'Completo';
 
-                                db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
-                                    if (snapshot.val) {
-                                        use = snapshot.val();
-                                        ultimocom = use.ultimocompleto;
+                                // db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+                                //     if (snapshot.val) {
+                                //         use = snapshot.val();
+                                //         ultimocom = use.ultimocompleto;
 
-                                    }
-                                })
+                                //     }
+                                // })
                             }
 
                             if (child.val().plan == 'Desayuno') {
@@ -1487,13 +1505,13 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                                 diasDesayuno = TotalDiasDe;
                                 desayuno = 'Desayuno';
 
-                                db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
-                                    if (snapshot.val) {
-                                        use = snapshot.val();
-                                        ultimodes = use.ultimodesayuno;
+                                // db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+                                //     if (snapshot.val) {
+                                //         use = snapshot.val();
+                                //         ultimodes = use.ultimodesayuno;
 
-                                    }
-                                })
+                                //     }
+                                // })
                             }
 
                             if (child.val().plan == 'Comida') {
@@ -1503,13 +1521,13 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                                 diasComida = TotalDiasCo;
                                 comida = 'Comida';
 
-                                db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
-                                    if (snapshot.val) {
-                                        use = snapshot.val();
-                                        ultimacom = use.ultimacomida;
+                                // db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+                                //     if (snapshot.val) {
+                                //         use = snapshot.val();
+                                //         ultimacom = use.ultimacomida;
 
-                                    }
-                                })
+                                //     }
+                                // })
                             }
 
                             if (child.val().plan == 'Cena') {
@@ -1519,13 +1537,13 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                                 diasCena = TotalDiasCe;
                                 cena = 'Cena';
 
-                                db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
-                                    if (snapshot.val) {
-                                        use = snapshot.val();
-                                        ultimacen = use.ultimacena;
+                                // db.ref("usuarios/" + key + "/").once('value', (snapshot) => {
+                                //     if (snapshot.val) {
+                                //         use = snapshot.val();
+                                //         ultimacen = use.ultimacena;
 
-                                    }
-                                })
+                                //     }
+                                // })
                             }
                         })
 
@@ -1543,11 +1561,6 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                             db.ref("usuarios/" + key + "/").once('value', async(snapshot) => {
                                 if (snapshot.val) {
                                     use = snapshot.val();
-                                    // console.log('Key: ' + key);
-                                    // console.log('Dias Desayuno: ' + diasDesayuno);
-                                    // console.log('Ultimo desayuno: ' + use.ultimodesayuno);
-                                    // console.log('Hora Desayuno: ' + objx.horaplanDesayuno);
-                                    // console.log('Direccion: ' + objx.direccion);
                                     await validacionDesayuno(diasDesayuno, use.ultimodesayuno, objx.horaplanDesayuno, objx.direccion, key, id_fichaOxxoPay);
                                 }
                             })
@@ -1570,6 +1583,64 @@ app.post('/usuario/Pago', async(req, res) => { //OXXO PAY ASIGNACION
                                 }
                             })
                         }
+                    }
+                    // console.log('Factura: ' + objx.factura);
+                    if (objx.factura === 'no' || objx.factura === 'No') {
+                        console.log('Factura se debe ir a Historial de Pedido');
+                        ff = new Date();
+                        hoy = moment(ff).format('YYYY-MM-DD');
+                        let histoped = {
+                                plan: 'Plan Alimenticio',
+                                fecha: hoy,
+                                monto: TotalCompra,
+                                factura: false,
+                                metPagoH: objx.metodoPago
+                            }
+                            // console.log('Datos para Historial de Pedido');
+                            // console.log(histoped);
+                        newKey = db.ref().child('HistorialPedidos').push().key
+                        let updates = {}
+                        updates['/HistorialPedidos/' + key + '/' + newKey] = histoped
+                        db.ref().update(updates);
+                    } else {
+                        console.log("Factura se debe enviar inmediatamente al correo");
+                        ff = new Date();
+                        hoy = moment(ff).format('YYYY-MM-DD');
+                        let histoped = {
+                            plan: 'Plan Alimenticio',
+                            fecha: hoy,
+                            monto: TotalCompra,
+                            factura: true,
+                            metPagoH: objx.metodoPago
+                        }
+
+                        newKey = db.ref().child('HistorialPedidos').push().key
+                        let updates = {}
+                        updates['/HistorialPedidos/' + key + '/' + newKey] = histoped
+                        db.ref().update(updates);
+
+                        console.log('HISTORIAL DE PEDIDO');
+                        console.log(histoped);
+                        db.ref("facturacion/" + key + '/').once('value', async(snapshot) => {
+                            if (snapshot.val) {
+                                objfact = snapshot.val();
+                                if (objfact != null) {
+                                    console.log('Objeto con datos de facturacion: ');
+                                    console.log(objfact);
+
+                                    function sendEmail(obj) {
+                                        return transporter.sendMail(obj);
+                                    }
+
+                                    sendEmail({
+                                        to: 'facturacion@easyeat.mx',
+                                        from: 'EASYEAT-APP',
+                                        subject: 'Solicitud de factura EasyEat',
+                                        html: '<<!DOCTYPE html><html><head><title>Formulario de contacto App EasyEat</title></head><body><p>Facturación EasyEat</p><p>RFC:</p><p>' + objfact.rfc + '</p><p>Razón social:</p><p>' + objfact.razonsocial + '</p><p>Dirección:</p><p>' + objfact.calle + ' #ext ' + objfact.numeroex + ' #int ' + (objfact.numeroIn === undefined ? 'N/A' : objfact.numeroIn) + ', Colonia: ' + objfact.colonia + ', Municipio ' + objfact.municipio + ', Estado ' + objfact.estado + ', C.P. ' + objfact.cp + '</p><p>Correo electrónico:</p><p>' + objfact.email + '</p><br><p>Producto:</p><p>' + histoped.plan + '</p><p>Fecha de compra:</p><p>' + histoped.fecha + '</p><p>Monto:</p><p>' + '$' + histoped.monto + '.00' + '</p><<</body></html>',
+                                    });
+                                }
+                            }
+                        });
                     }
                 })
             }
