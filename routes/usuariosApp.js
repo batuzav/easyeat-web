@@ -152,7 +152,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
 
                                 });
                             });
-                            if (pedido[pedido.length - 1].metodoPago !== '  Oxxo Pay') {
+                            // if (pedido[pedido.length - 1].metodoPago !== '  Oxxo Pay') {
                                 console.log('Diferente de oxxo pay');
                                 usuarioActivo.push({
                                     nombre: infoUsuario.val().nombre,
@@ -169,7 +169,7 @@ app.post('/usuartios/getUsuarios', async(req, res) => {
                                     pagado: true
 
                                 });
-                            }
+                            // }
 
 
                         }
@@ -1318,7 +1318,7 @@ async function asignarFechaCompleto(cc, hora, direc, key, id_fichaOxxoPay) {
         }
     })
 
-    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
+    // await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
 async function asignarFechaDesayuno(cc, hora, direc, key, id_fichaOxxoPay) {
@@ -1363,7 +1363,7 @@ async function asignarFechaDesayuno(cc, hora, direc, key, id_fichaOxxoPay) {
     })
 
     //AQUI SE TIENE QUE ELIMINAR DE LA TABLA OXXOPAY TODA LA INFO
-    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
+    // await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
 async function asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay) {
@@ -1400,7 +1400,7 @@ async function asignarFechaComida(cc, hora, direc, key, id_fichaOxxoPay) {
         }
     })
 
-    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
+    // await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
 async function asignarFechaCena(cc, hora, direc, key, id_fichaOxxoPay) {
@@ -1441,7 +1441,7 @@ async function asignarFechaCena(cc, hora, direc, key, id_fichaOxxoPay) {
         }
     })
 
-    await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
+    // await db.ref('OxxoPay/' + key + '/' + id_fichaOxxoPay + '/').remove();
 }
 
 
