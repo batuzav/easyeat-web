@@ -67,7 +67,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 /*-----------------socket----------------*/
 //variables para poder usar conekta
-conekta.api_key = 'key_LvJkHquY5PyyEqPALswExA'; //lave privada conekta
+conekta.api_key = 'key_VYq6Zk3VyzGUuqzDxoLAWg'//'key_LvJkHquY5PyyEqPALswExA'; //lave privada conekta
 conekta.api_version = '2.0.0';
 
 //configure de paypal
