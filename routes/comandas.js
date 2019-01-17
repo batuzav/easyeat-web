@@ -537,7 +537,7 @@ app.post('/completas/getComandas', async(req, res) => {
                     data.push({
                         nombre: dataUsuario.val().nombre,
                         fecha: info.fecha.fechaReporte,
-                        menu: "Des: " + dataAlimento1.val().nombre + ", Com: " + dataAlimento2.val().nombre + ", Cen: " + dataAlimento2.val().nombre + ", Col: " + NomColacion1.val() + " & " + NomColacion2.val(),
+                        menu: "Des: " + dataAlimento1.val().nombre + ", Com: " + dataAlimento2.val().nombre + ", Cen: " + dataAlimento3.val().nombre + ", Col: " + NomColacion1.val() + " & " + NomColacion2.val(),
                         calorias: "Des: " + dataAlimento1.val().calorias + ", Com: " + dataAlimento2.val().calorias + ", Cen: " + dataAlimento3.val().calorias,
                         porciones: "Des: " + (dataPlanAlimento1.val() / dataAlimento1.val().calorias).toFixed(2) + ", Com: " + (dataPlanAlimento2.val() / dataAlimento2.val().calorias).toFixed(2) + ", Cen: " + (dataPlanAlimento3.val() / dataAlimento3.val().calorias).toFixed(2),
                         uMedida: "Des: " + dataAlimento1.val().medidas + ", Com: " + dataAlimento2.val().medidas + ", Cen: " + dataAlimento3.val().medidas,
