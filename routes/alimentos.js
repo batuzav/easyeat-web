@@ -25,7 +25,7 @@ app.post('/comidas/insertdesayunos', async(req, res) => {
             console.log(' Hay imagen viejo');
 
         }
-
+        // let data = _.pick(req.body, ['nombre', 'descripcion', 'calorias', 'medidas']); //eliminar el objeto de imagen
         db.ref("/MenuDesayuno").push(data, (err) => {
 
             if (err) {

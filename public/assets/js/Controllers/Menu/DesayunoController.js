@@ -87,7 +87,7 @@ angular.module("app", ['ngCookies'])
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
-                    cargarDesayunos();
+                    // cargarDesayunos();
                 }, function(respone) {
                     console.log('respuesta mala', respone)
                     alert(respone.data.mensaje);
@@ -122,7 +122,7 @@ angular.module("app", ['ngCookies'])
 
                     console.log(document.getElementById('img1'));
                     console.log(respone);
-                    cargarDesayunos();
+                    // cargarDesayunos();
                     alert("Desayuno modificado perfectamente");
                 }, function(respone) {
                     alert(respone.data.mensaje);

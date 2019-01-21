@@ -45,7 +45,7 @@ angular.module("app", ['ngCookies'])
             var reader = new FileReader();
             reader.onload = function(event) {
                 $scope.img = document.getElementById('img1');
-                $scope.img.src = event.target.result;
+                $scope.img.src = event.target.result;//obtener img
                 console.log('Este es el valor de la variable de imagen: ', $scope.img);
             }
             reader.readAsDataURL(file);
@@ -89,7 +89,7 @@ angular.module("app", ['ngCookies'])
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
-                    cargarCenas();
+                    //cargarCenas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;
@@ -123,7 +123,7 @@ angular.module("app", ['ngCookies'])
                     console.log(respone);
 
                     console.log(respone);
-                    cargarCenas();
+                   // cargarCenas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;

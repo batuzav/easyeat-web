@@ -87,7 +87,7 @@ angular.module("app", ['ngCookies'])
 
                     console.log(document.getElementById('img1'));
                     console.log(respone);
-                    cargarComidas();
+                    // cargarComidas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;
@@ -121,7 +121,7 @@ angular.module("app", ['ngCookies'])
                     console.log(document.getElementById('img1'));
                     console.log(respone);
                     alert('Comida modificada');
-                    cargarComidas();
+                    // cargarComidas();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;

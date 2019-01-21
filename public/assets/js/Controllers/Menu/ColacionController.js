@@ -88,7 +88,7 @@ angular.module("app", ['ngCookies'])
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
-                    cargarColaciones();
+                    // cargarColaciones();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;
@@ -122,7 +122,7 @@ angular.module("app", ['ngCookies'])
                     document.getElementById('img1').src = null;
 
                     console.log(document.getElementById('img1'));
-                    cargarColaciones();
+                    // cargarColaciones();
                 }, function(respone) {
                     alert(respone.data.mensaje);
                     $scope.loading = false;
